@@ -1,5 +1,5 @@
 ; Generates a random quote from either Bash.org or qdb.us, strips the bash.org/qdb.us off the end aswell
-on *:TEXT:!RandomQuote:#:{
+on *:TEXT:!RandomQuote*:#:{
   if ($2 == Bash) { set %Quote BASH }
   elseif ($2 == QDB) { set %Quote QDB }
   else {
