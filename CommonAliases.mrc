@@ -32,3 +32,5 @@
   %Show md5: $md5($iif($1 == -m,$2-,$1))
   %Show sha1: $sha1($iif($1 == -m,$2-,$1))
 }
+; A simple calculator
+/calc { /echo -a 12 $+ $1- 11=12 $bytes($calc($remove($1-,$chr(44))),db) }
