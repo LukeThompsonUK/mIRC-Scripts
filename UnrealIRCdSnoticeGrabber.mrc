@@ -156,4 +156,3 @@ on *:INPUT:@ChatOPS.*:{ ChatOps $1- | haltdef }
 on *:INPUT:@HelpOp.*:{ helpop $1- | haltdef } 
 on *:INPUT:@NaChat.*:{ nachat $1- | haltdef }
 on *:INPUT:@AdminChat.*:{ AdChat $1- | haltdef }
-on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
