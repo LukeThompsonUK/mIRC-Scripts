@@ -11,10 +11,3 @@
   echo -a md5: $md5(%pass)
   echo -a sha1: $sha1(%pass)
 }
-; This doesn't have anything to do with the password generator.
-/hash {
-  var %Show $iif($1 == -m,msg $active,echo -a)
-  %Show Original: $iif($1 == -m,$2-,$1)
-  %Show md5: $md5($iif($1 == -m,$2-,$1))
-  %Show sha1: $sha1($iif($1 == -m,$2-,$1))
-}
