@@ -17,8 +17,8 @@ alias RandomQuote {
 }
 
 on *:SockOpen:RandQuote:{
-  if (%Quote == BASH) { sockwrite -nt $sockname GET $+(/lookup.php?type=bash) }
-  if (%Quote == QDB) { sockwrite -nt $sockname GET $+(/lookup.php?type=qdb) }
+  if (%Quote == BASH) { sockwrite -nt $sockname GET /lookup.php?type=bash }
+  if (%Quote == QDB) { sockwrite -nt $sockname GET /lookup.php?type=qdb }
   sockwrite -nt $sockname Host: www.rscript.org
   sockwrite -nt $sockname $crlf
 }
