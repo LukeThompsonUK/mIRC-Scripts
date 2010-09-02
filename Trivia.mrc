@@ -1,10 +1,12 @@
 ; Trivia Script
 ; by Shawn Smith
+; Provids the start and stop trivia command.
 on $*:TEXT:/^!(s)?trivia$/Si:#Trivia:{
   if ((!trivia isin $1) && (!%Trivia)) { set %trivia ON | /setnewq }
   elseif (!trivia isin $1) { .msg $chan There is currently a Trivia game running. Type !Question to see the current question. }
   elseif (!strivia isin $1) { .timerSETNEWQ off | .timerTimesUp off | unset %Trivia | unset %NextQ | unset %Ans | unset %hint | .msg #Trivia Trivia Stopped. }
 }
+; Provides the rank command
 on $*:TEXT:/^!rank(\s.+)?$/Si:#Trivia:{
   if (!$2) {
     var %nick $replace($nick,],$chr(41),[,$chr(40))
@@ -17,6 +19,7 @@ on $*:TEXT:/^!rank(\s.+)?$/Si:#Trivia:{
     else { .msg $chan $2 has $readini(TriviaScores.ini,n,$network,%nick) $iif($readini(TriviaScores.ini,n,$network,%nick) == 1,Point!,Points!) }
   }
 }
+; Provides the command to ask what the current question is.
 on $*:TEXT:/^!Q(uestion)?$/Si:#Trivia:{
   if (%NextQ) {
     if (!%Question.Spam) { .msg $chan The current question is: %NextQ | .msg $chan The answer space is: $regsubex(%ans,/\S/g,*) }
@@ -24,6 +27,7 @@ on $*:TEXT:/^!Q(uestion)?$/Si:#Trivia:{
   }
   else { .Msg $chan The Trivia game is currently off or is waiting for a new question to be set. If a new question as not been set within 5 seconds; type 7!Trivia to start a new game. }
 }
+; Provides the hint commant
 on $*:TEXT:/^!h(int)?$/Si:#Trivia:{
   inc %hint
   if (%hint < 4) { var %Len $floor($calc($Len(%Ans) *(.75/ %hint))) }
@@ -48,6 +52,7 @@ on *:TEXT:!Credits:*:{
   if (!%Credit.Spam. $+ $nick) { msg $nick $Credits }
   inc -u10 %Credit.Spam. $+ $nick
 }
+; Skips the current question.
 on *:TEXT:!Skip:#Trivia:{ .timerTimesUp off | unset %hint, %ans, %PrevWinner, %WinRow | /setnewq }
 on *:TEXT:*:#Trivia:{
   if ($istok($1-,%ans,42)) { 
@@ -65,11 +70,13 @@ on *:TEXT:*:#Trivia:{
     .timerSETNEWQ 1 5 /setnewq
   }
 }
+; Run out of time and set a new question.
 alias -l TimesUp {
   .msg #Trivia Times up! The answer was %Ans - Setting new question..
   unset %Ans, %hint, %PrevWinner, %WinRow
   /setnewq
 }
+; Set a new question
 alias -l setnewq {
   var %Prev $readn
   var %QNum $Lines(RuneScape.txt)
@@ -84,6 +91,7 @@ alias -l setnewq {
   }
   .timerTimesUp 1 60 /TimesUp
 }
+; Used for the scrable
 alias -l scramble {
   tokenize 32 $1-
   var %i = 1, %temp.smbl
@@ -97,10 +105,16 @@ alias -l scramble {
 }
 
 on *:disconnect:{ unset %Trivia | unset %NextQ | unset %Ans | unset %hint | echo -a It seems we've disconnected from $network $+ . Stopping the Trivia game. }
-;on *:Connect:{ if ($network == SeersIRC) { .timer 1 15 msg #Trivia Reminder: If you spot an error in any of the questions and/or answers. Please contact Shawn. } }
-on *:BAN:#Trivia:{
+on *:BAN:#:{
   if (($me isop $chan) || ($me ishop $chan)) {
-    if (($banmask iswm $ial($me)) || ((($left($banmask,3) == ~n:) || ($left($banmask,3) == ~q:)) && ($right($banmask,-3) iswm $ial($me)))) || (($left($banmask,3) == ~c:) && ($me ison $right($banmask,-3))) || (($left($banmask,3) == ~r:) && ($right($banmask,-3) iswm $fullname)) { ChanServ access $chan del $nick | mode $chan -ohv $str($nick $+ $chr(32),3) | mode $chan -b $banmask | msg $chan I'm a Trivia bot run by this channel. Do not ban me. }
+    var %x = 2, %i = 0, %BanMask
+    if ($modefirst) { 
+      while (%x <= $0) {
+        if ($($+($,%x),2) iswm $ial($me)) { inc %i | %BanMask = %BanMask $($+($,%x),2) }
+        inc %x
+      }
+      mode $chan - $+ $str(b,%i) %BanMask
+    }
   }
 }
 on *:Kick:#Trivia:{ if ($me == $knick) { join $Chan } }
