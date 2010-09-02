@@ -122,3 +122,39 @@ on $^*:Snotice:/Lag\sreply\s--\s(\S+)\s(\S+)\s(\d+)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
   aline -ph $($+(@Oper.,$network),2) 12(07 $+ $time $+ 12) 4LAG:07 $regml(1) 12<-->07 $regml(2) 12->07 $regml(3) 12(07 $+ $duration($calc($ctime - $regml(3))) $+ 12)
 }
+on $^*:Snotice:/Global\s--\sfrom\s(\S+):\s([^\]]+)$/Si:{
+  if (!$window($($+(@GlobOPS.,$network),2))) { window -nezg1 $($+(@GlobOPS.,$network),2) }
+  aline $iif($regml(1) == OperServ,-p,-ph) $($+(@GlobOPS.,$network),2) 12(07 $+ $time $+ 12) 04Global:07 $regml(1) 12->07 $regml(2)
+  haltdef
+}
+on $^*:Snotice:/HelpOp\s--\sfrom\s(\S+)\s(\(HelpOp\):\s)?(?:\(Local\):\s)?(.+)/Si:{
+  if (!$regml(3)) {
+    echo -ag 04*** 12HelpOP: 11(04 $+ $network $+ 11:04 $+ $regml(1) $+ 11:04 $+ $regml(2) $+ 11)
+    query -n $regml(1)
+    echo $regml(1) 04*** Needed HelpOp for -> $regml(2)
+  }
+  if (!$window($($+(@HelpOp.,$network),2))) { window -nezg1 $($+(@HelpOp.,$network),2) }
+  aline -ph $($+(@HelpOp.,$network),2) 12(07 $+ $time $+ 12) 04HelpOp:07 $regml(1) 12->07 $iif($regml(3),$regml(3),$regml(2))
+  haltdef
+}
+on $^*:Snotice:/NetAdmin.Chat\s--\sfrom\s(\S+):\s(.+)/Si:{
+  if (!$window($($+(@NaChat.,$network),2))) { window -nezg1 $($+(@NaChat.,$network),2) }
+  aline -ph $($+(@NaChat.,$network),2) 12(07 $+ $time $+ 12) 4NaChat:7 $regml(1) 12->07 $regml(2)
+  haltdef
+}
+on $^*:Snotice:/AdminChat\s--\sfrom\s(\S+):\s(.+)/Si:{
+  if (!$window($($+(@Adminchat.,$network),2))) { window -nezg1 $($+(@AdminChat.,$network),2) }
+  aline -ph $($+(@AdminChat.,$network),2) 12(07 $+ $time $+ 12) 4AdminChat:07 $regml(1) 12->07 $regml(2)
+  haltdef
+}
+on $^*:Snotice:/ChatOps\s--\sfrom\s(\S+):\s(.+)/Si:{
+  if (!$window($($+(@ChatOPS.,$network),2))) { window -nezg1 $($+(@ChatOPS.,$network),2) }
+  aline -ph $($+(@ChatOPS.,$network),2) 12(07 $+ $time $+ 12) 4ChatOps:7 $regml(1) 12->7 $regml(2)
+  haltdef
+}
+on $^*:Snotice:/(\S+)\s\((\S+)\)\sdid\sa\s.whois\son\syou/Si:{ echo -agt 4Whois -> 12[11 $+ $network $+ 12:11 $+ $+($regml(1),!,$regml(2)) $+ 12] | haltdef }
+on *:INPUT:@ChatOPS.*:{ ChatOps $1- | haltdef }
+on *:INPUT:@HelpOp.*:{ helpop $1- | haltdef } 
+on *:INPUT:@NaChat.*:{ nachat $1- | haltdef }
+on *:INPUT:@AdminChat.*:{ AdChat $1- | haltdef }
+on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }

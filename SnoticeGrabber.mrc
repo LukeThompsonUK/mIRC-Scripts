@@ -129,46 +129,11 @@ on $^*:Snotice:/FILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
   aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER REMOVAL:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-; Unreal only?
-on $^*:Snotice:/Global\s--\sfrom\s(\S+):\s([^\]]+)$/Si:{
-  if (!$window($($+(@GlobOPS.,$network),2))) { window -nezg1 $($+(@GlobOPS.,$network),2) }
-  aline $iif($regml(1) == OperServ,-p,-ph) $($+(@GlobOPS.,$network),2) 12(07 $+ $time $+ 12) 04Global:07 $regml(1) 12->07 $regml(2)
-  haltdef
-}
-; InspIRCd only?
 on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s([^\]]+)$/Si:{
   if (!$window($($+(@GlobOPS.,$network),2))) { window -nezg1 $($+(@GlobOPS.,$network),2) }
   aline -ph $($+(@GlobOPS.,$network),2) 12(07 $+ $time $+ 12) 04Global:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-on $^*:Snotice:/HelpOp\s--\sfrom\s(\S+)\s(\(HelpOp\):\s)?(?:\(Local\):\s)?(.+)/Si:{
-  if (!$regml(3)) {
-    echo -ag 04*** 12HelpOP: 11(04 $+ $network $+ 11:04 $+ $regml(1) $+ 11:04 $+ $regml(2) $+ 11)
-    query -n $regml(1)
-    echo $regml(1) 04*** Needed HelpOp for -> $regml(2)
-  }
-  if (!$window($($+(@HelpOp.,$network),2))) { window -nezg1 $($+(@HelpOp.,$network),2) }
-  aline -ph $($+(@HelpOp.,$network),2) 12(07 $+ $time $+ 12) 04HelpOp:07 $regml(1) 12->07 $iif($regml(3),$regml(3),$regml(2))
-  haltdef
-}
-on $^*:Snotice:/NetAdmin.Chat\s--\sfrom\s(\S+):\s(.+)/Si:{
-  if (!$window($($+(@NaChat.,$network),2))) { window -nezg1 $($+(@NaChat.,$network),2) }
-  aline -ph $($+(@NaChat.,$network),2) 12(07 $+ $time $+ 12) 4NaChat:7 $regml(1) 12->07 $regml(2)
-  haltdef
-}
-on $^*:Snotice:/AdminChat\s--\sfrom\s(\S+):\s(.+)/Si:{
-  if (!$window($($+(@Adminchat.,$network),2))) { window -nezg1 $($+(@AdminChat.,$network),2) }
-  aline -ph $($+(@AdminChat.,$network),2) 12(07 $+ $time $+ 12) 4AdminChat:07 $regml(1) 12->07 $regml(2)
-  haltdef
-}
-on $^*:Snotice:/ChatOps\s--\sfrom\s(\S+):\s(.+)/Si:{
-  if (!$window($($+(@ChatOPS.,$network),2))) { window -nezg1 $($+(@ChatOPS.,$network),2) }
-  aline -ph $($+(@ChatOPS.,$network),2) 12(07 $+ $time $+ 12) 4ChatOps:7 $regml(1) 12->7 $regml(2)
-  haltdef
-}
-on *:INPUT:@ChatOPS.*:{ ChatOps $1- | haltdef }
-on *:INPUT:@HelpOp.*:{ helpop $1- | haltdef } 
-on *:INPUT:@NaChat.*:{ nachat $1- | haltdef }
-on *:INPUT:@AdminChat.*:{ AdChat $1- | haltdef }
+
 on *:INPUT:@GlobOPS.*:{ GlobOPS $1- | haltdef }
 on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
