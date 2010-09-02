@@ -14,8 +14,11 @@ on *:SockRead:Youtube: {
   if (Title isin %Youtube) { set %vTitle $right(%Youtube,-7) }
   if (Views isin %Youtube) { set %vViews $right(%Youtube,-6) }
   if (END isin %Youtube) { 
+    ; If you want to display this in a channel instead of here
+    ; Comment out the following 2 lines and uncomment the one after.
     if (!$window(@Youtube)) { /window -nz @Youtube }
     aline -ph @Youtube Title: %vTitle - Views: %vViews - Link: %VidURL
+	; msg $chan Title: %vTitle - Views: %vViews - Link: %VidURL
     unset %vTitle
     unset %vViews
     unset %VidToGrab

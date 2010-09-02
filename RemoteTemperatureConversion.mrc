@@ -8,6 +8,8 @@ on *:TEXT:!Temp*:#:{ {
   - C (Celsius)
   - K (Kelvin)
   */
+  ; $3 will be the temperature to convert
+  ; $2 will be the scale you're using, it'll convert to the other 2 scales.
   if ($3 isnum) {
     if (F == $2) {
       msg $chan 07 $+ $2 in Fahrenheit is:

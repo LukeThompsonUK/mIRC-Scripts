@@ -19,6 +19,7 @@ on *:SockRead:IdleStats: {
   .timerShowStats 1 1 ShowStats
 }
 alias ShowStats {
+  ; We only get this warning if we try to go to a link that has no idlerpg player.
   if (%Warning.I) { unset %Warning.I | echo -a ERROR NO SUCH NAME }
   Else {
     var %Stats $replace(%Stats,$chr(32),$chr(58))

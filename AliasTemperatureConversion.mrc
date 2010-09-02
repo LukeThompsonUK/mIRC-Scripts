@@ -8,6 +8,8 @@
   - C (Celsius)
   - K (Kelvin)
   */
+  ; $2 will be the temperature to convert
+  ; $1 will be the scale you're using, it'll convert to the other 2 scales.
   if ($2 isnum) {
     if (F == $1) {
       echo -a 07 $+ $2 in Fahrenheit is:
