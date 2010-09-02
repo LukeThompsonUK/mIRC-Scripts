@@ -1,4 +1,3 @@
-on $^*:Snotice:/(\S+)\s\((\S+)\)\sdid\sa\s.whois\son\syou/Si:{ echo -agt 4Whois -> 12[11 $+ $network $+ 12:11 $+ $+($regml(1),!,$regml(2)) $+ 12] | haltdef }
 on $^*:WALLOPS:*:{
   if (!$window($($+(@WallOPS.,$network),2))) { window -nezg1 $($+(@WallOPS.,$network),2) }
   aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-

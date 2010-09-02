@@ -152,7 +152,6 @@ on $^*:Snotice:/ChatOps\s--\sfrom\s(\S+):\s(.+)/Si:{
   aline -ph $($+(@ChatOPS.,$network),2) 12(07 $+ $time $+ 12) 4ChatOps:7 $regml(1) 12->7 $regml(2)
   haltdef
 }
-on $^*:Snotice:/(\S+)\s\((\S+)\)\sdid\sa\s.whois\son\syou/Si:{ echo -agt 4Whois -> 12[11 $+ $network $+ 12:11 $+ $+($regml(1),!,$regml(2)) $+ 12] | haltdef }
 on *:INPUT:@ChatOPS.*:{ ChatOps $1- | haltdef }
 on *:INPUT:@HelpOp.*:{ helpop $1- | haltdef } 
 on *:INPUT:@NaChat.*:{ nachat $1- | haltdef }
