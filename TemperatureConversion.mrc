@@ -1,7 +1,7 @@
 /Temp {
   /*
   This script is used to convert tempature between two scales.
-  Usage: /Temp SCALE TEMPATURE
+  Usage: /Temp SCALE TEMPERATURE
   Example: /Temp F 94.5
   Supported scales:
   - F (Fahrenheit)
