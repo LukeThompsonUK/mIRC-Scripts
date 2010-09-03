@@ -3,6 +3,7 @@ on $^*:WALLOPS:*:{
   aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
   haltdef
 }
+; *** CONNECT: Client connecting on port 6697: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [xxx.xxx.xxx.xxx] [Test Nick]
 on $^*:Snotice:/CONNECT:(?:[^\]]+)port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[([^\]]+)\]/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
@@ -13,16 +14,20 @@ on $^*:Snotice:/ANNOUNCEMENT:\sConnecting\suser\s(\S+)\s(?:[^\]]+)\((\S+)\),\sch
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
   haltdef
 }
+;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Client closed the connection]
+;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Quit: Quitting IRC]
 on $^*:Snotice:/QUIT:\sClient\sexiting:\s(\S+)\s\[(.+)\]$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Disconnect:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
+;*** NICK: User TestNick changed their nickname to TestNick1
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
   if (!$window($($+(@NickChanges.,$network),2))) { window -nz $($+(@NickChanges.,$network),2) }
   aline -p $($+(@NickChanges.,$network),2) 12(09 $+ $time $+ 12) 4NickChange:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
+;*** KILL: Local Kill by Shawn: TestNick1!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com (Kill Message Here)
 on $^*:Snotice:/Kill:(?:[^\]]+)by\s(\S+):\s(\S+)\s\(([^\]]+)\)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
