@@ -46,51 +46,53 @@ on *:SockOpen:WhatPulse:{
 }
 on *:SockRead:WhatPulse:{
   sockread %WhatPulseBuffer
-  if ($regex(WhatPulse,%WhatPulseBuffer,>(.+)<)) { set %WhatPulseStats %WhatPulseStats $replace($regml(WhatPulse,1),$chr(32),$chr(95)) }
+  if (%TeamCheck) {
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamName>(.+)<\/TeamName>)) { set %WhatPulseStats.TeamName $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamMembers>(.+)<\/TeamMembers>)) { set %WhatPulseStats.TeamMembers $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamKeys>(.+)<\/TeamKeys>)) { set %WhatPulseStats.TeamKeys $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamClicks>(.+)<\/TeamClicks>)) { set %WhatPulseStats.TeamClicks $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamMiles>(.+)<\/TeamMiles>)) { set %WhatPulseStats.TeamMiles $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamRank>(.+)<\/TeamRank>)) { set %WhatPulseStats.TeamRank $regml(WhatPulse,1) }
+  }
+  else {
+    if ($regex(WhatPulse,%WhatPulseBuffer,<AccountName>(.+)<\/AccountName>)) { set %WhatPulseStats.AccountName $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<DateJoined>(.+)<\/DateJoined>)) { set %WhatPulseStats.DateJoined $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TotalKeyCount>(.+)<\/TotalKeyCount>)) { set %WhatPulseStats.TotalKeyCount $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TotalMouseClicks>(.+)<\/TotalMouseClicks>)) { set %WhatPulseStats.TotalMouseClicks $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TotalMiles>(.+)<\/TotalMiles>)) { set %WhatPulseStats.TotalMiles $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<Rank>(.+)<\/Rank>)) { set %WhatPulseStats.Rank $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamName>(.+)<\/TeamNAme>)) { set %WhatPulseStats.TeamName $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamID>(.+)<\/TeamID>)) { set %WhatPulseStats.TeamID $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<RankInTeam>(.+)<\/RankInTeam>)) { set %WhatPulseStats.RankInTeam $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamMembers>(.+)<\/TeamMembers>)) { set %WhatPulseStats.TeamMembers $regml(WhatPulse,1) }
+  }
   .timerShowPulse 1 1 ShowPulse
 }
 alias ShowPulse { 
   var %WhatPulseStats $replace(%WhatPulseStats,$chr(32),$chr(59))
   tokenize ; %WhatPulseStats
   if (%TeamCheck) {
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Name: $gettok(%WhatPulseStats,1,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Members: $gettok(%WhatPulseStats,3,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,4,59),b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,5,59),b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,6,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes($gettok(%WhatPulseStats,7,59),b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Name: %WhatPulseStats.TeamName
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Members: $bytes(%WhatPulseStats.TeamMembers,b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TeamKeys,b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TeamClicks,b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TeamMiles
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes(%WhatPulseStats.TeamRank,b)
   }
   else {
-    if ($numtok(%WhatPulseStats,59) == 25) {
-      ; User doesn't have a home page set, so we have to change the $gettoks by 1 fucking number
-      ; Or the whole thing goes anal.
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: $gettok(%WhatPulseStats,3,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: $gettok(%WhatPulseStats,5,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,8,59),b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,9,59),b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,10,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes($gettok(%WhatPulseStats,15,59),b)
-      ; If token 17 is 0 then they aren't in a team.
-      if ($gettok(%WhatPulseStats,16,59) != 0) {
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: $gettok(%WhatPulseStats,17,59) (ID: $+ $gettok(%WhatPulseStats,16,59) $+ )
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes($gettok(%WhatPulseStats,25,59),b) out of $bytes($gettok(%WhatPulseStats,18,59),b)
-      }
-    }
-    else {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: $gettok(%WhatPulseStats,3,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: $gettok(%WhatPulseStats,5,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,9,59),b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,10,59),b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,11,59)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes($gettok(%WhatPulseStats,16,59),b)
-      ; If token 17 is 0 then they aren't in a team.
-      if ($gettok(%WhatPulseStats,17,59) != 0) {
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: $gettok(%WhatPulseStats,18,59) (ID: $+ $gettok(%WhatPulseStats,17,59) $+ )
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes($gettok(%WhatPulseStats,26,59),b) out of $bytes($gettok(%WhatPulseStats,19,59),b)
-      }
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: %WhatPulseStats.AccountName
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: %WhatPulseStats.DateJoined
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TotalKeyCount,b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TotalMiles
+    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes(%WhatPulseStats.Rank,b)
+    ; If token 17 is 0 then they aren't in a team.
+    if ($gettok(%WhatPulseStats,17,59) != 0) {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
     }
   }
-  .timer 1 1 unset %WhatPulseStats
+  .timer 1 1 unset %WhatPulseStats.*
   unset %TeamCheck
   unset %IDToCheck
   unset %WhatPulseBuffer
