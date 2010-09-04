@@ -61,16 +61,33 @@ alias ShowPulse {
     $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes($gettok(%WhatPulseStats,7,59),b)
   }
   else {
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: $gettok(%WhatPulseStats,3,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: $gettok(%WhatPulseStats,5,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,9,59),b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,10,59),b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,11,59)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes($gettok(%WhatPulseStats,16,59),b)
-    ; If token 17 is 0 then they aren't in a team.
-    if ($gettok(%WhatPulseStats,17,59) != 0) {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: $gettok(%WhatPulseStats,18,59) (ID: $+ $gettok(%WhatPulseStats,17,59) $+ )
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes($gettok(%WhatPulseStats,26,59),b) out of $bytes($gettok(%WhatPulseStats,19,59),b)
+    if ($numtok(%WhatPulseStats,59) == 25) {
+      ; User doesn't have a home page set, so we have to change the $gettoks by 1 fucking number
+      ; Or the whole thing goes anal.
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: $gettok(%WhatPulseStats,3,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: $gettok(%WhatPulseStats,5,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,8,59),b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,9,59),b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,10,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes($gettok(%WhatPulseStats,15,59),b)
+      ; If token 17 is 0 then they aren't in a team.
+      if ($gettok(%WhatPulseStats,16,59) != 0) {
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: $gettok(%WhatPulseStats,17,59) (ID: $+ $gettok(%WhatPulseStats,16,59) $+ )
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes($gettok(%WhatPulseStats,25,59),b) out of $bytes($gettok(%WhatPulseStats,18,59),b)
+      }
+    }
+    else {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: $gettok(%WhatPulseStats,3,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: $gettok(%WhatPulseStats,5,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes($gettok(%WhatPulseStats,9,59),b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes($gettok(%WhatPulseStats,10,59),b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: $gettok(%WhatPulseStats,11,59)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes($gettok(%WhatPulseStats,16,59),b)
+      ; If token 17 is 0 then they aren't in a team.
+      if ($gettok(%WhatPulseStats,17,59) != 0) {
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: $gettok(%WhatPulseStats,18,59) (ID: $+ $gettok(%WhatPulseStats,17,59) $+ )
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes($gettok(%WhatPulseStats,26,59),b) out of $bytes($gettok(%WhatPulseStats,19,59),b)
+      }
     }
   }
   .timer 1 1 unset %WhatPulseStats
