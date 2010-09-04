@@ -68,7 +68,7 @@ on *:SockRead:WhatPulse:{
   }
   .timerShowPulse 1 1 ShowPulse
 }
-alias ShowPulse { 
+alias -l ShowPulse { 
   var %WhatPulseStats $replace(%WhatPulseStats,$chr(32),$chr(59))
   tokenize ; %WhatPulseStats
   if (%TeamCheck) {
