@@ -115,4 +115,18 @@ menu channel {
   .Team
   ..Check default TeamID: /WhatPulse -t $iif(%WhatPulseTeamID,%WhatPulseTeamID,$?="No default ID set; enter a new ID to check")
   ..Check other TeamID: /WhatPulse $?="Enter ID to check"
+  .Help: {
+    echo -a WhatPulse stats script by Shawn Smith
+    echo -a Commands:
+    echo -a /WhatPulse [-t] [User/TeamID]
+    echo -a If the -t switch is used you will look up a TeamID instead of UserID, the User/TeamID is optional
+    echo -a If you used either the menu or /PulseID [-t] to set your default IDs prior to using /WhatPulse
+    echo -a /PulseID [-t] User/TeamID
+    echo -a If the -t switch is used you will specify a TeamID instead of a UserID, if you do not fill in a User/TeamID your current one will be unset.
+    echo -a Settings:
+    echo -a All settings are done via the channel menu, Right click a channel->WhatPulse->Settings
+    echo -a You can also use this menu to change your default IDs
+    echo -a If you have never used WhatPulse->Settings->Display before you will automatically echo the results of the lookup in the active window
+    echo -a You can change this to a channel message if you wish.
+  }
 }
