@@ -86,8 +86,8 @@ alias ShowPulse {
     $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
     $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TotalMiles
     $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes(%WhatPulseStats.Rank,b)
-    ; If token 17 is 0 then they aren't in a team.
-    if ($gettok(%WhatPulseStats,17,59) != 0) {
+    ; If %WhatPulseStats.TeamID is 0 then they aren't in a team.
+    if (%WhatPulseStats.TeamID != 0) {
       $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
       $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
     }
