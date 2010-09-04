@@ -1,5 +1,6 @@
 alias WhatPulse {
   if ($sock(WhatPulse)) { .sockclose WhatPulse }
+  if (msg isin %WhatPulse_Display) { set %WhatPulse_Display msg $active }
   if ($1 == -t) { 
     if ($2 isnum) {
       set %TeamCheck ON
@@ -107,7 +108,7 @@ menu channel {
       halt
     }
     if (%vWPD == ECHO) { set %WhatPulse_Display echo -a }
-    elseif (%vWPD == MSG) { set %WhatPulse_Display msg $chan }
+    elseif (%vWPD == MSG) { set %WhatPulse_Display msg $active }
   }
   ..Set default UserID: set %WhatPulseUserID $?="Enter the ID"
   ..Set default TeamID: set %WhatPulseTeamID $?="Enter the ID"
