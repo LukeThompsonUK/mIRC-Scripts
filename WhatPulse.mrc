@@ -78,3 +78,14 @@ alias ShowPulse {
   unset %IDToCheck
   unset %WhatPulseBuffer
 }
+menu channel {
+  WhatPulse
+  .User
+  ..Set default UserID: set %WhatPulseUserID $?="Enter the ID"
+  ..Check default UserID: /WhatPulse $iif(%WhatPulseUserID,%WhatPulseUserID,$?="No default ID set; enter a new ID to check")
+  ..Check other UserID: /WhatPulse $?="Enter ID to check"
+  .Team
+  ..Set default TeamID: set %WhatPulseTeamID $?=Enter the ID"
+  ..Check default TeamID: /WhatPulse -t $iif(%WhatPulseTeamID,%WhatPulseTeamID,$?="No default ID set; enter a new ID to check")
+  ..Check other TeamID: /WhatPulse $?="Enter ID to check"
+}
