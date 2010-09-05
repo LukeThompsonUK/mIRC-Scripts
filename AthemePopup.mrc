@@ -1,7 +1,11 @@
 Atheme
 .NickServ
 ..Register: .msg NickServ REGISTER $?="Enter a password to register with" $?="Enter your email address"
-..Identify: .msg NickServ IDENTIFY $?="Enter username to identify with" $?="Enter password"
+..Identify
+...Identify via password: .msg NickServ IDENTIFY $?="Enter username to identify with" $?="Enter password"
+...SSL Fingerprint list: .msg NickServ CERT LIST
+...SSL Fingerprint add: .msg NickServ CERT ADD $?="Please enter the fingerprint to autoidentify with"
+...SSL Fingerprint del: .msg NickServ CERT DEL $?="Please enter the fingerprint to remove"
 ..Ghost: .msg NickServ Ghost $?="Enter username to ghost" $?="Enter password"
 ..Change Password: .msg NickServ SET PASSWORD $?=Enter a new password."
 ..Ungroup: .msg NickServ UNGROUP $?="Enter name to ungroup"
