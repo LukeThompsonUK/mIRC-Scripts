@@ -4,7 +4,7 @@ F7 {
   NAMES $chan
   var %x 1
   while (%x <= $snick($chan,0)) {
-    zline $snick($chan,%x) 7d : $+ %Reason
+    zline $snick($chan,%x) 7d $+(:,%Reason)
     inc %x
   }
 }
