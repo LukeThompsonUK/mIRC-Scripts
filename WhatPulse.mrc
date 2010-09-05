@@ -62,7 +62,7 @@ on *:SockRead:WhatPulse:{
     if ($regex(WhatPulse,%WhatPulseBuffer,<TotalMouseClicks>(.+)<\/TotalMouseClicks>)) { set %WhatPulseStats.TotalMouseClicks $regml(WhatPulse,1) }
     if ($regex(WhatPulse,%WhatPulseBuffer,<TotalMiles>(.+)<\/TotalMiles>)) { set %WhatPulseStats.TotalMiles $regml(WhatPulse,1) }
     if ($regex(WhatPulse,%WhatPulseBuffer,<Rank>(.+)<\/Rank>)) { set %WhatPulseStats.Rank $regml(WhatPulse,1) }
-    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamName>(.+)<\/TeamNAme>)) { set %WhatPulseStats.TeamName $regml(WhatPulse,1) }
+    if ($regex(WhatPulse,%WhatPulseBuffer,<TeamName>(.+)<\/TeamName>)) { set %WhatPulseStats.TeamName $regml(WhatPulse,1) }
     if ($regex(WhatPulse,%WhatPulseBuffer,<TeamID>(.+)<\/TeamID>)) { set %WhatPulseStats.TeamID $regml(WhatPulse,1) }
     if ($regex(WhatPulse,%WhatPulseBuffer,<RankInTeam>(.+)<\/RankInTeam>)) { set %WhatPulseStats.RankInTeam $regml(WhatPulse,1) }
     if ($regex(WhatPulse,%WhatPulseBuffer,<TeamMembers>(.+)<\/TeamMembers>)) { set %WhatPulseStats.TeamMembers $regml(WhatPulse,1) }
@@ -73,24 +73,34 @@ alias -l ShowPulse {
   var %WhatPulseStats $replace(%WhatPulseStats,$chr(32),$chr(59))
   tokenize ; %WhatPulseStats
   if (%TeamCheck) {
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Name: %WhatPulseStats.TeamName
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Members: $bytes(%WhatPulseStats.TeamMembers,b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TeamKeys,b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TeamClicks,b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TeamMiles
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes(%WhatPulseStats.TeamRank,b)
+    if (%WhatPulse_ShortDisplay) {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) WhatPulse for $+(%WhatPulseStats.TeamName,:) $+([TeamKeys:,$bytes(%WhatPulseStats.TeamKeys,b), / TeamClicks:,$bytes(%WhatPulseStats.TeamClicks,b), / TeamMiles:,%WhatPulseStats.TeamMiles,]) / Rank: %WhatPulseStats.TeamRank
+    }
+    else {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Name: %WhatPulseStats.TeamName
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Members: $bytes(%WhatPulseStats.TeamMembers,b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TeamKeys,b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TeamClicks,b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TeamMiles
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes(%WhatPulseStats.TeamRank,b)
+    }
   }
   else {
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: %WhatPulseStats.AccountName
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: %WhatPulseStats.DateJoined
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TotalKeyCount,b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TotalMiles
-    $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes(%WhatPulseStats.Rank,b)
-    ; If %WhatPulseStats.TeamID is 0 then they aren't in a team.
-    if (%WhatPulseStats.TeamID != 0) {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
+    if (%WhatPulse_ShortDisplay) {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Team: $+($iif(%WhatPulseStats.TeamID == 0,None,%WhatPulseStats.TeamName),[,%WhatPulseStats.TeamID,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b) / Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b)
+    }
+    else {
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: %WhatPulseStats.AccountName
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: %WhatPulseStats.DateJoined
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TotalKeyCount,b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TotalMiles
+      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes(%WhatPulseStats.Rank,b)
+      ; If %WhatPulseStats.TeamID is 0 then they aren't in a team.
+      if (%WhatPulseStats.TeamID != 0) {
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
+        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
+      }
     }
   }
   .timer 1 1 unset %WhatPulseStats.*
@@ -101,7 +111,7 @@ alias -l ShowPulse {
 menu channel {
   WhatPulse
   .Settings
-  ..Display: { 
+  ..Display [Echo/Active window]: { 
     var %vWPD $?="Do you want this to show as a channel message or echo for only you to see? [Type ECHO or MSG]"
     if ((%vWPD != ECHO) && (%vWPD != MSG)) {
       echo -a It appears you didn't type your answer correctly. Run WhatPulse->Settings->Display again and type either ECHO or MSG in the box.
@@ -109,6 +119,16 @@ menu channel {
     }
     if (%vWPD == ECHO) { set %WhatPulse_Display echo -a }
     elseif (%vWPD == MSG) { set %WhatPulse_Display msg $active }
+  }
+  ..Toggle short display [One line display or many]:{
+    var %sWPD $?="Do you want this on one line or multi? [Type ONE or MULTI]"
+    if ((%sWPD != ONE) && (%sWPD != MULTI)) {
+      echo -a It appears you didn't type your answer correctly, run WhatPulse->Settings->Toggle short display again and type either ONE or MULTI in the box.
+      unset %WhatPulse_ShortDisplay
+      halt
+    }
+    if (%sWPD == ONE) { set %WhatPulse_ShortDisplay on }
+    elseif (%sWPD == MULTI) { unset %WhatPulse_ShortDisplay }
   }
   ..Set default UserID: set %WhatPulseUserID $?="Enter the ID"
   ..Set default TeamID: set %WhatPulseTeamID $?="Enter the ID"
