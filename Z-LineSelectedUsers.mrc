@@ -1,10 +1,29 @@
-F7 {
+raw 340:*:{
+  if (%ZLineSelectedUsers) {
+    if ($regex(UserIP,$1-,/(\S+)\*=(?:\S+)@(\S+)/Si)) {
+      echo -a Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
+    }
+    elseif ($regex(UserIP,$1-,/(\S+)=(?:\S+)@(\S+)$/Si)) {
+      ;echo -a Z-Line: $regml(UserIP,1) - IP: $regml(UserIP,2)
+      zline $regml(UserIP,2) $+(:,%ZLineSelectedUsers_Reason)
+    }
+    dec %ZLineSelectedUsers_TotalUsers
+    if (%ZLineSelectedUsers_TotalUsers == 0) { 
+      unset %ZLineSelectedUsers
+      .timer 1 5 unset %ZLineSelectedUsers_TotalUsers
+      .timer 1 5 unset %ZlineSelectedUsers_Reason
+    }
+  }
+}
+alias F7 {
   if ($?!="Z-Line selected users?" == $false) { Halt }
-  var %Reason == $?="Z-Line Reason:"
-  NAMES $chan
+  set %ZLineSelectedUsers_Reason $?="Z-Line Reason:"
   var %x 1
+  set %ZLineSelectedUsers ON
+  set %ZLineSelectedUsers_TotalUsers $snick($chan,0)
   while (%x <= $snick($chan,0)) {
-    zline $snick($chan,%x) 7d $+(:,%Reason)
+    ; zline $snick($chan,%x) 7d $+(:,%Reason)
+    userip $snick($chan,%x)
     inc %x
   }
 }
