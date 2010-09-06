@@ -4,7 +4,6 @@ raw 340:*:{
       echo -a Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
     }
     elseif ($regex(UserIP,$1-,/(\S+)=(?:\S+)@(\S+)$/Si)) {
-      ;echo -a Z-Line: $regml(UserIP,1) - IP: $regml(UserIP,2)
       zline $regml(UserIP,2) $+(:,%ZLineSelectedUsers_Reason)
     }
     dec %ZLineSelectedUsers_TotalUsers
@@ -22,7 +21,6 @@ alias F7 {
   set %ZLineSelectedUsers ON
   set %ZLineSelectedUsers_TotalUsers $snick($chan,0)
   while (%x <= $snick($chan,0)) {
-    ; zline $snick($chan,%x) 7d $+(:,%Reason)
     userip $snick($chan,%x)
     inc %x
   }
