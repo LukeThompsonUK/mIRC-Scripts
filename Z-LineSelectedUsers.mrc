@@ -4,7 +4,7 @@ raw 340:*:{
       echo -a Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
     }
     elseif ($regex(UserIP,$1-,/(\S+)=(?:\S+)@(\S+)$/Si)) {
-      zline $regml(UserIP,2) $+(:,%ZLineSelectedUsers_Reason)
+      zline $regml(UserIP,2) 7d $+(:,%ZLineSelectedUsers_Reason)
     }
     dec %ZLineSelectedUsers_TotalUsers
     if (%ZLineSelectedUsers_TotalUsers == 0) { 
