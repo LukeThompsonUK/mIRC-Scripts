@@ -1,20 +1,20 @@
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG:{ 
   if ($nick == $me) {
-    if ($+(%,[INFO]IdleRPG.,$network,.BotName)) {
-      msg $($+(%,[INFO]IdleRPG.,$network,.BotName),2) LOGIN $($+(%,[INFO]IdleRPG.,$network,.UserID),2) $($+(%,[INFO]IdleRPG.,$network,.Password),2)
+    if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+      msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     }
   }
 }
 alias IRPG {
-  set $+(%,[INFO]IdleRPG.,$network,.BotName) $?="Enter the bot name to message on this network."
-  set $+(%,[INFO]IdleRPG.,$network,.UserID) $?="Enter the username to autoidentify with."
-  set $+(%,[INFO]IdleRPG.,$network,.Password) $?="Enter the password to autoidentify with."
+  writeini IdleRPGAutoLoginDetails.ini $network Botname $?="Enter the bot name to message on this network."
+  writeini IdleRPGAutoLoginDetails.ini $network Username $?="Enter the username to autoidentify with."
+  writeini IdleRPGAutoLoginDetails.ini $network Password $?="Enter the password to autoidentify with."
   echo -a -
   echo -a Network: $network
-  echo -a BotName: $($+(%,[INFO]IdleRPG.,$network,.BotName),2)
-  echo -a Username: $($+(%,[INFO]IdleRPG.,$network,.UserID),2)
-  echo -a Password: $($+(%,[INFO]IdleRPG.,$network,.Password),2)
+  echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+  echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+  echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   echo -a -
 }
 menu channel {
@@ -22,13 +22,23 @@ menu channel {
   .View current information for this network: {
     echo -a -
     echo -a Network: $network
-    echo -a BotName: $($+(%,[INFO]IdleRPG.,$network,.BotName),2)
-    echo -a Username: $($+(%,[INFO]IdleRPG.,$network,.UserID),2)
-    echo -a Password: $($+(%,[INFO]IdleRPG.,$network,.Password),2)
+    echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+    echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+    echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     echo -a -
   }
-  .Autologin information
-  ..Set botname: set $+(%,[INFO]IdleRPG.,$network,.BotName) $?="Enter the bot name to message on this network."
-  ..Set username: set $+(%,[INFO]IdleRPG.,$network,.UserID) $?="Enter the username to autoidentify with."
-  ..Set password: set $+(%,[INFO]IdleRPG.,$network,.Password) $?="Enter the password to autoidentify with."
+  .Autologin information: {
+    ..Set botname:{
+      writeini IdleRPGAutoLoginDetails.ini $network Botname $?="Enter the bot name to message on this network."
+      echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+    }
+    ..Set username:{
+      writeini IdleRPGAutoLoginDetails.ini $network Username $?="Enter the username to message on this network."
+      echo -a Username for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+    }
+    ..Set password:{
+      writeini IdleRPGAutoLoginDetails.ini $network Password $?="Enter the password to message on this network."
+      echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    }
+  }
 }
