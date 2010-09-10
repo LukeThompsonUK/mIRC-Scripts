@@ -44,9 +44,9 @@ on *:NOTICE:*:?:{
       if ($readini(AutoLoginInformation.ini,$network,$me)) {
         NickServ IDENTIFY $readini(AutoLoginInformation.ini,$network,$me)
       }
-    }
-    else { 
-      echo -a You're not set to autoidentify with this nickname.
+      else { 
+        echo -a You're not set to autoidentify with this nickname.
+      }
     }
   }
 }
