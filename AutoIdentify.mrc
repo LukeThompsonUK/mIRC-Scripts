@@ -40,8 +40,8 @@ menu channel {
 }
 on *:NOTICE:*:?:{
   if ($nick == NickServ) {
-    if ($readini(AutoLoginInformation.ini,$network,$me)) {
-      if ((This nickname is registered isin $1-) || (Please identify via isin $1-)) {
+    if ((This nickname is registered isin $1-) || (Please identify via isin $1-)) {
+      if ($readini(AutoLoginInformation.ini,$network,$me)) {
         NickServ IDENTIFY $readini(AutoLoginInformation.ini,$network,$me)
       }
     }
