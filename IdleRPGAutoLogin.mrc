@@ -27,7 +27,7 @@ menu channel {
     echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     echo -a -
   }
-  .Autologin information:
+  .Autologin information
   ..Set botname:{
     writeini IdleRPGAutoLoginDetails.ini $network Botname $?="Enter the bot name to message on this network."
     echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
