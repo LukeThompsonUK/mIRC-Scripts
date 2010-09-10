@@ -27,18 +27,17 @@ menu channel {
     echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     echo -a -
   }
-  .Autologin information: {
-    ..Set botname:{
-      writeini IdleRPGAutoLoginDetails.ini $network Botname $?="Enter the bot name to message on this network."
-      echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
-    }
-    ..Set username:{
-      writeini IdleRPGAutoLoginDetails.ini $network Username $?="Enter the username to message on this network."
-      echo -a Username for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
-    }
-    ..Set password:{
-      writeini IdleRPGAutoLoginDetails.ini $network Password $?="Enter the password to message on this network."
-      echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
-    }
+  .Autologin information:
+  ..Set botname:{
+    writeini IdleRPGAutoLoginDetails.ini $network Botname $?="Enter the bot name to message on this network."
+    echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+  }
+  ..Set username:{
+    writeini IdleRPGAutoLoginDetails.ini $network Username $?="Enter the username to message on this network."
+    echo -a Username for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+  }
+  ..Set password:{
+    writeini IdleRPGAutoLoginDetails.ini $network Password $?="Enter the password to message on this network."
+    echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   }
 }
