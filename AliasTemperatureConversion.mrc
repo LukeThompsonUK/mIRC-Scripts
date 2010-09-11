@@ -1,4 +1,4 @@
-/Temp {
+alias Temp {
   /*
   This script is used to convert tempature between two scales.
   Usage: /Temp SCALE TEMPERATURE
