@@ -1,3 +1,7 @@
+/*
+* Please note this only works for the SeersIRC IdleRPG because that's where the socket is opening to
+* If you want a script like this for your network let me know.
+*/
 alias IdleStats {
   if (!$1) { echo 7 -a Syntax: /IdleStats IdleUserNameHere }
   else {
