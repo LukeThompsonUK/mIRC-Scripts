@@ -9,7 +9,7 @@ alias /LoginDetails {
       echo -a Removed $me from your autologin nicklist on $network
     }
   }
-  writeini AutoLoginInformation.ini $network $me $?="Enter the password for autoidentifying"
+  writeini AutoLoginInformation.ini $network $me $$?="Enter the password for autoidentifying"
   echo -a -
   echo -a Network: $network
   echo -a Username: $me
@@ -20,11 +20,11 @@ alias /LoginDetails {
 menu channel {
   NickServ autologin information
   .Set a nick for autologin:{
-    writeini AutoLoginInformation.ini $network $?="Enter the nick to identify with" $?="Enter the password for the nickname"
+    writeini AutoLoginInformation.ini $network $$?="Enter the nick to identify with" $$?="Enter the password for the nickname"
     echo -a Updated the autologin information for $network
   }
   .Remove a nick from autologin:{
-    remini AutoLoginInformation.ini $network $?="Enter the nick to delete"
+    remini AutoLoginInformation.ini $network $$?="Enter the nick to delete"
     echo -a Updated the autologin information for $network
   }
   .View information for this network: {
