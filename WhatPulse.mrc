@@ -70,8 +70,7 @@ on *:SockRead:WhatPulse:{
   .timerShowPulse 1 1 ShowPulse
 }
 alias -l ShowPulse { 
-  var %WhatPulseStats $replace(%WhatPulseStats,$chr(32),$chr(59))
-  tokenize ; %WhatPulseStats
+  echo -a -
   if (%TeamCheck) {
     if (%WhatPulse_ShortDisplay) {
       $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) WhatPulse for $+(%WhatPulseStats.TeamName,:) $+([TeamKeys:,$bytes(%WhatPulseStats.TeamKeys,b), / TeamClicks:,$bytes(%WhatPulseStats.TeamClicks,b), / TeamMiles:,%WhatPulseStats.TeamMiles,]) / Rank: %WhatPulseStats.TeamRank
@@ -103,6 +102,7 @@ alias -l ShowPulse {
       }
     }
   }
+  echo -a -
   .timer 1 1 unset %WhatPulseStats.*
   unset %TeamCheck
   unset %IDToCheck
@@ -139,6 +139,7 @@ menu channel {
   ..Check default TeamID: /WhatPulse -t $iif(%WhatPulseTeamID,%WhatPulseTeamID,$?="No default ID set; enter a new ID to check")
   ..Check other TeamID: /WhatPulse $?="Enter ID to check"
   .Help: {
+    echo -a -
     echo -a WhatPulse stats script by Shawn Smith
     echo -a Commands:
     echo -a /WhatPulse [-t] [User/TeamID]
@@ -151,5 +152,6 @@ menu channel {
     echo -a You can also use this menu to change your default IDs
     echo -a If you have never used WhatPulse->Settings->Display before you will automatically echo the results of the lookup in the active window
     echo -a You can change this to a channel message if you wish.
+    echo -a -
   }
 }
