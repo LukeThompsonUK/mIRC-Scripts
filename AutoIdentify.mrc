@@ -17,7 +17,7 @@ alias /LoginDetails {
   echo -a To remove this username/password type /LoginDetails -d $me
   echo -a -
 }
-menu channel {
+menu channel,status {
   NickServ autologin information
   .Set a nick for autologin:{
     writeini AutoLoginInformation.ini $network $$?="Enter the nick to identify with" $$?="Enter the password for the nickname"

@@ -108,7 +108,7 @@ alias -l ShowPulse {
   unset %IDToCheck
   unset %WhatPulseBuffer
 }
-menu channel {
+menu channel,status {
   WhatPulse
   .Settings
   ..Display [Echo/Active window]: { 

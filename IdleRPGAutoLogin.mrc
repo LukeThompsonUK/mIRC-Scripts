@@ -17,7 +17,7 @@ alias IRPG {
   echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   echo -a -
 }
-menu channel {
+menu channel,status {
   IdleRPG
   .View current information for this network: {
     echo -a -
