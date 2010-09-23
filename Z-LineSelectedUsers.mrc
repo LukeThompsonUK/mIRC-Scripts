@@ -16,7 +16,7 @@ raw 340:*:{
 }
 alias F7 {
   if ($?!="Z-Line selected users?" == $false) { Halt }
-  set %ZLineSelectedUsers_Reason $?="Z-Line Reason:"
+  set %ZLineSelectedUsers_Reason $$?="Z-Line Reason:"
   var %x 1
   set %ZLineSelectedUsers ON
   set %ZLineSelectedUsers_TotalUsers $snick($chan,0)
