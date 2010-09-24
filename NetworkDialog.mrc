@@ -16,6 +16,7 @@ dialog NetworkControl {
   tab "Users" 1, 1 1 249 249
   ; Pushing this will envoke a /who * u
   button "Refresh userlist", 2, 198 15 50 10, tab 1
+  button "Clear users", 14, 198 25 50 10, tab 1
   ; This will list all the users on the network at the time of pushing
   ; the 'refresh userlist' button
   list 3, 5 15 150 200, multisel, tab 1
@@ -25,6 +26,7 @@ dialog NetworkControl {
   tab "Marked users" 4, 2 2 249 249
   ; Pushing this will zline all users in the marked user table.
   button "Ban marked users", 5, 198 15 50 10, tab 4
+  button "Clear users", 12, 198 25 50 10, tab 4
   ; This will list all the marked users.
   list 6, 5 15 150 200, multisel, tab 4
 
@@ -33,10 +35,14 @@ dialog NetworkControl {
   tab "Search by time connected" 7, 3 3 249 249
   ; Pushing this will search for users that have been connected less than x amount of seconds.
   button "Search users", 8, 198 40 50 10, tab 7
+  button "Clear users", 13, 198 50 50 10, tab 7
   text "Specify the number of seconds to search back", 10, 185 15 60 15, tab 7
   edit "600", 9, 198 30 50 10, tab 7
   list 11, 5 15 150 200, multisel, tab 7
 }
+on *:Dialog:NetworkControl:sclick:14:{ did -r NetworkControl 3 }
+on *:Dialog:NetworkControl:sclick:13:{ did -r NetworkControl 11 }
+on *:Dialog:NetworkControl:sclick:12:{ did -r NetworkControl 6 }
 on *:Dialog:NetworkControl:sclick:5:{
   ; This is called when the ban marked users button is pressed
   var %x $did(NetworkControl,6).lines
