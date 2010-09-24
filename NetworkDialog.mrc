@@ -105,10 +105,14 @@ raw 352:*:{
   if (%NetworkControl_Dialog_WHO) {
     ; Ok, so $3 is the ident, $4 is the host, $5 is the server their on, $6 is their nick, $9- is their real name.
     ; We'll add all the names that we get to the userlist in the dialog.
+    if ($didwm(NetworkControl,3,$6)) { halt }
     did -a NetworkControl 3 $6
+    haltdef
   }
   elseif (%NetworkControl_Dialog_WHO_Timed) {
+    if ($didwm(NetworkControl,11,$6)) { halt }
     did -a NetworkControl 11 $6
+    haltdef
   }
 }
 raw 315:*:{
