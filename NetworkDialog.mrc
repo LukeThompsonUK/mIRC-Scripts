@@ -116,8 +116,14 @@ raw 352:*:{
   }
 }
 raw 315:*:{
-  if (%NetworkControl_Dialog_WHO) { unset %NetworkControl_Dialog_WHO }
-  if (%NetworkControl_Dialog_WHO_Timed) { unset %NetworkControl_Dialog_WHO_Timed }
+  if (%NetworkControl_Dialog_WHO) { 
+    unset %NetworkControl_Dialog_WHO 
+    haltdef
+  }
+  if (%NetworkControl_Dialog_WHO_Timed) { 
+    unset %NetworkControl_Dialog_WHO_Timed 
+    haltdef
+  }
 }
 on *:Dialog:NetworkControl:close:*:{
   ; This is called when the dialog is closed, we should ensure that we unset all variables
