@@ -32,6 +32,19 @@ dialog NetworkControl {
   button "Search users", 8, 198 85 50 10, tab 1
   text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
   edit "600", 9, 198 75 50 10, tab 1
+
+  button "Help", 20, 198 100 50 10, tab1
+}
+on *:Dialog:NetworkControl:sclick:20:{
+  ; This is the help button
+  dialog -m Help Help
+}
+dialog Help {
+  title NetworkControl Help
+  size 200 200 100 100
+  option dbu
+
+  text "By clicking users in the user/marked list you can move them back and forth between them, when you've marked all the users you wish to you can click the ban marked users button and ban them all.", 1, 1 1 60 60
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
