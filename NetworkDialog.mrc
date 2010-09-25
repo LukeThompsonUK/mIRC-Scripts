@@ -3,6 +3,7 @@
 ; Please let me know if you spot anything working in a way it shouldn't
 ; I am currently developing this for InspIRCd networks, I'm testing this on a 1.2.x based server
 ;
+
 alias F6 { dialog -mh NetworkControl NetworkControl }
 alias NetworkControl { dialog -mh NetworkControl NetworkControl }
 on *:Dialog:NetworkControl:init:0:{
@@ -10,7 +11,6 @@ on *:Dialog:NetworkControl:init:0:{
   set %NetworkControl_Dialog ON
   set %NetworkControl_Dialog_Network $network
 }
-
 dialog NetworkControl {
   title NetworkControl - by Shawn
   size 200 200 250 250
@@ -43,6 +43,7 @@ on *:Dialog:NetworkControl:sclick:5:{
   set %NetworkControl_Dialog_ZLINE ON
   set %NetworkControl_Dialog_ZLINE_TotalUsers $did(NetworkControl,6).lines
   set %NetworkControl_Dialog_ZLINE_Reason $$?="Reason for banning?"
+
   while (%x > 0) {
     userip $did(NetworkControl,6,%x).text
     dec %x
@@ -119,7 +120,7 @@ raw 315:*:{
 raw 340:*:{
   if (%NetworkControl_Dialog_ZLINE) {
     if ($regex(UserIP,$1-,/(\S+)\*=(?:\S+)@(\S+)/Si)) {
-      echo -a Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
+      echo -as Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
     }
     elseif ($regex(UserIP,$1-,/(\S+)=(?:\S+)@(\S+)$/Si)) {
       zline $regml(UserIP,2) 7d $+(:,%NetworkControl_Dialog_ZLINE_Reason)
