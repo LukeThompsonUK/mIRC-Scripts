@@ -12,28 +12,22 @@ dialog NetworkControl {
   size 200 200 250 250
   option dbu
 
-  ; This will be for the entire network userlist
   tab "Users" 1, 1 1 249 249
-  ; Pushing this will envoke a /who * u
+
   button "View entire network", 2, 193 15 55 10, tab 1
   button "Clear users", 14, 198 25 50 10, tab 1
-  ; This will list all the users on the network at the time of pushing
-  ; the 'refresh userlist' button
-  text "Userlist:", 15, 5 15 20 6, tab 1
-  list 3, 5 21 50 200, multisel, tab 1
-  ; This will list all the marked users.
-  list 6, 70 21 50 200, multisel, tab 1
-  text "Marked users:", 16, 70 15 40 6, tab 1
-  ; Pushing this will zline all users in the marked user table.
   button "Ban marked users", 5, 198 35 50 10, tab 1
-
-  ; This tab will let you specify a number of seconds to search by
-  ; Pushing this will search for users that have been connected less than x amount of seconds.
+  button "Help", 20, 198 100 50 10, tab 1
   button "Search users", 8, 198 85 50 10, tab 1
-  text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
-  edit "600", 9, 198 75 50 10, tab 1
 
-  button "Help", 20, 198 100 50 10, tab1
+  text "Userlist:", 15, 5 15 20 6, tab 1
+  text "Marked users:", 16, 70 15 40 6, tab 1
+  text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
+
+  list 3, 5 21 50 200, multisel, tab 1
+  list 6, 70 21 50 200, multisel, tab 1
+
+  edit "600", 9, 198 75 50 10, tab 1
 }
 on *:Dialog:NetworkControl:sclick:20:{
   ; This is the help button
