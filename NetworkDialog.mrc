@@ -15,34 +15,28 @@ dialog NetworkControl {
   ; This will be for the entire network userlist
   tab "Users" 1, 1 1 249 249
   ; Pushing this will envoke a /who * u
-  button "Refresh userlist", 2, 198 15 50 10, tab 1
+  button "View entire network", 2, 193 15 55 10, tab 1
   button "Clear users", 14, 198 25 50 10, tab 1
   ; This will list all the users on the network at the time of pushing
   ; the 'refresh userlist' button
-  list 3, 5 15 150 200, multisel, tab 1
-
-
-  ; This will be for users that are marked as bad or watching
-  tab "Marked users" 4, 2 2 249 249
-  ; Pushing this will zline all users in the marked user table.
-  button "Ban marked users", 5, 198 15 50 10, tab 4
-  button "Clear users", 12, 198 25 50 10, tab 4
+  text "Userlist:", 15, 5 15 20 6, tab 1
+  list 3, 5 21 50 200, multisel, tab 1
   ; This will list all the marked users.
-  list 6, 5 15 150 200, multisel, tab 4
-
+  list 6, 70 21 50 200, multisel, tab 1
+  text "Marked users:", 16, 70 15 40 6, tab 1
+  ; Pushing this will zline all users in the marked user table.
+  button "Ban marked users", 5, 198 35 50 10, tab 1
 
   ; This tab will let you specify a number of seconds to search by
-  tab "Search by time connected" 7, 3 3 249 249
   ; Pushing this will search for users that have been connected less than x amount of seconds.
-  button "Search users", 8, 198 40 50 10, tab 7
-  button "Clear users", 13, 198 50 50 10, tab 7
-  text "Specify the number of seconds to search back", 10, 185 15 60 15, tab 7
-  edit "600", 9, 198 30 50 10, tab 7
-  list 11, 5 15 150 200, multisel, tab 7
+  button "Search users", 8, 198 85 50 10, tab 1
+  text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
+  edit "600", 9, 198 75 50 10, tab 1
 }
-on *:Dialog:NetworkControl:sclick:14:{ did -r NetworkControl 3 }
-on *:Dialog:NetworkControl:sclick:13:{ did -r NetworkControl 11 }
-on *:Dialog:NetworkControl:sclick:12:{ did -r NetworkControl 6 }
+on *:Dialog:NetworkControl:sclick:14:{ 
+  did -r NetworkControl 3 
+  did -r NetworkControl 6
+}
 on *:Dialog:NetworkControl:sclick:5:{
   ; This is called when the ban marked users button is pressed
   var %x $did(NetworkControl,6).lines
@@ -54,19 +48,16 @@ on *:Dialog:NetworkControl:sclick:5:{
     dec %x
   }
 }
-on *:Dialog:NetworkControl:sclick:11:{
-  ; This is called when you click any nick on the list in the searchusers tab
-  did -a NetworkControl 6 $did(11).seltext
-  did -d NetworkControl 11 $did(11).sel
-}
 on *:Dialog:NetworkControl:sclick:8:{
   ; This is called when the "Search users" button
-  set %NetworkControl_Dialog_WHO_Timed ON
+  set %NetworkControl_Dialog_WHO ON
+  did -r NetworkControl 3
   WHO $did(NetworkControl,9).text tu
 }
 on *:Dialog:NetworkControl:sclick:2:{
   ; This is called when a user clicks the "Refresh userlist" button.
   set %NetworkControl_Dialog_WHO ON
+  did -r NetworkControl 3
   WHO * u
 }
 on *:Dialog:NetworkControl:sclick:3:{
@@ -102,9 +93,6 @@ on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
     elseif ($didwm(NetworkControl,6,$regml(1))) {
       did -o NetworkControl 6 $didwm(NetworkControl,6,$regml(1)) $regml(2)
     }
-    elseif ($didwm(NetworkControl,11,$regml(1))) {
-      did -o NetworkControl 11 $didwm(NetworkControl,11,$regml(1)) $regml(2)
-    }
   }
 }
 raw 352:*:{
@@ -115,19 +103,10 @@ raw 352:*:{
     did -a NetworkControl 3 $6
     haltdef
   }
-  elseif (%NetworkControl_Dialog_WHO_Timed) {
-    if ($didwm(NetworkControl,11,$6)) { halt }
-    did -a NetworkControl 11 $6
-    haltdef
-  }
 }
 raw 315:*:{
   if (%NetworkControl_Dialog_WHO) { 
     unset %NetworkControl_Dialog_WHO 
-    haltdef
-  }
-  if (%NetworkControl_Dialog_WHO_Timed) { 
-    unset %NetworkControl_Dialog_WHO_Timed 
     haltdef
   }
 }
@@ -136,7 +115,6 @@ on *:Dialog:NetworkControl:close:*:{
   ; and other things since we nolonger need them if the dialog isn't running.
   unset %NetworkControl_Dialog_*
   unset %NetworkControl_Dialog
-  unset %NetworkControl_WHO_Timed
 }
 on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
