@@ -3,10 +3,14 @@
 ; Please let me know if you spot anything working in a way it shouldn't
 ; I am currently developing this for InspIRCd networks, I'm testing this on a 1.2.x based server
 ;
-alias F6 {
-  ; Calling the dialog, the -h switch is used to tie it to the active server window.
-  dialog -mh NetworkControl NetworkControl
+alias F6 { dialog -mh NetworkControl NetworkControl }
+alias NetworkControl { dialog -mh NetworkControl NetworkControl }
+on *:Dialog:NetworkControl:init:0:{
+  ; This is called when we first start the dialog.
+  set %NetworkControl_Dialog ON
+  set %NetworkControl_Dialog_Network $network
 }
+
 dialog NetworkControl {
   title NetworkControl - by Shawn
   size 200 200 250 250
@@ -28,17 +32,6 @@ dialog NetworkControl {
   list 6, 70 21 50 200, multisel, tab 1
 
   edit "600", 9, 198 75 50 10, tab 1
-}
-on *:Dialog:NetworkControl:sclick:20:{
-  ; This is the help button
-  dialog -m Help Help
-}
-dialog Help {
-  title NetworkControl Help
-  size 200 200 100 100
-  option dbu
-
-  text "By clicking users in the user/marked list you can move them back and forth between them, when you've marked all the users you wish to you can click the ban marked users button and ban them all.", 1, 1 1 60 60
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
@@ -92,6 +85,12 @@ on *:Dialog:NetworkControl:sclick:6:{
     did -d NetworkControl 6 $did(6).sel
   }
 }
+on *:Dialog:NetworkControl:close:*:{
+  ; This is called when the dialog is closed, we should ensure that we unset all variables
+  ; and other things since we nolonger need them if the dialog isn't running.
+  unset %NetworkControl_Dialog_*
+  unset %NetworkControl_Dialog
+}
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
   if ($network == %NetworkControl_Dialog_Network) {
     if ($didwm(NetworkControl,3,$regml(1))) {
@@ -117,18 +116,6 @@ raw 315:*:{
     haltdef
   }
 }
-on *:Dialog:NetworkControl:close:*:{
-  ; This is called when the dialog is closed, we should ensure that we unset all variables
-  ; and other things since we nolonger need them if the dialog isn't running.
-  unset %NetworkControl_Dialog_*
-  unset %NetworkControl_Dialog
-}
-on *:Dialog:NetworkControl:init:0:{
-  ; This is called when we first start the dialog.
-  set %NetworkControl_Dialog ON
-  set %NetworkControl_Dialog_Network $network
-}
-
 raw 340:*:{
   if (%NetworkControl_Dialog_ZLINE) {
     if ($regex(UserIP,$1-,/(\S+)\*=(?:\S+)@(\S+)/Si)) {
@@ -143,4 +130,15 @@ raw 340:*:{
       .timer 1 5 unset %NetworkControl_Dialog_ZLINE_*
     }
   }
+}
+dialog Help {
+  title NetworkControl Help
+  size 200 200 100 100
+  option dbu
+
+  text "By clicking users in the user/marked list you can move them back and forth between them, when you've marked all the users you wish to you can click the ban marked users button and ban them all.", 1, 1 1 60 60
+}
+on *:Dialog:NetworkControl:sclick:20:{
+  ; This is the help button
+  dialog -m Help Help
 }
