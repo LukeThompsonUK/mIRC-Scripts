@@ -21,7 +21,7 @@ dialog NetworkControl {
   button "View entire network", 2, 193 15 55 10, tab 1
   button "Clear users", 14, 198 25 50 10, tab 1
   button "Ban marked users", 5, 198 35 50 10, tab 1
-  button "Help", 20, 198 100 50 10, tab 1
+  button "Help", 20, 198 200 50 10, tab 1
   button "Search users", 8, 198 85 50 10, tab 1
 
   text "Userlist:", 15, 5 15 20 6, tab 1
@@ -65,6 +65,7 @@ on *:Dialog:NetworkControl:sclick:3:{
   ; This is called when a user clicks any nick on the network userlist listbox.
   ; clicking any username on this table will remove them from here and add them to the list of marked users.
   ;echo -s $did(3).sel
+  if (!$did(3).seltext) { halt } 
   if ($didwm(NetworkControl,6,$did(3).seltext)) {
     did -d NetworkControl 3 $did(3).sel
     halt
@@ -77,6 +78,7 @@ on *:Dialog:NetworkControl:sclick:3:{
 on *:Dialog:NetworkControl:sclick:6:{
   ; This is called when a user clicks any nick on the marked userlist listbox
   ; Clicking any username here will return them to the network userlist.
+  if (!$did(6).seltext) { halt } 
   if ($didwm(NetworkControl,3,$did(6).seltext)) { 
     did -d NetworkControl 6 $did(6).sel
     halt 
