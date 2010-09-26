@@ -10,6 +10,9 @@ on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
   set %NetworkControl_Dialog ON
   set %NetworkControl_Dialog_Network $network
+  set %NetworkControl_Dialog_WHO ON
+
+  who 600 ut
 }
 dialog NetworkControl {
   title NetworkControl - by Shawn
