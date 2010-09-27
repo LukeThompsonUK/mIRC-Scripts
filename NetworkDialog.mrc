@@ -12,6 +12,7 @@ on *:Dialog:NetworkControl:init:0:{
   set %NetworkControl_Dialog_Network $network
   set %NetworkControl_Dialog_WHO ON
 
+  ; This /who will only work on inspircd
   who 600 ut
 }
 dialog NetworkControl {
@@ -19,21 +20,32 @@ dialog NetworkControl {
   size 200 200 250 250
   option dbu
 
+  ; I created a tab so if I want to expand this in the future it can be done with another tab.
   tab "Users" 1, 1 1 249 249
 
+  ; This button can be used to view the entire network
+  ; (Requires the ability to view past the normal /who limit)
   button "View entire network", 2, 193 15 55 10, tab 1
+  ; This button clears the userlist
   button "Clear users", 14, 198 25 50 10, tab 1
+  ; This button will give a pop-up asking for a reason, then ban all users on the marked list
   button "Ban marked users", 5, 198 35 50 10, tab 1
+  ; This button displays help.
   button "Help", 20, 198 200 50 10, tab 1
+  ; This button lets you search for users in the last 'x' amount of seconds
+  ; 'x' being the edit box, ID 9
   button "Search users", 8, 198 85 50 10, tab 1
 
   text "Userlist:", 15, 5 15 20 6, tab 1
   text "Marked users:", 16, 70 15 40 6, tab 1
   text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
 
+  ; This is the userlist
   list 3, 5 21 50 200, multisel, tab 1
+  ; This is the marked userlist
   list 6, 70 21 50 200, multisel, tab 1
 
+  ; When you push the 'search users' button it checks this for the number of seconds to search back
   edit "600", 9, 198 75 50 10, tab 1
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
@@ -67,8 +79,11 @@ on *:Dialog:NetworkControl:sclick:2:{
 on *:Dialog:NetworkControl:sclick:3:{
   ; This is called when a user clicks any nick on the network userlist listbox.
   ; clicking any username on this table will remove them from here and add them to the list of marked users.
-  ;echo -s $did(3).sel
+
+  ; This is used to keep from getting a weird bug where you'd add a blank line to the other list.
   if (!$did(3).seltext) { halt } 
+  ; Checks to see if the name is already on the other list, if it is it deletes the name
+  ; but doesn't add it to the other list.
   if ($didwm(NetworkControl,6,$did(3).seltext)) {
     did -d NetworkControl 3 $did(3).sel
     halt
@@ -81,8 +96,12 @@ on *:Dialog:NetworkControl:sclick:3:{
 on *:Dialog:NetworkControl:sclick:6:{
   ; This is called when a user clicks any nick on the marked userlist listbox
   ; Clicking any username here will return them to the network userlist.
+
+  ; This is used to keep from getting a weird bug where you'd add a blank line to the other list.
   if (!$did(6).seltext) { halt } 
   if ($didwm(NetworkControl,3,$did(6).seltext)) { 
+    ; Checks to see if the name is already on the other list, if it is it deletes the name
+    ; but doesn't add it to the other list.
     did -d NetworkControl 6 $did(6).sel
     halt 
   }
