@@ -34,11 +34,12 @@ dialog NetworkControl {
   button "Help", 20, 198 200 50 10, tab 1
   ; This button lets you search for users in the last 'x' amount of seconds
   ; 'x' being the edit box, ID 9
-  button "Search users", 8, 198 85 50 10, tab 1
+  button "Search users", 8, 198 90 50 10, tab 1
 
   text "Userlist:", 15, 5 15 20 6, tab 1
   text "Marked users:", 16, 70 15 40 6, tab 1
-  text "Specify the number of seconds to search back", 10, 185 60 60 15, tab 1
+  text "Specify the number of seconds to search back", 10, 185 65 60 15, tab 1
+  text "Duration of ban:", 18, 198 45 50 10, tab 1
 
   ; This is the userlist
   list 3, 5 21 50 200, multisel, tab 1
@@ -46,7 +47,10 @@ dialog NetworkControl {
   list 6, 70 21 50 200, multisel, tab 1
 
   ; When you push the 'search users' button it checks this for the number of seconds to search back
-  edit "600", 9, 198 75 50 10, tab 1
+  edit "600", 9, 198 80 50 10, tab 1
+  ; This is the duration to ban the marked users for.
+  ; Format can be any 1w1d1h1m1s combination.
+  edit "7d", 17, 198 52 50 10, tab 1
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
@@ -58,6 +62,13 @@ on *:Dialog:NetworkControl:sclick:5:{
   set %NetworkControl_Dialog_ZLINE ON
   set %NetworkControl_Dialog_ZLINE_TotalUsers $did(NetworkControl,6).lines
   set %NetworkControl_Dialog_ZLINE_Reason $$?="Reason for banning?"
+  ; This is to prevent %NetworkControl_Dialog_ZLINE_Duration being empty.
+  if (!$did(NetworkControl,17).text) { 
+    set %NetworkControl_Dialog_ZLINE_Duration 0
+  }
+  else {
+    set %NetworkControl_Dialog_ZLINE_Duration $did(NetworkControl,17).text
+  }
 
   while (%x > 0) {
     userip $did(NetworkControl,6,%x).text
@@ -147,7 +158,7 @@ raw 340:*:{
       echo -as Detected operator $regml(UserIP,1) not setting Z-Line on: $regml(UserIP,2)
     }
     elseif ($regex(UserIP,$1-,/(\S+)=(?:\S+)@(\S+)$/Si)) {
-      zline $regml(UserIP,2) 7d $+(:,%NetworkControl_Dialog_ZLINE_Reason)
+      zline $regml(UserIP,2) %NetworkControl_Dialog_ZLINE_Duration $+(:,%NetworkControl_Dialog_ZLINE_Reason)
     }
     dec %NetworkControl_Dialog_ZLINE_TotalUsers
     if (%NetworkControl_Dialog_ZLINE_TotalUsers == 0) { 
