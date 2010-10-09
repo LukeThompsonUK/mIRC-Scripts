@@ -14,6 +14,17 @@ on *:Dialog:NetworkControl:init:0:{
 
   ; This /who will only work on inspircd
   who 600 ut
+
+  ; This has to do with the configuration tab, we're going to store everything in an ini file
+  didtok NetworkControl 22 58 $readini(NetworkControlDialog.ini,MainSettings,IRCdList)
+
+  if ($readini(NetworkControlDialog.ini,Preferences,IRCd)) {
+    ; Checks to see if we have a prefered IRCd
+    did -c NetworkControl 22 $readini(NetworkControlDialog.ini,Preferences,IRCd)
+  }
+  if ($readini(NetworkControlDialog.ini,Preferences,BanTime)) {
+    did -a NetworkControl 17 $readini(NetworkControlDialog.ini,Preferences,BanTime)
+  }
 }
 dialog NetworkControl {
   title NetworkControl - by Shawn
@@ -22,6 +33,9 @@ dialog NetworkControl {
 
   ; I created a tab so if I want to expand this in the future it can be done with another tab.
   tab "Users" 1, 1 1 249 249
+  ;tab "Configuration" 19, 2 2, 249 249
+  ; So apparently after making 1 tab the others don't need to have so much shit
+  tab "Configuration", 19
 
   ; This button can be used to view the entire network
   ; (Requires the ability to view past the normal /who limit)
@@ -39,7 +53,8 @@ dialog NetworkControl {
   text "Userlist:", 15, 5 15 20 6, tab 1
   text "Marked users:", 16, 70 15 40 6, tab 1
   text "Specify the number of seconds to search back", 10, 185 65 60 15, tab 1
-  text "Duration of ban:", 18, 198 45 50 10, tab 1
+  text "Duration of ban:", 18, 5 33 40 10, tab 19
+  text "IRCd:", 21, 5 21 13 10, tab 19
 
   ; This is the userlist
   list 3, 5 21 50 200, multisel, tab 1
@@ -50,7 +65,9 @@ dialog NetworkControl {
   edit "600", 9, 198 80 50 10, tab 1
   ; This is the duration to ban the marked users for.
   ; Format can be any 1w1d1h1m1s combination.
-  edit "7d", 17, 198 52 50 10, tab 1
+  edit "", 17, 45 32 20 10, tab 19
+
+  combo 22, 19 19 50 10, drop, tab 19
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
@@ -69,7 +86,6 @@ on *:Dialog:NetworkControl:sclick:5:{
   else {
     set %NetworkControl_Dialog_ZLINE_Duration $did(NetworkControl,17).text
   }
-
   while (%x > 0) {
     userip $did(NetworkControl,6,%x).text
     dec %x
@@ -126,6 +142,10 @@ on *:Dialog:NetworkControl:close:*:{
   ; and other things since we nolonger need them if the dialog isn't running.
   unset %NetworkControl_Dialog_*
   unset %NetworkControl_Dialog
+
+  ; This will be used with the configuration tab to save preferences
+  writeini NetworkControlDialog.ini Preferences IRCd $did(22).sel
+  writeini NetworkControlDialog.ini Preferences BanTime $did(17).text
 }
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
   if ($network == %NetworkControl_Dialog_Network) {
