@@ -16,13 +16,21 @@ on *:Dialog:NetworkControl:init:0:{
   who 600 ut
 
   ; This has to do with the configuration tab, we're going to store everything in an ini file
+
+  ; This populates the drop-down box with the IRCd list.
   didtok NetworkControl 22 58 $readini(NetworkControlDialog.ini,MainSettings,IRCdList)
 
   if ($readini(NetworkControlDialog.ini,Preferences,IRCd)) {
-    ; Checks to see if we have a prefered IRCd
+    ; This sets the IRCd to the prefered one.
     did -c NetworkControl 22 $readini(NetworkControlDialog.ini,Preferences,IRCd)
+    if ($readini(NetworkControlDialog.ini,Preferences,IRCd) != 1) {
+      ; 8 is the button, 9 is the edit box
+      ; used for time-based who searches
+      did -b NetworkControl 8,9
+    }
   }
   if ($readini(NetworkControlDialog.ini,Preferences,BanTime)) {
+    ; Sets the ban time to what it was set to last time the dialog was open.
     did -a NetworkControl 17 $readini(NetworkControlDialog.ini,Preferences,BanTime)
   }
 }
@@ -33,7 +41,6 @@ dialog NetworkControl {
 
   ; I created a tab so if I want to expand this in the future it can be done with another tab.
   tab "Users" 1, 1 1 249 249
-  ;tab "Configuration" 19, 2 2, 249 249
   ; So apparently after making 1 tab the others don't need to have so much shit
   tab "Configuration", 19
 
@@ -49,12 +56,16 @@ dialog NetworkControl {
   ; This button lets you search for users in the last 'x' amount of seconds
   ; 'x' being the edit box, ID 9
   button "Search users", 8, 198 90 50 10, tab 1
+  ; This button sends whatever is in the edit box (id:24) in a WHO search
+  ; EXACTLY as it is typed in the box.
+  button "WHO", 25, 190 160 50 10, tab 1
 
   text "Userlist:", 15, 5 15 20 6, tab 1
   text "Marked users:", 16, 70 15 40 6, tab 1
   text "Specify the number of seconds to search back", 10, 185 65 60 15, tab 1
   text "Duration of ban:", 18, 5 33 40 10, tab 19
   text "IRCd:", 21, 5 21 13 10, tab 19
+  text "Custom /WHO search", 23, 190 140 55 10, tab 1
 
   ; This is the userlist
   list 3, 5 21 50 200, multisel, tab 1
@@ -66,12 +77,22 @@ dialog NetworkControl {
   ; This is the duration to ban the marked users for.
   ; Format can be any 1w1d1h1m1s combination.
   edit "", 17, 45 32 20 10, tab 19
+  edit "", 24, 190 150 50 10, tab 1
 
   combo 22, 19 19 50 10, drop, tab 19
+}
+on *:Dialog:NetworkControl:sclick:22:{
+  ; If the IRCd isn't InspIRCd then we can't use these.
+  if ($did(22).sel == 1) { did -e NetworkControl 8,9 }
+  else { did -b NetworkControl 8,9 }
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
   did -r NetworkControl 6
+}
+on *:Dialog:NetworkControl:sclick:25:{
+  set %NetworkControl_Dialog_WHO ON
+  WHO $did(24).text
 }
 on *:Dialog:NetworkControl:sclick:5:{
   ; This is called when the ban marked users button is pressed
