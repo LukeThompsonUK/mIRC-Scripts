@@ -12,11 +12,6 @@ on *:Dialog:NetworkControl:init:0:{
   set %NetworkControl_Dialog_Network $network
   set %NetworkControl_Dialog_WHO ON
 
-  ; This /who will only work on inspircd
-  who 600 ut
-
-  ; This has to do with the configuration tab, we're going to store everything in an ini file
-
   ; This populates the drop-down box with the IRCd list.
   didtok NetworkControl 22 58 $readini(NetworkControlDialog.ini,MainSettings,IRCdList)
 
@@ -27,6 +22,10 @@ on *:Dialog:NetworkControl:init:0:{
       ; 8 is the button, 9 is the edit box
       ; used for time-based who searches
       did -b NetworkControl 8,9
+    }
+    else { 
+      ; This /who will only work on inspircd
+      who 600 ut
     }
   }
   if ($readini(NetworkControlDialog.ini,Preferences,BanTime)) {
