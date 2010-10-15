@@ -7,7 +7,6 @@ alias RegexBan {
   var %x 1
   while (%x <= $nick($chan,0)) { 
     if ($regex(RegexBan,$nick($chan,%x),$1) == 1) {
-      if (%RegexBan_DebugMode) { echo -a $nick($chan,%x) matches regex $1 }
       var %AddressToBan $addtok(%AddressToBan,$address($nick($chan,%x),3),32)
       var %NicksToKick $addtok(%NicksToKick,$nick($chan,%x),32)
       if ($numtok(%AddressToBan,32) == $modespl) {
@@ -35,8 +34,8 @@ alias RegexBan {
   if (%RegexBan_Kick) {
     var %x 1
     while (%x < $numtok(%NicksToKick,32)) {
-      if (%RegexBan_DebugMode) { echo -a KICK: $gettok(%NicksToKick,%x,32) }
-      else { kick $chan $gettok(%NicksToKick,%x,32) }
+      if (%RegexBan_DebugMode) { echo -a KICK: $gettok(%NicksToKick,%x,32) - Matched ban regex: $1 }
+      else { kick $chan $gettok(%NicksToKick,%x,32) Matched ban regex: $1 }
       inc %x
     }
   }
