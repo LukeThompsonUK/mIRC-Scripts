@@ -9,7 +9,7 @@ alias RegexBan {
     if ($regex(RegexBan,$nick($chan,%x),$1) == 1) {
       if (%RegexBan_DebugMode) { echo -a $nick($chan,%x) matches regex $1 }
       var %AddressToBan $addtok(%AddressToBan,$address($nick($chan,%x),3),32)
-
+      var %NicksToKick $addtok(%NicksToKick,$nick($chan,%x),32)
       if ($numtok(%AddressToBan,32) == $modespl) {
         if (%RegexBan_DebugMode) {
           echo -a SET: $+(+,$str(b,$numtok(%AddressToBan,32))) %AddressToBan
@@ -29,6 +29,15 @@ alias RegexBan {
     }
     else {
       mode $chan $+(+,$str(b,$numtok(%AddresstoBan,32))) %AddressToBan 
+    }
+  }
+  ; Now that all the bans are placed we can do all the kicks.
+  if (%RegexBan_Kick) {
+    var %x 1
+    while (%x < $numtok(%NicksToKick,32)) {
+      if (%RegexBan_DebugMode) { echo -a KICK: $gettok(%NicksToKick,%x,32) }
+      else { kick $chan $gettok(%NicksToKick,%x,32) }
+      inc %x
     }
   }
 }
