@@ -9,7 +9,7 @@ alias RegexBan {
   while (%x <= $nick($chan,0)) { 
     if ($regex(RegexBan,$nick($chan,%x),$1) == 1) {
       if (%RegexBan_DoBan) { var %AddressToBan $addtok(%AddressToBan,$address($nick($chan,%x),3),32) }
-      var %NicksToKick $addtok(%NicksToKick,$nick($chan,%x),32)
+      if (%RegexBan_Kick) { var %NicksToKick $addtok(%NicksToKick,$nick($chan,%x),32) }
       if (%RegexBan_DoBan) { 
         if ($numtok(%AddressToBan,32) == $modespl) {
           if (%RegexBan_DebugMode) {
