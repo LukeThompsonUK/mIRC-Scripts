@@ -33,7 +33,7 @@ alias RegexBan {
   ; Now that all the bans are placed we can do all the kicks.
   if (%RegexBan_Kick) {
     var %x 1
-    while (%x < $numtok(%NicksToKick,32)) {
+    while (%x <= $numtok(%NicksToKick,32)) {
       if (%RegexBan_DebugMode) { echo -a KICK: $gettok(%NicksToKick,%x,32) - Matched ban regex: $1 }
       else { kick $chan $gettok(%NicksToKick,%x,32) Matched ban regex: $1 }
       inc %x
