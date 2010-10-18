@@ -44,6 +44,7 @@ alias RegexBan {
       inc %x
     }
   }
+  echo -at * RegexBan: Finished
 }
 raw 352:*:{ if (%RegexBan_HIDEWHO) { haltdef } }
 raw 315:*:{ if (%RegexBan_HIDEWHO) { unset %RegexBan_HIDEWHO |  haltdef } }
