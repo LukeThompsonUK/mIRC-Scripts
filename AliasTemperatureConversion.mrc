@@ -8,8 +8,6 @@ alias Temp {
   - C (Celsius)
   - K (Kelvin)
   */
-  ; $2 will be the temperature to convert
-  ; $1 will be the scale you're using, it'll convert to the other 2 scales.
   if ($2 isnum) {
     if (F == $1) {
       echo -a 07 $+ $2 in Fahrenheit is:
@@ -26,5 +24,13 @@ alias Temp {
       echo -a 07 $+ $calc($2 - 275.15) in Celsius.
       echo -a 07 $+ $calc($2 * (9/5) - 459.67) in Fahrenheit.
     }
+    else { 
+      echo -a Syntax: /Temp [FCK] [Number]
+      echo -a Example: /Temp F 60
+    }
+  }
+  else { 
+    echo -a Syntax: /Temp [FCK] [Number]
+    echo -a Example: /Temp F 60
   }
 }
