@@ -32,6 +32,10 @@ on *:Dialog:NetworkControl:init:0:{
     ; Sets the ban time to what it was set to last time the dialog was open.
     did -a NetworkControl 17 $readini(NetworkControlDialog.ini,Preferences,BanTime)
   }
+  if ($readini(NetworkControlDialog.ini,Preferences,IgnoreOper) == 1) {
+    ; Sets the ignoreoper checkbox to true if you had it set when the dialog was closed last.
+    did -c NetworkControl 26
+  }
 }
 dialog NetworkControl {
   title NetworkControl - by Shawn
@@ -79,6 +83,8 @@ dialog NetworkControl {
   edit "", 24, 190 150 50 10, tab 1
 
   combo 22, 19 19 50 10, drop, tab 19
+
+  check "Ignore opers when searching", 26, 5 43 80 10, tab 19
 }
 on *:Dialog:NetworkControl:sclick:22:{
   ; If the IRCd isn't InspIRCd then we can't use these.
@@ -166,6 +172,7 @@ on *:Dialog:NetworkControl:close:*:{
   ; This will be used with the configuration tab to save preferences
   writeini NetworkControlDialog.ini Preferences IRCd $did(22).sel
   writeini NetworkControlDialog.ini Preferences BanTime $did(17).text
+  writeini NetworkControlDialog.ini Preferences IgnoreOper $did(26).state
 }
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
   if ($network == %NetworkControl_Dialog_Network) {
@@ -182,7 +189,10 @@ raw 352:*:{
     ; Ok, so $3 is the ident, $4 is the host, $5 is the server their on, $6 is their nick, $9- is their real name.
     ; We'll add all the names that we get to the userlist in the dialog.
     if ($didwm(NetworkControl,3,$6)) { halt }
-    did -a NetworkControl 3 $6
+    if (* isin $7) {
+      if ($did(NetworkControl,26).state != 1) { did -a NetworkControl 3 $6 }
+    }
+    else { did -a NetworkControl 3 $6 }
     haltdef
   }
 }
