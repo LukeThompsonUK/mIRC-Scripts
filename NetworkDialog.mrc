@@ -24,6 +24,8 @@ on *:Dialog:NetworkControl:init:0:{
       did -b NetworkControl 8,9
     }
     else { 
+      ; This currently wont work on inspircd '27' is the IgnoreRegID checkbox
+      did -b NetworkControl 27
       ; This /who will only work on inspircd
       who 600 ut
     }
@@ -35,6 +37,10 @@ on *:Dialog:NetworkControl:init:0:{
   if ($readini(NetworkControlDialog.ini,Preferences,IgnoreOper) == 1) {
     ; Sets the ignoreoper checkbox to true if you had it set when the dialog was closed last.
     did -c NetworkControl 26
+  }
+  if ($readini(NetworkControlDialog.ini,Preferences,IgnoreRegID) == 1) {
+    ; Sets the ignoreregid checkbox to true if you had it set when the dialog was closed last.
+    did -c NetworkControl 27
   }
 }
 dialog NetworkControl {
@@ -84,12 +90,23 @@ dialog NetworkControl {
 
   combo 22, 19 19 50 10, drop, tab 19
 
-  check "Ignore opers when searching", 26, 5 43 80 10, tab 19
+  check "Do not show opers when searching", 26, 5 43 95 10, tab 19
+  check "Do not show registered/identified users", 27, 5 53 105 10, tab 19
 }
 on *:Dialog:NetworkControl:sclick:22:{
   ; If the IRCd isn't InspIRCd then we can't use these.
-  if ($did(22).sel == 1) { did -e NetworkControl 8,9 }
-  else { did -b NetworkControl 8,9 }
+  ; 1 = InspIRCd
+  ; 2 = UnrealIRCd
+  ; 8 is the button, 9 is the edit box for time-based searching
+  ; 27 is the ignore registered/identified users checkbox. Needs the 'r' flag in /who output
+  if ($did(22).sel == 1) { 
+    did -e NetworkControl 8,9 
+    did -ub NetworkControl 27
+  }
+  elseif ($did(22).sel == 2) { 
+    did -b NetworkControl 8,9
+    did -e NetworkControl 27 
+  }
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
   did -r NetworkControl 3 
@@ -173,6 +190,7 @@ on *:Dialog:NetworkControl:close:*:{
   writeini NetworkControlDialog.ini Preferences IRCd $did(22).sel
   writeini NetworkControlDialog.ini Preferences BanTime $did(17).text
   writeini NetworkControlDialog.ini Preferences IgnoreOper $did(26).state
+  writeini NetworkControlDialog.ini Preferences IgnoreRegID $did(27).state
 }
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
   if ($network == %NetworkControl_Dialog_Network) {
@@ -189,9 +207,8 @@ raw 352:*:{
     ; Ok, so $3 is the ident, $4 is the host, $5 is the server their on, $6 is their nick, $9- is their real name.
     ; We'll add all the names that we get to the userlist in the dialog.
     if ($didwm(NetworkControl,3,$6)) { halt }
-    if (* isin $7) {
-      if ($did(NetworkControl,26).state != 1) { did -a NetworkControl 3 $6 }
-    }
+    if ((* isin $7) && ($did(NetworkControl,26).state == 1)) { haltdef }
+    elseif ((r isincs $7) && ($did(NetworkControl,27).state == 1)) { haltdef }
     else { did -a NetworkControl 3 $6 }
     haltdef
   }
