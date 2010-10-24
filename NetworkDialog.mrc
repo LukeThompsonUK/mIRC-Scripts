@@ -4,7 +4,7 @@
 ; I am currently developing this for InspIRCd networks, I'm testing this on a 1.2.x based server
 ;
 
-alias F6 { dialog -mh NetworkControl NetworkControl }
+alias F6 { dialog -mhd NetworkControl NetworkControl }
 alias NetworkControl { dialog -mh NetworkControl NetworkControl }
 on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
