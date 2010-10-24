@@ -12,21 +12,22 @@ on *:Join:#Help:{
   if ($chan != $active) { echo -ag 4¤ 12User: $+(13,$nick,12) has joined #Help. 4¤ }
   ; Chances are this is a swiftsiwtch user. Treat them as a child.
   if (*!ssh*@* iswm $address($nick,5)) { echo -g #Help 4[11Nick Info4]12 $nick could be using SwiftSwitch. }
+  set %HelpJoin on
 }
 on *:NOTICE:*:#Help:{
   ; If the nick is Veridian
-  if ($nick == Veridian) { 
-    ; This regex matches if they are in 1 or more channels
-    if ($regex($1-,/^(\S+)\sis\s(\S+)(?:[^\]]+):(.+)$/Si)) { 
-      echo 07 #Help Nick: $regml(1)
-      echo 07 #Help Identified: $iif($regml(2) == not,No,Yes)
-      echo 07 #Help Channels: $regml(3)
+  if (($nick == Veridian) && (%HelpJoin)) { 
+    if ($3 == not) { var %I no }
+    else { var %I Yes }
+    if (($6 == not) || ($7 == not)) { var %Channels None }
+    else { 
+      if (%I == Yes) { var %Channels $7- }
+      else { var %Channels $8- }
     }
-    ; This regex matches if they are in no channels
-    elseif ($regex($1-,/^(\S+)\sis\s(\S+)(?:[^\]]+)channels\.$/Si)) {
-      echo 07 #Help Nick: $regml(1)
-      echo 07 #Help Identified: $iif($regml(2) == not,No,Yes)
-      echo 07 #Help Channels: None
-    }
+    else { var %Channels None. }
+    echo 07 #Help Nick: $1
+    echo 07 #Help Identified: %I
+    echo 07 #Help Channels: %Channels
+    unset %HelpJoin
   }
 }
