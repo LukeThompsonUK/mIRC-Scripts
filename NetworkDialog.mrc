@@ -124,7 +124,7 @@ on *:Dialog:NetworkControl:sclick:8:{
   WHO $did(NetworkControl,9).text tu
 }
 on *:Dialog:NetworkControl:sclick:2:{
-  ; This is called when a user clicks the "Refresh userlist" button.
+  ; This is called when a user clicks the "View entire network" button.
   set %NetworkControl_Dialog_WHO ON
   did -r NetworkControl 3
   WHO * u
