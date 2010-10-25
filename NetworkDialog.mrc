@@ -24,8 +24,6 @@ on *:Dialog:NetworkControl:init:0:{
       did -b NetworkControl 8,9
     }
     else { 
-      ; This currently wont work on inspircd '27' is the IgnoreRegID checkbox
-      did -b NetworkControl 27
       ; This /who will only work on inspircd
       who 600 ut
     }
@@ -67,7 +65,7 @@ dialog NetworkControl {
   button "Search users", 8, 198 90 50 10, tab 1
   ; This button sends whatever is in the edit box (id:24) in a WHO search
   ; EXACTLY as it is typed in the box.
-  button "WHO", 25, 190 160 50 10, tab 1
+  button "WHO", 25, 190 160 50 10, tab 1 
 
   text "Userlist:", 15, 5 15 20 6, tab 1
   text "Marked users:", 16, 70 15 40 6, tab 1
@@ -91,6 +89,9 @@ dialog NetworkControl {
   combo 22, 19 19 50 10, drop, tab 19
 
   check "Do not show opers when searching", 26, 5 43 95 10, tab 19
+  ; This will only work on ircds that have the 'r' flag in /who output, inspircd needs a patch
+  ; for this to work.
+  ; Patch is located here: http://inspircd.org/forum/showthread.php?t=8347
   check "Do not show registered/identified users", 27, 5 53 105 10, tab 19
 }
 on *:Dialog:NetworkControl:sclick:22:{
@@ -101,11 +102,9 @@ on *:Dialog:NetworkControl:sclick:22:{
   ; 27 is the ignore registered/identified users checkbox. Needs the 'r' flag in /who output
   if ($did(22).sel == 1) { 
     did -e NetworkControl 8,9 
-    did -ub NetworkControl 27
   }
   elseif ($did(22).sel == 2) { 
     did -b NetworkControl 8,9
-    did -e NetworkControl 27 
   }
 }
 on *:Dialog:NetworkControl:sclick:14:{ 
