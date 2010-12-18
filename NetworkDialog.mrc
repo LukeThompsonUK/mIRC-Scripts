@@ -58,6 +58,8 @@ dialog NetworkControl {
   button "Clear users", 14, 198 25 50 10, tab 1
   ; This button will give a pop-up asking for a reason, then ban all users on the marked list
   button "Ban marked users", 5, 198 35 50 10, tab 1
+  ; This button will give a pop-up asking for a reason, then disconnect all users on the marked list
+  button "Kill marked users", 28, 198 45 50 10, tab 1
   ; This button displays help.
   button "Help", 20, 198 200 50 10, tab 1
   ; This button lets you search for users in the last 'x' amount of seconds
@@ -114,6 +116,15 @@ on *:Dialog:NetworkControl:sclick:14:{
 on *:Dialog:NetworkControl:sclick:25:{
   set %NetworkControl_Dialog_WHO ON
   WHO $did(24).text
+}
+on *:Dialog:NetworkControl:sclick:28:{
+  ; This is called when the kill marked users button is pressed
+  var %x $did(NetworkControl,6).lines
+  var %KR $$?="Reason for disconnecting users?"
+  while (%x > 0) {
+    kill $did(NetworkControl,6,%x).text %KR
+    dec %x
+  }
 }
 on *:Dialog:NetworkControl:sclick:5:{
   ; This is called when the ban marked users button is pressed
