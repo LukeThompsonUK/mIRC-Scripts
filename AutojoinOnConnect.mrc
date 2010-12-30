@@ -1,58 +1,33 @@
 alias autojoin { 
   if (($1 == -d) && ($2)) {
-    var %Tok $findtok($($+(%,$network,.autojoin),2),$2,1,44)
-    set $+(%,$network,.autojoin) $deltok($($+(%,$network,.autojoin),2),%Tok,44)
-    echo -a $+([,$network,]) $($+(%,$network,.autojoin),2)
+    var %Tok $findtok($readini(AutoJoin.ini,$network,Channels),$2,1,44)
+    writeini AutoJoin.ini $network Channels $deltok($readini(AutoJoin.ini,$network,Channels),%Tok,44)
+    echo -a $+([,$network,]) $readini(AutoJoin.ini,$network,Channels)
   }
   else {
-    set $+(%,$network,.autojoin) $addtok($($+(%,$network,.autojoin),2),$chan,44)
-    echo -a $+([,$network,]) $($+(%,$network,.autojoin),2)
+    writeini AutoJoin.ini $network Channels $addtok($readini(AutoJoin.ini,$network,Channels),$chan,44))
+    echo -a $+([,$network,]) $readini(AutoJoin.ini,$network,Channels)
   }
+}
+alias setconnectmodes {
+  writeini AutoJoin.ini $network Modes $1
+  echo -a $+([,$network,]) Modes on connect set to: $1
 }
 raw 001:*:{
   set %Connect.raw on
 }
-raw 004:*:{
-  if (%Connect.raw) {
-    ; Modes to set on any UnrealIRCd network
-    if (Unreal isin $3) { mode $me +pTiwx }
-    if (InspIRCd isin $3) { 
-	  ; Modes to set on any InspIRCd network, also look below to see how we detect/set the +I mode
-      set %modes +xiw
-      if (I isincs $4) {
-        ; I isin the usermode list, let's check to make sure it's on the modules list aswell.
-        set %CheckMods true
-        /modules
-      }
-    }
-  }
-}
 raw 005:*:{
   if (%Connect.Raw) {
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
-      if ($regml(Raw005Name,1) == SeersIRC) {
-        if ($me == Shawn) { join -n %SeersIRC.autojoin }
-      }
-      elseif ($regml(Raw005Name,1) == EXAMPLENETWORK) {
-	    ; Set certain modes on certain networks.
-	    mode $me +somemodeshere
-        join -n %EXAMPLENETWORK.autojoin 
+      if ($readini(NetworkAutoJoin.ini,$regml(Raw005Name,1))) {
+        if ($readini(AutoJoin.ini,$network,Channels)) {
+          join -n $readini(AutoJoin.ini,$network,Channels)
+        }
+        if ($readini(AutoJoin.ini,$network,Modes)) {
+          mode $me $readini(AutoJoin.ini,$network,Modes)
+        }
       }
       unset %Connect.Raw
     }
-  }
-}
-raw 702:*m_hidechans*:{
-  ; Detects if +I is m_hidechans.so, if yes it sets +I
-  if (%CheckMods) {
-    ; Fantastic, This network supports m_hidechans.so. Appending +I to the end of modes to set.
-    mode $me %modes $+ I
-  }
-}
-raw 703:*End of MODULES list*:{
-  if (%CheckMods) {
-    mode $me %modes
-    unset %modes
-    unset %CheckMods
   }
 }
