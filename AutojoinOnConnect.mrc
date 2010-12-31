@@ -6,7 +6,7 @@
 * -d and -setmodes can't be used together on the same line.
 */
 alias autojoin { 
-  if ($regex(AutoJoin,$1-2,/^-\S+\s\S+$/)) {
+  if ($regex(AutoJoin,$1-2,/^-\S+\s\S+/)) {
     if ($1 == -d) {
       var %Tok $findtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,1,44)
       writeini AutoJoin.ini $network Channels $deltok($readini(AutoLoginInformation.ini,$network,&Channels),%Tok,44)
@@ -15,6 +15,10 @@ alias autojoin {
     elseif ($1 == -setmodes) {
       writeini AutoLoginInformation.ini $network &Modes $2
       echo -a $+([,$network,]) Modes on connect set to: $2
+    }
+    elseif ($1 == -vhost) {
+      writeini AutoLoginInformation.ini $network &Vhost $+($2,:,$3)
+      echo -a $+([,$network,]) Vhost set to: $2 - password: $3
     }
     else {
       echo -a * Syntax: /Autojoin [-d|-setmodes] [#Channel|ModesToSet]
@@ -40,12 +44,15 @@ raw 001:*:{
 raw 005:*:{
   if (%Connect.Raw) {
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
-      if ($ini(AutoJoin.ini,$regml(Raw005Name,1))) {
-        if ($ini(AutoJoin.ini,$network,Channels)) {
-          join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+      if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
+        if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
+          vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
         }
-        if ($ini(AutoJoin.ini,$network,Modes)) {
+        if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
           mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
+        }
+        if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
+          join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
       unset %Connect.Raw
