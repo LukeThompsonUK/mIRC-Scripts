@@ -4,8 +4,8 @@
 ; I am currently developing this for InspIRCd networks, I'm testing this on a 1.2.x based server
 ;
 
-alias F6 { dialog -mhd NetworkControl NetworkControl }
-alias NetworkControl { dialog -mh NetworkControl NetworkControl }
+alias F6 { dialog -md NetworkControl NetworkControl }
+alias NetworkControl { dialog -m NetworkControl NetworkControl }
 on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
   set %NetworkControl_Dialog ON
@@ -42,7 +42,7 @@ on *:Dialog:NetworkControl:init:0:{
   }
 }
 dialog NetworkControl {
-  title NetworkControl - by Shawn
+  title NetworkControl - by Shawn $+([,$network,])
   size 200 200 250 250
   option dbu
 
