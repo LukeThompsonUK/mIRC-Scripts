@@ -41,6 +41,8 @@ alias autoconnect {
       echo -a $+(10,$ini(AutoLoginInformation.ini,$2,%ToCheck),:07) $readini(AutoLoginInformation.ini,$2,$ini(AutoLoginInformation.ini,$2,%ToCheck))
       dec %ToCheck
     }
+    echo -a [Note] If you're using AutoIdentify some information from that script will be printed here also
+    echo -a [Note] &Channels, &Modes, &Vhost, and &Nick are all from AutoIdentify
     echo -a -
   }
   else { 
@@ -50,6 +52,7 @@ alias autoconnect {
     echo -a 10/AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
     echo -a 10/AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
     echo -a 10/AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+    echo -a 10/AutoConnect -status NetworkHere [Prints status for the given network]
   }
 }
 raw 001:*:{
