@@ -28,6 +28,21 @@ alias autoconnect {
     writeini AutoLoginInformation.ini $network &Nick $2
     echo -a $+([,$network,]) Nick set to: $2
   }
+  elseif (($1 == -status) && ($2)) {
+    echo -a -
+    echo -a 10Printing information for: $2
+    if (!$ini(AutoLoginInformation.ini,$2,0)) {
+      echo -a 10No information found.
+    }
+    else {
+      var %ToCheck $ini(AutoLoginInformation.ini,$2,0)
+    }
+    while (%ToCheck > 0) {
+      echo -a $+(10,$ini(AutoLoginInformation.ini,$2,%ToCheck),:07) $readini(AutoLoginInformation.ini,$2,$ini(AutoLoginInformation.ini,$2,%ToCheck))
+      dec %ToCheck
+    }
+    echo -a -
+  }
   else { 
     echo -a 07Syntax:
     echo -a 10/AutoConnect -join #Channel [Adds a channel to your autojoin list]
