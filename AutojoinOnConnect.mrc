@@ -1,41 +1,40 @@
 /*
-* AutoJoinOnConnect.mrc
-* Syntax: /Autojoin [-d|-setmodes] [#Channel|ModesToSet]
-* /Autojoin #channel will set the channel typed in to the autojoin list, if -d is present it will remove the channel.
-* If -setmodes is present it will change the modes to set for that network to whatever modes you put.
-* -d and -setmodes can't be used together on the same line.
+* Syntax:
+* /AutoConnect -join #Channel [Adds a channel to your autojoin list]
+* /AutoConnect -del #Channel [Removes a channel from your autojoin list]
+* /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
+* /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
+* /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
 */
-alias autojoin { 
-  if ($regex(AutoJoin,$1-2,/^-\S+\s\S+/)) {
-    if ($1 == -d) {
-      var %Tok $findtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,1,44)
-      writeini AutoJoin.ini $network Channels $deltok($readini(AutoLoginInformation.ini,$network,&Channels),%Tok,44)
-      echo -a $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
-    }
-    elseif ($1 == -setmodes) {
-      writeini AutoLoginInformation.ini $network &Modes $2
-      echo -a $+([,$network,]) Modes on connect set to: $2
-    }
-    elseif ($1 == -vhost) {
-      writeini AutoLoginInformation.ini $network &Vhost $+($2,:,$3)
-      echo -a $+([,$network,]) Vhost set to: $2 - password: $3
-    }
-    else {
-      echo -a * Syntax: /Autojoin [-d|-setmodes] [#Channel|ModesToSet]
-      echo -a * /Autojoin #channel will set the channel typed in to the autojoin list, if -d is present it will remove the channel.
-      echo -a * If -setmodes is present it will change the modes to set for that network to whatever modes you put.
-      echo -a * -d and -setmodes can't be used together on the same line.
-    }
-  }
-  elseif ($regex(AutoJoin,$1,/^#\S+$/)) {
-    writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$1,44))
+alias autoconnect { 
+  if (($1 == -join) && ($regex(autoconnect,$2,/^#\S+$/))) {
+    writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44))
     echo -a $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
   }
+  elseif (($1 == -del) && ($regex(autoconnect,$2,/^#\S+$/))) {
+    var %Tok $findtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,1,44)
+    writeini AutoLoginInformation.ini $network &Channels $deltok($readini(AutoLoginInformation.ini,$network,&Channels),%Tok,44)
+    echo -a $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
+  }
+  elseif (($1 == -setmodes) && ($2)) {
+    writeini AutoLoginInformation.ini $network &Modes $2
+    echo -a $+([,$network,]) Modes on connect set to: $2
+  }
+  elseif (($1 == -vhost) && ($3)) {
+    writeini AutoLoginInformation.ini $network &Vhost $+($2,:,$3)
+    echo -a $+([,$network,]) Vhost set to: $2 - password: $3
+  }
+  elseif (($1 == -nick) && ($2)) {
+    writeini AutoLoginInformation.ini $network &Nick $2
+    echo -a $+([,$network,]) Nick set to: $2
+  }
   else { 
-    echo -a * Syntax: /Autojoin [-d|-setmodes] [#Channel|ModesToSet]
-    echo -a * /Autojoin #channel will set the channel typed in to the autojoin list, if -d is present it will remove the channel.
-    echo -a * If -setmodes is present it will change the modes to set for that network to whatever modes you put.
-    echo -a * -d and -setmodes can't be used together on the same line.
+    echo -a 07Syntax:
+    echo -a 10/AutoConnect -join #Channel [Adds a channel to your autojoin list]
+    echo -a 10/AutoConnect -del #Channel [Removes a channel from your autojoin list]
+    echo -a 10/AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
+    echo -a 10/AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
+    echo -a 10/AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
   }
 }
 raw 001:*:{
@@ -45,6 +44,9 @@ raw 005:*:{
   if (%Connect.Raw) {
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
       if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
+        if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
+          nick $readini(AutoLoginInformation.ini,$network,&Nick)
+        }
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
           vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
         }
@@ -52,7 +54,7 @@ raw 005:*:{
           mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
         }
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          .timer 1 5 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
       unset %Connect.Raw
