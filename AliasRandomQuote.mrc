@@ -25,12 +25,12 @@ on *:SockOpen:RandQuote:{
 on *:SockRead:RandQuote: {
   sockread %RandQuote
   ; Comment out the line below to hide the START message
-  if (START isin %RandQuote) { %show START }
+  if (START isin %RandQuote) { %show - }
   if (Quote: isin %RandQuote) { 
     if ($right(%RandQuote,10) == [Bash.org]) { %show $left(%RandQuote,-10) }
     elseif ($right(%RandQuote,8) == [QDB.US]) { %show $left(%RandQuote,-8) }
     else { %show %RandQuote }
   }
   ; Comment out the line below to hide the END message
-  if (END isin %RandQuote) { %show END }
+  if (END isin %RandQuote) { %show - }
 }

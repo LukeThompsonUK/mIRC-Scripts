@@ -35,6 +35,8 @@ menu channel,status {
       echo -a $ini(AutoLoginInformation.ini,$network,%x) : $readini(AutoLoginInformation.ini,$network,$ini(AutoLoginInformation.ini,$network,%x))
       inc %x
     }
+    echo -a [Note] If you're using AutojoinOnConnect some information from that script will be printed here also
+    echo -a [Note] &Channels, &Modes, &Vhost, and &Nick are all from AutojoinOnConnect
     echo -a -
   }
 }
