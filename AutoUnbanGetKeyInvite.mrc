@@ -41,3 +41,18 @@ on $^*:Notice:/KEY\s(\S+)\s(\S+)$/Si:?:{
   aline -ph @Ban/Key/Invite $timestamp 10Bypassed +k on:07 $regml(1) 10with key:07 $regml(2)
   join -n $regml(1) $regml(2) | haltdef
 }
+; This unbans you when someone else sets a ban as long as you're a Op/Halfop it will remove the ban.
+; You must be on the channel when the ban is set to remove it though, if you're banned+kicked and
+; have autorejoin on the other part of the script will unban you and join you again.
+on *:BAN:#:{
+  if (($me isop $chan) || ($me ishop $chan)) {
+    var %x = 2, %i = 0, %BanMask
+    if ($modefirst) { 
+      while (%x <= $0) {
+        if ($($+($,%x),2) iswm $ial($me)) { inc %i | %BanMask = %BanMask $($+($,%x),2) }
+        inc %x
+      }
+      mode $chan - $+ $str(b,%i) %BanMask
+    }
+  }
+}
