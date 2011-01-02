@@ -46,7 +46,7 @@ alias highlight {
     echo -a /Highlight -addnick Nick [Adds a nick to your highlight list]
     echo -a /Highlight -delnick Nick [Removes a nick from your highlight list]
     echo -a /Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
-    echo -a /Highlight -unignore #Channel [Removes a channel from your highlight ignore list]
+    echo -a /Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
     echo -a /Highlight -ignorenick Nick [Ignores a user form highlighting you]
     echo -a /Highlight -unigorenick Nick [Unignores a user form highlighting you]
     echo -a /Highlight -status [Prints information]
