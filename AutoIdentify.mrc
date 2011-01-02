@@ -17,6 +17,7 @@ alias /LoginDetails {
   echo -a To remove this username/password type /LoginDetails -d $me
   echo -a -
 }
+
 menu channel,status {
   NickServ autologin information
   .Set a nick for autologin:{
@@ -40,6 +41,7 @@ menu channel,status {
     echo -a -
   }
 }
+
 on *:NOTICE:*:?:{
   if ($nick == NickServ) {
     if ((This nickname is registered isin $1-) || (Please identify via isin $1-)) {
@@ -52,3 +54,40 @@ on *:NOTICE:*:?:{
     }
   }
 }
+
+; This alias will work outside of the script also, so you can use /ghost namehere to ghost somebody.
+alias Ghost { 
+  if (-switch == $1) {
+    var %GhostNick $2
+    var %Switch on
+    if ($3) {
+      var %Password $3
+    }
+    else {
+      var %Password $readini(AutoLoginInformation.ini,$network,$1)
+    }
+  }
+  else {
+    var %GhostNick $1
+    if ($2) {
+      var %Password $2
+    }
+    else {
+      var %Password $readini(AutoLoginInformation.ini,$network,$1)
+    }
+  }
+  if (%Password) {
+    NickServ ghost %GhostNick %Password
+    if (%Switch) {
+      .timer 1 3 nick %GhostNick
+    }
+  }
+  else {
+    echo -a 10Syntax:
+    echo -a 10/Ghost [-switch] <nick> [password]
+    echo -a 10Password is optional if you have the nick setup for auto identfying.
+    echo -a 10If -switch is used you will /nick to the nick after ghosting.
+  }
+}
+
+raw 433:*nickname is already in use.*:{ ghost $2 }
