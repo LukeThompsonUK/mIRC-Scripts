@@ -64,7 +64,7 @@ alias Ghost {
       var %Password $3
     }
     else {
-      var %Password $readini(AutoLoginInformation.ini,$network,$1)
+      var %Password $readini(AutoLoginInformation.ini,$network,%GhostNick)
     }
   }
   else {
@@ -90,4 +90,4 @@ alias Ghost {
   }
 }
 
-raw 433:*nickname is already in use.*:{ ghost $2 }
+raw 433:*nickname is already in use.*:{ ghost -switch $2 }
