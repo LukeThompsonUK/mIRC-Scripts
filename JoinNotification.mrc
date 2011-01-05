@@ -1,4 +1,3 @@
-; Test
 ; The on voice/help/op is to mark the user as staff so that you never check that user on join again
 on *:Voice:#Help:{ if (($network == SeersIRC) && (!$istok(%SeersIRC.Staff,$vnick,58))) { set %SeersIRC.Staff $addtok(%SeersIRC.Staff,$vnice,58) } }
 on *:Help:#Help:{ if (($network == SeersIRC) && (!$istok(%SeersIRC.Staff,$hnick,58))) { set %SeersIRC.Staff $addtok(%SeersIRC.Staff,$hnick,58) } }
