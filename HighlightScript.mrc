@@ -1,3 +1,4 @@
+; Adding something to commit for a test.
 alias highlight {
   if (($1 == -addnick) && ($2)) {
     set %Highlight.NicksToMatch $addtok(%Highlight.NicksToMatch,$2,44)
