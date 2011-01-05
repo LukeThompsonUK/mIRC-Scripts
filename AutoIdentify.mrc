@@ -83,10 +83,12 @@ alias Ghost {
     }
   }
   else {
+    echo -a -
     echo -a 10Syntax:
     echo -a 10/Ghost [-switch] <nick> [password]
     echo -a 10Password is optional if you have the nick setup for auto identfying.
     echo -a 10If -switch is used you will /nick to the nick after ghosting.
+    echo -a -
   }
 }
 
