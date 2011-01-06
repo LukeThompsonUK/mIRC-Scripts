@@ -59,7 +59,7 @@ on *:TEXT:*:#:{
     while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
       if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
         if (!$window(@Highlight)) { /window -nz @Highlight }
-        aline -ph @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
+        aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
       }
       inc %x
     }
@@ -71,7 +71,7 @@ on *:ACTION:*:#:{
     while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
       if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
         if (!$window(@Highlight)) { /window -nz @Highlight }
-        aline -ph @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
+        aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
       }
       inc %x
     }
