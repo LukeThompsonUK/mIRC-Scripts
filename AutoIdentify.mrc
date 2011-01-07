@@ -49,7 +49,7 @@ on *:NOTICE:*:?:{
         NickServ IDENTIFY $readini(AutoLoginInformation.ini,$network,$me)
       }
       else { 
-        echo -a You're not set to autoidentify with this nickname.
+        echo -a $+([,$network,:,$me,]) You're not set to autoidentify with this nickname.
       }
     }
   }

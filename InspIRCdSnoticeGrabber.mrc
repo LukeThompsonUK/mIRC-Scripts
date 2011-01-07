@@ -1,8 +1,3 @@
-on $^*:WALLOPS:*:{
-  if (!$window($($+(@WallOPS.,$network),2))) { window -nezg1 $($+(@WallOPS.,$network),2) }
-  aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
-  haltdef
-}
 ; *** CONNECT: Client connecting on port 6697: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [xxx.xxx.xxx.xxx] [Test Nick]
 on $^*:Snotice:/CONNECT:(?:[^\]]+)port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[([^\]]+)\]/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
@@ -23,8 +18,8 @@ on $^*:Snotice:/QUIT:\sClient\sexiting:\s(\S+)\s\[(.+)\]$/Si:{
 }
 ;*** NICK: User TestNick changed their nickname to TestNick1
 on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
-  if (!$window($($+(@NickChanges.,$network),2))) { window -nz $($+(@NickChanges.,$network),2) }
-  aline -p $($+(@NickChanges.,$network),2) 12(09 $+ $time $+ 12) 4NickChange:7 $regml(1) 12->07 $regml(2)
+  if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
+  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Clients:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
 ;*** KILL: Local Kill by Shawn: TestNick1!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com (Kill Message Here)
@@ -131,6 +126,12 @@ on $^*:Snotice:/FILTER:\s(\S+)(?:[^\]]+)'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)'
 on $^*:Snotice:/FILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
   aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER REMOVAL:07 $regml(1) 12->07 $regml(2)
+  haltdef
+}
+
+on $^*:WALLOPS:*:{
+  if (!$window($($+(@WallOPS.,$network),2))) { window -nezg1 $($+(@WallOPS.,$network),2) }
+  aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
   haltdef
 }
 on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s([^\]]+)$/Si:{
