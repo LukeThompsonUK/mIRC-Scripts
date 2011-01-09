@@ -5,6 +5,7 @@
 * /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
 * /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
 * /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+* /AutoConnect -Oper OperUser OperPass [Adds a oper name for that network]
 */
 alias autoconnect { 
   if (($1 == -join) && ($regex(autoconnect,$2,/^#\S+$/))) {
@@ -27,6 +28,10 @@ alias autoconnect {
   elseif (($1 == -nick) && ($2)) {
     writeini AutoLoginInformation.ini $network &Nick $2
     echo -a $+([,$network,]) Nick set to: $2
+  }
+  elseif (($1 == -oper) && ($3)) {
+    writeini AutoLoginInformation.ini $network &Oper $+($2,:,$3)
+    echo -a $+([,$network,]) Oper set to: $2 - password: $3
   }
   elseif (($1 == -status) && ($2)) {
     echo -a -
@@ -52,6 +57,7 @@ alias autoconnect {
     echo -a 10/AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
     echo -a 10/AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
     echo -a 10/AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+    echo -a 10/AutoConnect -oper Opername OperPass [Sets your oper name for that network]
     echo -a 10/AutoConnect -status NetworkHere [Prints status for the given network]
   }
 }
@@ -62,17 +68,20 @@ raw 005:*:{
   if (%Connect.Raw) {
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
       if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
+        if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
+          oper $replace($readini(AutoLoginInformation.ini,$network,&Oper),$chr(58),$chr(32)))
+        }
         if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
           nick $readini(AutoLoginInformation.ini,$network,&Nick)
+          if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
+            mode $readini(AutoLoginInformation.ini,$network,&Nick) $readini(AutoLoginInformation.ini,$network,&Modes)
+          }
         }
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
           vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
         }
-        if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
-        }
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          .timer 1 5 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          .timer 1 6 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
       unset %Connect.Raw
