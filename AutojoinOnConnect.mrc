@@ -73,9 +73,9 @@ raw 005:*:{
         }
         if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
           nick $readini(AutoLoginInformation.ini,$network,&Nick)
-          if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-            mode $readini(AutoLoginInformation.ini,$network,&Nick) $readini(AutoLoginInformation.ini,$network,&Modes)
-          }
+        }
+        if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
+          mode $iif($ini(AutoLoginInformation.ini,$network,&Nick),$readini(AutoLoginInformation.ini,$network,&Nick),$me) $readini(AutoLoginInformation.ini,$network,&Modes)
         }
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
           vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
