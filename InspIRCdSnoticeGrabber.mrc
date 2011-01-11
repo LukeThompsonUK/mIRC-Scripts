@@ -4,7 +4,7 @@ on $^*:Snotice:/CONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
   haltdef
 }
-on $^*:Snotice:/ANNOUNCEMENT:\sConnecting\suser\s(\S+)\s(?:[^\]]+)\((\S+)\),\schanging\sreal\shost\sto\s(\S+)\sfrom\s(\S+)$/Si:{
+on $^*:Snotice:/ANNOUNCEMENT:\sConnecting\suser\s(\S+)\s(.+\((\S+)\),\schanging\sreal\shost\sto\s(\S+)\sfrom\s(\S+)$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
   haltdef
@@ -135,6 +135,11 @@ on $^*:Snotice:/FILTER:\s(\S+).+'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)',\sreaso
 on $^*:Snotice:/FILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
   aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER REMOVAL:07 $regml(1) 12->07 $regml(2)
+  haltdef
+}
+on $^*:Snotice:/^\*{3}\s(\S+)\s\((\S+)\).+\/whois/Si:{
+  if (!$window($($+(@Other.,$network),2))) { window -nz $($+(@Other.,$network),2) }
+  aline -p $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04WHOIS:07 $+($regml(1),!,$regml(2))
   haltdef
 }
 
