@@ -43,7 +43,7 @@ on $^*:Snotice:/XLINE:\s(\S+).+\son\s(\S+)\./Si:{
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE REMOVAL:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-on $^*:Snotice:/\*{3}\sXLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
+on $^*:Snotice:/XLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE EXPIRE:07 $regml(1) 12originally set by07 $regml(2)
   haltdef
