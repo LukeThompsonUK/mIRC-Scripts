@@ -89,13 +89,13 @@ on $^*:Snotice:/LINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-on $^*:Snotice:/LINK:.+(\d+).+(\d+)\sservers.$/Si:{
+on $^*:Snotice:/LINK:.+(\d+).+(\d+)\sservers\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { window -nz $($+(@Server.,$network),2) }
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT-LOST:07 $regml(1) 12user(s)
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT-LOST:07 $regml(2) 12server(s)
   haltdef
 }
-on $^*:Snotice:/LINK:.+'(\S+)'\sfailed.$/Si:{
+on $^*:Snotice:/LINK:.+'(\S+)'\sfailed\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { window -nz $($+(@Server.,$network),2) }
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT:07 $regml(1) 12failed.
   haltdef
@@ -110,12 +110,12 @@ on $^*:Snotice:/LINK:.+from\s(\S+)\[(\S+)\]\s\((.+)\)$/Si:{
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK:07 $+($regml(1),@,$regml(2)) 12->07 $regml(3)
   haltdef
 }
-on $^*:Snotice:/LINK:.+to\s(\S+)\s\(Authentication:\s(.+)\).$/Si:{
+on $^*:Snotice:/LINK:.+to\s(\S+)\s\(Authentication:\s(.+)\)\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { window -nz $($+(@Server.,$network),2) }
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK-BURST:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-on $^*:Snotice:/LINK:\sFinished\sbursting\sto\s(\S+).$/Si:{
+on $^*:Snotice:/LINK:\sFinished\sbursting\sto\s(\S+)\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { window -nz $($+(@Server.,$network),2) }
   aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK-ENDBURST:07 $regml(1)
   haltdef
@@ -139,7 +139,7 @@ on $^*:Snotice:/FILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
 }
 on $^*:Snotice:/^\*{3}\s(\S+)\s\((\S+)\).+\/whois/Si:{
   if (!$window($($+(@Other.,$network),2))) { window -nz $($+(@Other.,$network),2) }
-  aline -p $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04WHOIS:07 $+($regml(1),!,$regml(2))
+  aline -ph $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04WHOIS:07 $+($regml(1),!,$regml(2))
   haltdef
 }
 
