@@ -1,5 +1,5 @@
 ; *** CONNECT: Client connecting on port 6697: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [xxx.xxx.xxx.xxx] [Test Nick]
-on $^*:Snotice:/CONNECT:(?:[^\]]+)port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[([^\]]+)\]/Si:{
+on $^*:Snotice:/CONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
   haltdef
@@ -17,35 +17,35 @@ on $^*:Snotice:/QUIT:\sClient\sexiting:\s(\S+)\s\[(.+)\]$/Si:{
   haltdef
 }
 ;*** NICK: User TestNick changed their nickname to TestNick1
-on $^*:Snotice:/NICK:\sUser\s(\S+)(?:[^\]]+)to\s(\S+)/Si:{
+on $^*:Snotice:/NICK:\sUser\s(\S+).+to\s(\S+)/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Clients:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
 ;*** KILL: Local Kill by Shawn: TestNick1!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com (Kill Message Here)
-on $^*:Snotice:/Kill:(?:[^\]]+)by\s(\S+):\s(\S+)\s\(([^\]]+)\)/Si:{
+on $^*:Snotice:/Kill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
   haltdef
 }
-on $^*:Snotice:/XLINE:\s(\S+)(?:[^\]]+)for\s(\S+):\s([^\]]+)/Si:{
+on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4PERMANENT XLINE:7 $remove($regml(2),$chr(44)) 12added by7 $regml(1) 12for7 $regml(3)
 }
-on $^*:Snotice:/XLINE:\s(\S+)(?:[^\]]+)for\s(\S+),(?:[^\]]+)on\s([^\]]+):\s([^\]]+)$/Si:{
+on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
-  haltdef
+  ;haltdef
 }
-on $^*:Snotice:/XLINE:\s(\S+)(?:[^\]]+)\son\s(\S+)\./Si:{
+on $^*:Snotice:/XLINE:\s(\S+).+\son\s(\S+)\./Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE REMOVAL:07 $regml(1) 12->07 $regml(2)
-  haltdef
+  ; haltdef
 }
-on $^*:Snotice:/XLINE:\sRemoving\sExpired\s(?:\S+)\s(\S+)\s\(set\sby\s(\S+)(?:[^\]]+)\)/Si:{
+on $^*:Snotice:/\*{3}\sXLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE EXPIRE:07 $regml(1) 12originally set by07 $regml(2)
-  haltdef
+  ; haltdef
 }
 on $^*:Snotice:/XLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s([^\]]+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
