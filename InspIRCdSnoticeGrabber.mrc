@@ -4,7 +4,7 @@ on $^*:Snotice:/CONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
   haltdef
 }
-on $^*:Snotice:/ANNOUNCEMENT:\sConnecting\suser\s(\S+)\s(.+\((\S+)\),\schanging\sreal\shost\sto\s(\S+)\sfrom\s(\S+)$/Si:{
+on $^*:Snotice:/ANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\sfrom\s\S+$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { window -nz $($+(@Clients.,$network),2) }
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
   haltdef
@@ -51,6 +51,7 @@ on $^*:Snotice:/XLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
 on $^*:Snotice:/XLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { window -nz $($+(@Network-Kills/Bans.,$network),2) }
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4QLINE:07 $regml(2) 12->07 $regml(1)
+  haltdef
 }
 on $^*:Snotice:/OPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
@@ -65,6 +66,7 @@ on $^*:Snotice:/REMOTEOPER:\sFrom\s(\S+):\sUser\s(\S+)\s\((\S+)\).+type\s(\S+)/S
 on $^*:Snotice:/OPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
   aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Oper:7 $regml(1) 12Deopered by7 $regml(2)
+  haltdef
 }
 on $^*:Snotice:/STATS:\s(?:Remote\sstats|Stats)\s'(.)'\srequested\sby\s(\S+)\s\((\S+)\)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { window -nz $($+(@Oper.,$network),2) }
