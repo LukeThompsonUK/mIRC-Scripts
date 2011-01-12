@@ -75,13 +75,13 @@ raw 005:*:{
           nick $readini(AutoLoginInformation.ini,$network,&Nick)
         }
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          mode $iif($ini(AutoLoginInformation.ini,$network,&Nick),$readini(AutoLoginInformation.ini,$network,&Nick),$me) $readini(AutoLoginInformation.ini,$network,&Modes)
+          /timer 1 10 //mode $iif($ini(AutoLoginInformation.ini,$network,&Nick),$readini(AutoLoginInformation.ini,$network,&Nick),$me) $readini(AutoLoginInformation.ini,$network,&Modes)
         }
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
           vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
         }
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          .timer 1 6 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          /timer 1 10 //join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
       unset %Connect.Raw

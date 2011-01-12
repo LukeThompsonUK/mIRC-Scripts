@@ -79,7 +79,7 @@ alias Ghost {
   if (%Password) {
     NickServ ghost %GhostNick %Password
     if (%Switch) {
-      .timer 1 3 nick %GhostNick
+      .timer 1 2 nick %GhostNick
     }
   }
   else {
