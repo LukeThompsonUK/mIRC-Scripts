@@ -1,4 +1,4 @@
-saway {
+alias saway {
   if ($1) {
     if ($away) { 
       scon -at1 away $1-
