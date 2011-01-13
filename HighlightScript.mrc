@@ -6,7 +6,9 @@ alias highlight {
   elseif (($1 == -delnick) && ($2)) {
     var %Tok $findtok(%Highlight.NicksToMatch,$2,1,44)
     set %Highlight.NicksToMatch $deltok(%Highlight.NicksToMatch,%Tok,44)
+   
     echo -a [Highlight/Nicks]: %Highlight.NicksToMatch
+
     if ($numtok(%Highlight.NicksToMatch,44) == 0) {
       unset %Highlight.NicksToMatch
     }
@@ -18,7 +20,9 @@ alias highlight {
   elseif (($1 == -unignorechan) && ($regex($2,/#\S+/))) {
     var %Tok $findtok(%Highlight.IgnoreChans,$2,1,44)
     set %Highlight.IgnoreChans $deltok(%Highlight.IgnoreChans,%Tok,44)
+
     echo -a [Highlight/IgnoreChans]: %Highlight.IgnoreChans
+
     if ($numtok(%Highlight.IgnoreChans,44) == 0) {
       unset %Highlight.IgnoreChans
     }
@@ -30,7 +34,9 @@ alias highlight {
   elseif (($1 == -unignorenick) && ($2)) {
     var %Tok $findtok(%Highlight.IgnoreNicks,$2,1,44)
     set %Highlight.IgnoreNicks $deltok(%Highlight.IgnoreNicks,%Tok,44)
+
     echo -a [Highlight/IgnoreNicks]: %Highlight.IgnoreNicks
+
     if ($numtok(%Highlight.IgnoreNicks,44) == 0) {
       unset %Highlight.IgnoreNicks
     }
@@ -53,26 +59,39 @@ alias highlight {
   }
 }
 
+
 on *:TEXT:*:#:{ 
   if ((!$istok(%Highlight.IgnoreChans,$chan,44)) && (!$istok(%Highlight.IgnoreNicks,$nick,44))) {
     var %x 1
+
     while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
       if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
-        if (!$window(@Highlight)) { /window -nz @Highlight }
+        if (!$window(@Highlight)) { 
+          window -nz @Highlight 
+        }
+
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
       }
+
       inc %x
     }
   }
 }
+
+
 on *:ACTION:*:#:{ 
   if ((!$istok(%Highlight.IgnoreChans,$chan,44)) && (!$istok(%Highlight.IgnoreNicks,$nick,44))) {
     var %x 1
+
     while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
       if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
-        if (!$window(@Highlight)) { /window -nz @Highlight }
+        if (!$window(@Highlight)) {
+          window -nz @Highlight 
+        }
+
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
       }
+
       inc %x
     }
   }

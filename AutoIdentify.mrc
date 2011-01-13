@@ -1,4 +1,4 @@
-alias /LoginDetails {
+alias LoginDetails {
   if ($1 == -d) {
     if ($2) {
       remini AutoLoginInformation.ini $network $2
@@ -9,7 +9,9 @@ alias /LoginDetails {
       echo -a Removed $me from your autologin nicklist on $network
     }
   }
+
   writeini AutoLoginInformation.ini $network $me $$?="Enter the password for autoidentifying"
+
   echo -a -
   echo -a Network: $network
   echo -a Username: $me
@@ -60,6 +62,7 @@ alias Ghost {
   if (-switch == $1) {
     var %GhostNick $2
     var %Switch on
+
     if ($3) {
       var %Password $3
     }
@@ -69,6 +72,7 @@ alias Ghost {
   }
   else {
     var %GhostNick $1
+
     if ($2) {
       var %Password $2
     }
@@ -76,8 +80,10 @@ alias Ghost {
       var %Password $readini(AutoLoginInformation.ini,$network,$1)
     }
   }
+
   if (%Password) {
     NickServ ghost %GhostNick %Password
+
     if (%Switch) {
       .timer 1 2 nick %GhostNick
     }

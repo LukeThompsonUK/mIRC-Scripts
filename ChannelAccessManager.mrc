@@ -7,44 +7,58 @@
 menu channel {
   Channel Management: dialog -ma ACM ACM
 }
+
 alias F4 {
   dialog -ma ACM ACM
 }
+
 on *:dialog:ACM:init:0:{
   set %ACM_FLAGLIST on
   set %ACM_TMPL on
   msg CHANSERV TEMPLATE $active
   msg CHANSERV FLAGS $active
 }
+
 on ^*:NOTICE:*:?:{
   if ($nick == ChanServ) { 
     if ((%ACM_FLAGLIST) || (%ACM_TMPL)) {
       if ($regex($1-,/^\d+\s+(\S+)\s+(\+\S+)/Si)) {
         did -a ACM 2 $regml(1) $regml(2)
       }
+
       if ($regex($1-,/^(\S+)\s+(\+\S+)/Si)) {
         did -a ACM 9 $regml(1) $regml(2)
       }
+
       if ($regex($1-,/^end\sof\s\S+\s(\S+)/Si)) {
-        if ($regml(1) == FLAGS) { unset %ACM_FLAGLIST }
-        elseif ($regml(1) == TEMPLATE) { unset %ACM_TMPL }
+        if ($regml(1) == FLAGS) { 
+          unset %ACM_FLAGLIST 
+        }
+        elseif ($regml(1) == TEMPLATE) { 
+          unset %ACM_TMPL 
+        }
       }
+
       haltdef
     }
   }
 }
+
 on *:dialog:ACM:sclick:2:{
   noop $regex(ACM,$did(ACM,2).seltext,/^(\S+)\s\+(\S+)$/Si)
   did -o ACM 3 1 $regml(ACM,1)
   did -o ACM 6 1 $regml(ACM,2)
 }
+
 on *:dialog:ACM:sclick:9:{ 
   noop $regex(ACM,$did(ACM,9).seltext,/^\S+\s\+(\S+)$/Si)
   did -o ACM 6 1 $regml(ACM,1)
 }
+
 on *:dialog:ACM:sclick:7:{
   if ($did(ACM,3)) {
     msg CHANSERV FLAGS $active $did(ACM,3) $+(-*+,$did(ACM,6))
+
     if ($didwm(ACM,2,$did(ACM,3) *)) {
       did -o ACM 2 $didwm(ACM,2,$did(ACM,3) *) $did(ACM,3) $+(+,$did(ACM,6))
     }
@@ -53,6 +67,7 @@ on *:dialog:ACM:sclick:7:{
     }
   }
 }
+
 dialog ACM {
   title Channel Access Manager
   size 200 200 250 250

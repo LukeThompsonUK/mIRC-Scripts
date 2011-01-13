@@ -6,10 +6,13 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG:{
     }
   }
 }
+
+
 alias IRPG {
   writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
   writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to autoidentify with."
   writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to autoidentify with."
+
   echo -a -
   echo -a Network: $network
   echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
@@ -17,6 +20,8 @@ alias IRPG {
   echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   echo -a -
 }
+
+
 menu channel,status {
   IdleRPG
   .View current information for this network: {
@@ -27,15 +32,18 @@ menu channel,status {
     echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     echo -a -
   }
+
   .Autologin information
   ..Set botname:{
     writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
     echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
   }
+
   ..Set username:{
     writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to message on this network."
     echo -a Username for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
   }
+
   ..Set password:{
     writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to message on this network."
     echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
