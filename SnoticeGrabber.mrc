@@ -1,1 +1,0 @@
-on $^*:Snotice:/(\S+)\s\((\S+)\)\sdid\sa\s.whois\son\syou/Si:{ echo -agt 4Whois -> 12[11 $+ $network $+ 12:11 $+ $+($regml(1),!,$regml(2)) $+ 12] | haltdef }
