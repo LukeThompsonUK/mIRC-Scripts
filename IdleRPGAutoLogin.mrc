@@ -1,6 +1,6 @@
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG:{ 
-  if ($nick == $me) {
+  if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
     if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
       msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     }
@@ -19,6 +19,13 @@ alias IRPG {
   echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
   echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   echo -a -
+}
+
+
+on *:Notice:*No such account*:?:{
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+    msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) REGISTER $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password) IdleUser
+  }
 }
 
 
