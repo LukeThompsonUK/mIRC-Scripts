@@ -13,7 +13,7 @@ on $^*:Snotice:/ANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
-  
+
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
   haltdef
 }
@@ -294,6 +294,7 @@ on $^*:WALLOPS:*:{
   aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
   haltdef
 }
+on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
 
 
 on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s(.+)$/Si:{
@@ -304,7 +305,13 @@ on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s(.+)$/Si:{
   aline -ph $($+(@GlobOPS.,$network),2) 12(07 $+ $time $+ 12) 04Global:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
-
-
 on *:INPUT:@GlobOPS.*:{ GlobOPS $1- | haltdef }
-on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
+
+
+on $*:Snotice/^\*{3}/Si:{
+  if (!$window($($+(@Other.,$network),2))) { 
+    window -nz $($+(@Other.,$network),2) 
+  }
+
+  aline -ph $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04Unsorted:07 $1-
+}
