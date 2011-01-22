@@ -6,8 +6,7 @@ on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
   aline -ph @Ban/Key/Invite $timestamp 10Removed ban from:07 $regml(1) [Matched $regml(2) $+($iif($regml(2) > 1,bans,ban),])
-  join -n $regml(1) 
-  ;haltdef
+  join -n $regml(1) | haltdef
 }
 
 ; This is for Anope
