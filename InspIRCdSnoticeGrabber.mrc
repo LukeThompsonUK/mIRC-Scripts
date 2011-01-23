@@ -1,5 +1,5 @@
 ; *** CONNECT: Client connecting on port 6697: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [xxx.xxx.xxx.xxx] [Test Nick]
-on $^*:Snotice:/CONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
+on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
@@ -9,7 +9,7 @@ on $^*:Snotice:/CONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
 }
 
 
-on $^*:Snotice:/ANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\sfrom\s\S+$/Si:{
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\sfrom\s\S+$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
@@ -21,7 +21,7 @@ on $^*:Snotice:/ANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\
 
 ;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Client closed the connection]
 ;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Quit: Quitting IRC]
-on $^*:Snotice:/QUIT:\sClient\sexiting:\s(\S+)\s\[(.+)\]$/Si:{
+on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+)$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
@@ -32,7 +32,7 @@ on $^*:Snotice:/QUIT:\sClient\sexiting:\s(\S+)\s\[(.+)\]$/Si:{
 
 
 ;*** NICK: User TestNick changed their nickname to TestNick1
-on $^*:Snotice:/NICK:\sUser\s(\S+).+to\s(\S+)/Si:{
+on $^*:Snotice:/^\*{3}\sNICK:\sUser\s(\S+).+to\s(\S+)/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
@@ -43,7 +43,7 @@ on $^*:Snotice:/NICK:\sUser\s(\S+).+to\s(\S+)/Si:{
 
 
 ;*** KILL: Local Kill by Shawn: TestNick1!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com (Kill Message Here)
-on $^*:Snotice:/Kill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
+on $^*:Snotice:/^\*{3}\sKill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -53,7 +53,7 @@ on $^*:Snotice:/Kill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
 }
 
 
-on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
+on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -63,7 +63,7 @@ on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
 }
 
 
-on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -73,7 +73,7 @@ on $^*:Snotice:/XLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
 }
 
 
-on $^*:Snotice:/XLINE:\s(\S+).+\son\s(\S+)\./Si:{
+on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+\son\s(\S+)\./Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -83,7 +83,7 @@ on $^*:Snotice:/XLINE:\s(\S+).+\son\s(\S+)\./Si:{
 }
 
 
-on $^*:Snotice:/XLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
+on $^*:Snotice:/^\*{3}\sXLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -93,7 +93,7 @@ on $^*:Snotice:/XLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
 }
 
 
-on $^*:Snotice:/XLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sXLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -103,7 +103,7 @@ on $^*:Snotice:/XLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si:{
 }
 
 
-on $^*:Snotice:/OPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
+on $^*:Snotice:/^\*{3}\sOPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2)
   }
@@ -113,7 +113,7 @@ on $^*:Snotice:/OPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
 }
 
 
-on $^*:Snotice:/REMOTEOPER:\sFrom\s(\S+):\sUser\s(\S+)\s\((\S+)\).+type\s(\S+)/Si:{
+on $^*:Snotice:/^\*{3}\sREMOTEOPER:\sFrom\s(\S+):\sUser\s(\S+)\s\((\S+)\).+type\s(\S+)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -123,7 +123,7 @@ on $^*:Snotice:/REMOTEOPER:\sFrom\s(\S+):\sUser\s(\S+)\s\((\S+)\).+type\s(\S+)/S
 }
 
 
-on $^*:Snotice:/OPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
+on $^*:Snotice:/^\*{3}\sOPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -133,7 +133,7 @@ on $^*:Snotice:/OPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
 }
 
 
-on $^*:Snotice:/STATS:\s(?:Remote\sstats|Stats)\s'(.)'\srequested\sby\s(\S+)\s\((\S+)\)/Si:{
+on $^*:Snotice:/^\*{3}\sSTATS:\s(?:Remote\sstats|Stats)\s'(.)'\srequested\sby\s(\S+)\s\((\S+)\)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -143,7 +143,7 @@ on $^*:Snotice:/STATS:\s(?:Remote\sstats|Stats)\s'(.)'\srequested\sby\s(\S+)\s\(
 }
 
 
-on $^*:Snotice:/OPER:.+by\s(\S+)\susing\slogin\s'(\S+)':.+:(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sOPER:.+by\s(\S+)\susing\slogin\s'(\S+)':.+:(.+)$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -153,7 +153,7 @@ on $^*:Snotice:/OPER:.+by\s(\S+)\susing\slogin\s'(\S+)':.+:(.+)$/Si:{
 }
 
 
-on $^*:Snotice:/ANNOUNCEMENT:\s(\S+)\sused\s(\S+)\sto\smake\s(\S+)\s(?:join|part)\s(\S+)/Si:{
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\s(\S+)\sto\smake\s(\S+)\s(?:join|part)\s(\S+)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -162,7 +162,7 @@ on $^*:Snotice:/ANNOUNCEMENT:\s(\S+)\sused\s(\S+)\sto\smake\s(\S+)\s(?:join|part
 }
 
 
-on $^*:Snotice:/ANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -171,7 +171,7 @@ on $^*:Snotice:/ANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
 }
 
 
-on $^*:Snotice:/LINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -181,7 +181,7 @@ on $^*:Snotice:/LINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+(\d+).+(\d+)\sservers\.$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+(\d+).+(\d+)\sservers\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -193,7 +193,7 @@ on $^*:Snotice:/LINK:.+(\d+).+(\d+)\sservers\.$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+'(\S+)'\sfailed\.$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+'(\S+)'\sfailed\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -203,7 +203,7 @@ on $^*:Snotice:/LINK:.+'(\S+)'\sfailed\.$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+'(\S+)'.+for\s(\S+)$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+'(\S+)'.+for\s(\S+)$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -213,7 +213,7 @@ on $^*:Snotice:/LINK:.+'(\S+)'.+for\s(\S+)$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+from\s(\S+)\[(\S+)\]\s\((.+)\)$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+from\s(\S+)\[(\S+)\]\s\((.+)\)$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -223,7 +223,7 @@ on $^*:Snotice:/LINK:.+from\s(\S+)\[(\S+)\]\s\((.+)\)$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+to\s(\S+)\s\(Authentication:\s(.+)\)\.$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+to\s(\S+)\s\(Authentication:\s(.+)\)\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -233,7 +233,7 @@ on $^*:Snotice:/LINK:.+to\s(\S+)\s\(Authentication:\s(.+)\)\.$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:\sFinished\sbursting\sto\s(\S+)\.$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:\sFinished\sbursting\sto\s(\S+)\.$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -243,7 +243,7 @@ on $^*:Snotice:/LINK:\sFinished\sbursting\sto\s(\S+)\.$/Si:{
 }
 
 
-on $^*:Snotice:/LINK:.+from\s(\S+)\s\(burst\stime:\s(.+)\)$/Si:{
+on $^*:Snotice:/^\*{3}\sLINK:.+from\s(\S+)\s\(burst\stime:\s(.+)\)$/Si:{
   if (!$window($($+(@Server.,$network),2))) { 
     window -nz $($+(@Server.,$network),2) 
   }
@@ -253,7 +253,7 @@ on $^*:Snotice:/LINK:.+from\s(\S+)\s\(burst\stime:\s(.+)\)$/Si:{
 }
 
 
-on $^*:Snotice:/FILTER:\s(\S+).+'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)',\sreason:\s(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+).+'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)',\sreason:\s(.+)$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -266,7 +266,7 @@ on $^*:Snotice:/FILTER:\s(\S+).+'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)',\sreaso
 }
 
 
-on $^*:Snotice:/FILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
+on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
@@ -297,7 +297,7 @@ on $^*:WALLOPS:*:{
 on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
 
 
-on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sGLOBOPS:\sfrom\s(\S+):\s(.+)$/Si:{
   if (!$window($($+(@GlobOPS.,$network),2))) { 
     window -nezg1 $($+(@GlobOPS.,$network),2) 
   }
