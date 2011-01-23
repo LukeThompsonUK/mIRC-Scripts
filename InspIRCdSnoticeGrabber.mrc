@@ -48,7 +48,7 @@ on $^*:Snotice:/Kill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
+  aline $iif($regml(1) == NickServ,-p,-ph) $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
   haltdef
 }
 
@@ -308,10 +308,11 @@ on $^*:Snotice:/GLOBOPS:\sfrom\s(\S+):\s(.+)$/Si:{
 on *:INPUT:@GlobOPS.*:{ GlobOPS $1- | haltdef }
 
 
-on $*:Snotice/^\*{3}/Si:{
-  if (!$window($($+(@Other.,$network),2))) { 
-    window -nz $($+(@Other.,$network),2) 
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:{
+  if (!$window($($+(@Server.,$network),2))) { 
+    window -nz $($+(@Server.,$network),2) 
   }
 
-  aline -ph $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04Unsorted:07 $1-
+  aline -ph $($+(@Server.,$network),2)} 12(09 $+ $time $+ 12) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
+  haltdef
 }
