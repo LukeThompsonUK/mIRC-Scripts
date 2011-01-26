@@ -21,7 +21,7 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to
 
 ;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Client closed the connection]
 ;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Quit: Quitting IRC]
-on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+)$/Si:{
+on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+).$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
@@ -133,13 +133,13 @@ on $^*:Snotice:/^\*{3}\sOPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
 }
 
 
-on $^*:Snotice:/^\*{3}\sSTATS:\s(?:Remote\sstats|Stats)\s'(.)'\srequested\sby\s(\S+)\s\((\S+)\)/Si:{
+on $^*:Snotice:/^\*{3}\sSTATS:\s(?:Remote\sstats|Stats)\s'(.)'.+\s(\S+)\s\((\S+)\)$/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
     window -nz $($+(@Oper.,$network),2) 
   }
 
   aline -p $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Stats:7 $+($regml(2),!,$regml(3)) 12->7 $regml(1)
-  ;haltdef
+  haltdef
 }
 
 
