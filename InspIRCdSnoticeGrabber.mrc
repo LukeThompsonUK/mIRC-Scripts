@@ -8,14 +8,17 @@ on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   haltdef
 }
 
-
+;*** ANNOUNCEMENT: Connecting user 897AAAL5F detected as using CGI:IRC (IP.IP.IP.IP), changing real host to Host.com from IP.IP.IP.IP
+; IP.IP.IP.IP is the same IP in both places I replaced. Otherwise I would have used IP2.IP2..etc to denote a difference
+; Host.com is the real host of the person connecting, NOT the webserver they are connecting through.
+; 897AAAL5F is the UUID of the user.
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\sfrom\s\S+$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
   }
 
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
-  ; haltdef
+  haltdef
 }
 
 
