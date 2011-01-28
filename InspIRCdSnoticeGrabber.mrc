@@ -62,8 +62,19 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
   haltdef
 }
 
-
+; Done on a local server.
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
+  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
+    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  }
+
+  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
+  haltdef
+}
+
+
+; Done on a remove server. (Or possibly just Atheme?)
+on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+on\s(\S+).+on\s(.+)\s\((.+)\)\.$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
