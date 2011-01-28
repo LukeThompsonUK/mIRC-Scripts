@@ -1,4 +1,4 @@
-; *** CONNECT: Client connecting on port 6697: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [xxx.xxx.xxx.xxx] [Test Nick]
+; *** CONNECT: Client connecting on port 6697: Nick!Ident@Host.com [IP.IP.IP.IP] [Test Nick]
 on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
@@ -15,12 +15,14 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to
   }
 
   aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
-  haltdef
+  ; haltdef
 }
 
 
-;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Client closed the connection]
-;*** QUIT: Client exiting: TestNick!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com [Quit: Quitting IRC]
+;*** QUIT: Client exiting: Nick!Ident@Host.com [Quit: Quitting IRC]
+; Note that the 'Quit:' prefix will not always be shown, when being server banned, killed, ghosted, or ping timeouting
+; It will be different, so when matching you should match from [ to the end of the line for a quit reason
+; Sometimes the ending ] will not be shown on long lines as it's cut off from the buffer due to the newline needing to be added
 on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+).$/Si:{
   if (!$window($($+(@Clients.,$network),2))) { 
     window -nz $($+(@Clients.,$network),2) 
@@ -42,7 +44,7 @@ on $^*:Snotice:/^\*{3}\sNICK:\sUser\s(\S+).+to\s(\S+)/Si:{
 }
 
 
-;*** KILL: Local Kill by Shawn: TestNick1!Shawn@cpe-xxx-xxx-xxx-xxx.censored.res.rr.com (Kill Message Here)
+;*** KILL: Local Kill by Shawn: Nick!Ident@Host.com (Kill Message Here)
 on $^*:Snotice:/^\*{3}\sKill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
@@ -63,6 +65,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
 }
 
 ; Done on a local server.
+;*** XLINE: Shawn added timed G-line for *@IP.IP.IP.IP, expires on Fri Jan 28 14:00:26 2011: Ban Reason Here
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
@@ -74,6 +77,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
 
 
 ; Done on a remove server. (Or possibly just Atheme?)
+;*** XLINE: Services.CriticalSecurity.net added GLINE on *@IP.IP.IP.IP to expire on Sat Jan 29 14:12:48 2011 (Ban Reason Here).
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+on\s(\S+).+on\s(.+)\s\((.+)\)\.$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
