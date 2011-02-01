@@ -42,7 +42,7 @@ on $^*:Snotice:/^\*{3}\sNICK:\sUser\s(\S+).+to\s(\S+)/Si:{
     window -nz $($+(@Clients.,$network),2) 
   }
 
-  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Clients:7 $regml(1) 12->07 $regml(2)
+  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 8Nick:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
 

@@ -1,6 +1,7 @@
 ; Raw 474 is the ban error numeric.
 raw 474:*cannot join channel*:{ cs unban $2 | haltdef }
 
+
 ; This is for Atheme
 on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
@@ -9,6 +10,7 @@ on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
   join -n $regml(1) | haltdef
 }
 
+
 ; This is for Anope
 on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{ 
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
@@ -16,6 +18,7 @@ on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{
   aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Removed ban from:07 $regml(1)
   join -n $regml(1) | haltdef
 }
+
 
 ; Raw 473 is the +i error numeric.
 raw 473:*cannot join channel*:{ cs invite $2 | haltdef }
