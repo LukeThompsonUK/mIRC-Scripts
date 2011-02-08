@@ -116,7 +116,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4QLINE:07 $regml(2) 12->07 $regml(1)
+  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4QLINE:07 $regml(2) 12->07 $regml(1) 12reason:07 $regml(3)
   haltdef
 }
 
