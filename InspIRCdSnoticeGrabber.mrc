@@ -127,6 +127,7 @@ on $^*:Snotice:/\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
   }
 
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1)
+  haltdef
 }
 
 
@@ -137,6 +138,7 @@ on $^*:Snotice:/\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:{
   }
 
   aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1) $+(12[07,$regml(2),12/07,$regml(3),12]03 [total/limit])
+  haltdef
 }
 
 
