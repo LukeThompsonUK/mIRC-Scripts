@@ -120,6 +120,25 @@ on $^*:Snotice:/^\*{3}\sXLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si
   haltdef
 }
 
+;*** FLOOD: Excess flood from: Nick!Ident@Host
+on $^*:Snotice:/\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
+  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
+    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  }
+
+  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1)
+}
+
+
+;*** ANNOUNCEMENT: User NICK RecvQ of 10240 exceeds connect class maximum of 8192
+on $^*:Snotice:/\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:{
+  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
+    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  }
+
+  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1) $+(12[07,$regml(2),12/07,$regml(3),12]03 [total/limit])
+}
+
 
 on $^*:Snotice:/^\*{3}\sOPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
   if (!$window($($+(@Oper.,$network),2))) { 
