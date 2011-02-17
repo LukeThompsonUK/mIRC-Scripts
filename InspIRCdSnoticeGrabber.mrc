@@ -121,7 +121,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si
 }
 
 ;*** FLOOD: Excess flood from: Nick!Ident@Host
-on $^*:Snotice:/\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
+on $^*:Snotice:/^\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -132,7 +132,7 @@ on $^*:Snotice:/\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
 
 
 ;*** ANNOUNCEMENT: User NICK RecvQ of 10240 exceeds connect class maximum of 8192
-on $^*:Snotice:/\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:{
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:{
   if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
     window -nz $($+(@Network-Kills/Bans.,$network),2) 
   }
@@ -353,5 +353,16 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:
   }
 
   aline -ph $($+(@Server.,$network),2)} 12(09 $+ $time $+ 12) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
+  haltdef
+}
+
+
+;*** You are connected using SSL cipher "DHE RSA-3DES 168 CBC-SHA"
+on $^*:Snotice:/^\*{3}.+SSL\scipher\s"(.+)"$/Si:{
+  if (!$window($($+(@Other.,$network),2))) { 
+    window -nz $($+(@Other.,$network),2) 
+  }
+
+  aline -p $($+(@Other.,$network),2)} 12(09 $+ $time $+ 12) 12SSL Cipher:07 $regml(1)
   haltdef
 }
