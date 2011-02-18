@@ -48,7 +48,7 @@ on $^*:Notice:/(\S+)\skey\sis.\s(\S+)$/Si:?:{
 ; This is for Anope (1.8.4) Not sure if it changes by version
 ; I used to use a different notice but when I was testing the script it didn't work
 ; So I assume this wont work with eariler versions of Anope.
-on $^*:Notice:/KEY\s(\S+)\s(\S+)$/Si:?:{
+on $^*:Notice:/^KEY\s(\S+)\s(\S+)$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
   aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Bypassed +k on:07 $regml(1) 10with key:07 $regml(2)
