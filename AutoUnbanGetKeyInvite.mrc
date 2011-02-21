@@ -59,23 +59,24 @@ on $^*:Notice:/^KEY\s(\S+)\s(\S+)$/Si:?:{
 ; You must be on the channel when the ban is set to remove it though, if you're banned+kicked and
 ; have autorejoin on the other part of the script will unban you and join you again.
 on *:BAN:#:{
-  if (($me isop $chan) || ($me ishop $chan)) {
-    var %x = 2, %i = 0, %BanMask
+  var %x = 2, %i = 0, %BanMask
 
-    if ($modefirst) { 
-      while (%x <= $0) {
-        if ($($+($,%x),2) iswm $ial($me)) { 
-          inc %i | %BanMask = %BanMask $($+($,%x),2) 
-        }
-
-        inc %x
+  if ($modefirst) { 
+    while (%x <= $0) {
+      if ($($+($,%x),2) iswm $ial($me)) { 
+        inc %i | %BanMask = %BanMask $($+($,%x),2) 
       }
 
-      if (%BanMask) {
-        mode $chan - $+ $str(b,%i) %BanMask
-        if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
+      inc %x
+    }
 
-        aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 04Ban:07 $nick 12banned07 %BanMask
+    if (%BanMask) {
+      if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
+
+      aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 04Ban:07 $nick 12banned07 %BanMask
+
+      if (($me isop $chan) || ($me ishop $chan)) {
+        mode $chan - $+ $str(b,%i) %BanMask
       }
 
     }
