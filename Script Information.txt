@@ -1,0 +1,31 @@
+Scripts and their usage.
+AliasInspIRCdCheck.mrc
+* Syntax: /Status [-message] <User/Channel>
+* Example: /Status #TestingChannel
+* Will output various information about a user or channel, if -message is used it will print to the active window.
+
+AliasRandomQuote.mrc
+* Syntax: /RandomQuote <Bash|QDB> <Echo|Show>
+* Example: /RandomQuote Bash Echo
+* Will grab a random quote from bash.org or qdb.us and either echo it or print to the active window.
+
+AliasRegexChannelBan.mrc
+* Syntax: /RegexBan <Regex> [dbk]
+* Example: /RegexBan /away|brb|afk|\|zzz|school|work|bnc|offline/ dk
+* Will check the channel for users matching the regex.
+* Flag explanation:
+** b - Will ban any user that is matched
+** k - Will kick any user that is matched
+** d - Will echo information on who is matched and what bans would have been set had you not specified d (requires b or k to work)
+** The 'd' flag is the debug flag, it's used to test regexs before actually using them so you don't accidently ban wrong people.
+** You can specify multiple flags (kb to kick and ban or kbd to show you who would have been kicked/banned, or just k to kick, etc, you get the idea.)
+
+AliasTemperatureConversion.mrc
+* Syntax: /Temp <Scale> <Temperature>
+* Example: /Temp F 58
+* Will convert temperatures from the given scale.
+* Valid Scales are:
+** F - Fahrenheit
+** C - Celsius
+** K - Kelvin
+
