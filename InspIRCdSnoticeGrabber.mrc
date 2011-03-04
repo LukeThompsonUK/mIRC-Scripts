@@ -355,14 +355,3 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:
   aline -ph $($+(@Server.,$network),2)} 12(09 $+ $time $+ 12) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
   haltdef
 }
-
-
-;*** You are connected using SSL cipher "DHE RSA-3DES 168 CBC-SHA"
-on $^*:Snotice:/^\*{3}.+SSL\scipher\s"(.+)"$/Si:{
-  if (!$window($($+(@Other.,$network),2))) { 
-    window -nz $($+(@Other.,$network),2) 
-  }
-
-  aline -p $($+(@Other.,$network),2)} 12(09 $+ $time $+ 12) 12SSL Cipher:07 $regml(1)
-  haltdef
-}
