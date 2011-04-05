@@ -1,5 +1,9 @@
 ; Raw 474 is the ban error numeric.
-raw 474:*cannot join channel*:{ cs unban $2 | haltdef }
+raw 474:*cannot join channel*:{
+  echo 10 -ta * 4Banned: Could not join: $2
+  cs unban $2
+  haltdef
+}
 
 
 ; This is for Atheme
@@ -21,7 +25,11 @@ on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{
 
 
 ; Raw 473 is the +i error numeric.
-raw 473:*cannot join channel*:{ cs invite $2 | haltdef }
+raw 473:*cannot join channel*:{ 
+  echo 10 -ta * 4Invite-Only: Could not join: $2
+  cs invite $2
+  haltdef 
+}
 
 ; This isn't going to work on networks that make the botserv bot do the invite instead of chanserv
 ; when the user does /chanserv invite #chan
@@ -35,7 +43,11 @@ on ^*:invite:#:{
 }
 
 ; Raw 475 is the +k error numeric.
-raw 475:*cannot join channel*:{ cs getkey $2 | haltdef }
+raw 475:*cannot join channel*:{
+  echo 10 -ta * 4Keyed Channel: Could not join: $2
+  cs getkey $2
+  haltdef
+}
 
 ; This is for Atheme
 on $^*:Notice:/(\S+)\skey\sis.\s(\S+)$/Si:?:{
