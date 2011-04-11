@@ -6,7 +6,7 @@ alias highlight {
   elseif (($1 == -delnick) && ($2)) {
     var %Tok $findtok(%Highlight.NicksToMatch,$2,1,44)
     set %Highlight.NicksToMatch $deltok(%Highlight.NicksToMatch,%Tok,44)
-   
+
     echo -a [Highlight/Nicks]: %Highlight.NicksToMatch
 
     if ($numtok(%Highlight.NicksToMatch,44) == 0) {
@@ -71,6 +71,7 @@ on *:TEXT:*:#:{
         }
 
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
+        window -g2 $chan
       }
 
       inc %x
@@ -90,6 +91,7 @@ on *:ACTION:*:#:{
         }
 
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
+        window -g2 $chan
       }
 
       inc %x
