@@ -85,7 +85,7 @@ on *:BAN:#:{
     if (%BanMask) {
       if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-      aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 04Ban:07 $nick 12banned07 %BanMask
+      aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$chan,]) 04Ban:07 $nick 12banned07 %BanMask
 
       if (($me isop $chan) || ($me ishop $chan)) {
         mode $chan - $+ $str(b,%i) %BanMask
