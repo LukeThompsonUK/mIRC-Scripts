@@ -1,12 +1,3 @@
-on $*:TEXT:/(\S+imgur\S+)/Sgi:*:{
-  if (!$window(@LinkSaver)) { 
-    window -nz @LinkSaver 
-  }
-
-  aline -ph @LinkSaver $timestamp 07[ImGur] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(1))
-}
-
-
 on $*:TEXT:/(\S+4chan\S+)/Sgi:*:{
   if (!$window(@LinkSaver)) { 
     window -nz @LinkSaver 
@@ -25,19 +16,14 @@ on $*:TEXT:/(\S+photobucket\S+)/Sgi:*:{
 }
 
 
-on $*:TEXT:/(\S+youtube\S+)/Sgi:*:{
-  if (!$window(@LinkSaver)) { 
-    window -nz @LinkSaver 
+on *:TEXT:*:*:{
+  if ($regex(ImageSaver,$1-,/((?:https?://)?(?:www\.)?\S+(?:\.jpe?g|\.flv|\.bmp|\.gif))/Si)) {
+    aline -ph @LinkSaver $timestamp 07[IMAGE] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(ImageSaver,1))
   }
-
-  aline -ph @LinkSaver $timestamp 07[Youtube] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(1))
-}
-
-
-on $*:TEXT:/(\S+motherless\S+)/Sgi:*:{
-  if (!$window(@LinkSaver)) { 
-    window -nz @LinkSaver 
+  elseif ($regex(Motherless,$1-,/((?:https?://)?(?:www\.)?motherless\.com\S+)/Si)) {
+    aline -ph @LinkSaver $timestamp 04[Motherless] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(Motherless,1))
   }
-
-  aline -ph @LinkSaver $timestamp 04[Motherless] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(1))
+  elseif ($regex(Youtube,$1-,/((?:https?://)?(?:www\.)?youtube\.co(?:m|\..{2})\S+)/Si)) {
+    aline -ph @LinkSaver $timestamp 07[Youtube] $+(12[10,$network,12:10,$chan,12:10,$nick,12]: 10, $regml(Youtube,1))
+  }
 }
