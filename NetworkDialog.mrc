@@ -15,7 +15,7 @@ alias NetworkControl {
 
 on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
-  set %NetworkControl_Dialog ON
+  ; set %NetworkControl_Dialog ON Commented out because it may not be used anymore?
   set %NetworkControl_Dialog_Network $network
   set %NetworkControl_Dialog_WHO ON
 
@@ -26,7 +26,7 @@ on *:Dialog:NetworkControl:init:0:{
     ; This sets the IRCd to the prefered one.
     did -c NetworkControl 22 $readini(NetworkControlDialog.ini,Preferences,IRCd)
 
-    if ($readini(NetworkControlDialog.ini,Preferences,IRCd) != 1) {
+    if ($readini(NetworkControlDialog.ini,Preferences,IRCd) !isnum 1-2) {
       ; 8 is the button, 9 is the edit box
       ; used for time-based who searches
       did -b NetworkControl 8,9
@@ -124,13 +124,13 @@ dialog NetworkControl {
 on *:Dialog:NetworkControl:sclick:22:{
   ; If the IRCd isn't InspIRCd then we can't use these.
   ; 1 = InspIRCd
-  ; 2 = UnrealIRCd
+  ; 2 = WGIRCd
   ; 8 is the button, 9 is the edit box for time-based searching
   ; 27 is the ignore registered/identified users checkbox. Needs the 'r' flag in /who output
-  if ($did(22).sel == 1) { 
+  if ($did(22).sel isnum 1-2) { 
     did -e NetworkControl 8,9 
   }
-  elseif ($did(22).sel == 2) { 
+  else { 
     did -b NetworkControl 8,9
   }
 }
@@ -279,7 +279,7 @@ raw 352:*:{
     }
 
     if ((* isin $7) && ($did(NetworkControl,26).state == 1)) {
-       haltdef 
+      haltdef 
     }
     elseif ((r isincs $7) && ($did(NetworkControl,27).state == 1)) { 
       haltdef 
