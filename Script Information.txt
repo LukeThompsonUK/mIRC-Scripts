@@ -1,4 +1,15 @@
 Scripts and their usage.
+
+AliasAwayScript.mrc
+* Syntax: /away [Reason]
+* Example: /away Shopping
+* Will mark you as away on all networks you are connected to and will change the title of mIRC to "mIRC [AWAY] (Your reason here)"
+
+AliasCheckPrivilages.mrc
+* Syntax: /CheckPrivilages <#chan> <nick>[,<nick2>,<nick3>]
+* Example: /CheckPrivilages #Testing Shawn,Dijit
+* Will print information about their channel privilages (Requires Atheme Services)
+
 AliasInspIRCdCheck.mrc
 * Syntax: /Status [-message] <User/Channel>
 * Example: /Status #TestingChannel
@@ -29,3 +40,22 @@ AliasTemperatureConversion.mrc
 ** C - Celsius
 ** K - Kelvin
 
+AthemePopup.mrc
+* Gives a popup menu to interact with Atheme services.
+
+AutoIdentify.mrc
+* Syntax: /LoginDetails [-d] [Nick to remove]
+* Example: /LoginDetails
+* Example2: /LoginDetails -d Shawn
+
+AutoJoinOnConnect.mrc
+* Syntax:
+** /AutoConnect -join #Channel [Adds a channel to your autojoin list]
+** /AutoConnect -del #Channel [Removes a channel from your autojoin list]
+** /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
+** /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
+** /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+** /AutoConnect -Oper OperUser OperPass [Adds a oper name for that network]
+
+AutoUnbanGetKeyInvite.mrc
+* Will automatically try to unban you, get the channel key, and invite you upon joining a channel that gives you an error when trying to join.
