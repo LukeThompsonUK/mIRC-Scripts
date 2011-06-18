@@ -6,7 +6,7 @@
 
 on *:NICK:{
   if ($query($newnick)) {
-    echo 07 -et $nick $nick has changed their nick to: $newnick
+    echo 07 -et $newnick $nick has changed their nick to: $newnick
   }
 }
 
