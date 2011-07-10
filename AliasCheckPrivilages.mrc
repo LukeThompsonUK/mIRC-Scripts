@@ -12,7 +12,9 @@ alias CheckPrivilages {
 
 on $^*:Notice:/^End\sof\s\S+\sFLAGS\slisting\.$/Si:?:{
   if (%CPriv_Check) {
-    echo -a Unfound nick(s): $iif(%CPrivilages_Nicks,%CPrivilages_Nicks,None)
+    if (%CPrivilages_Nicks) {
+      echo -a Unfound nick(s): %CPrivilages_Nicks
+    }
     unset %CPrivilages_Nicks
     unset %CPriv_Check
     haltdef
