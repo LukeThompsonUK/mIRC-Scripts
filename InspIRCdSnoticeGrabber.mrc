@@ -1,10 +1,10 @@
 ; *** CONNECT: Client connecting on port 6697: Nick!Ident@Host.com [IP.IP.IP.IP] [Test Nick]
 on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
-  if (!$window($($+(@Clients.,$network),2))) { 
-    window -nz $($+(@Clients.,$network),2) 
+  if (!$window(@Clients)) { 
+    window -nz @Clients 
   }
 
-  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
   haltdef
 }
 
@@ -13,11 +13,11 @@ on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
 ; Host.com is the real host of the person connecting, NOT the webserver they are connecting through.
 ; 897AAAL5F is the UUID of the user.
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to\s(\S+)\sfrom\s\S+$/Si:{
-  if (!$window($($+(@Clients.,$network),2))) { 
-    window -nz $($+(@Clients.,$network),2) 
+  if (!$window(@Clients)) { 
+    window -nz @Clients 
   }
 
-  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4WebChat Connect:07 $+($regml(1),!,$regml(3)) 12from07 $regml(2)
   haltdef
 }
 
@@ -27,22 +27,22 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to
 ; It will be different, so when matching you should match from [ to the end of the line for a quit reason
 ; Sometimes the ending ] will not be shown on long lines as it's cut off from the buffer due to the newline needing to be added
 on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+).$/Si:{
-  if (!$window($($+(@Clients.,$network),2))) { 
-    window -nz $($+(@Clients.,$network),2) 
+  if (!$window(@Clients)) { 
+    window -nz @Clients 
   }
 
-  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 4Disconnect:7 $regml(1) 12->07 $regml(2)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Disconnect:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
 
 ;*** NICK: User TestNick changed their nickname to TestNick1
 on $^*:Snotice:/^\*{3}\sNICK:\sUser\s(\S+).+to\s(\S+)/Si:{
-  if (!$window($($+(@Clients.,$network),2))) { 
-    window -nz $($+(@Clients.,$network),2) 
+  if (!$window(@Clients)) { 
+    window -nz @Clients 
   }
 
-  aline -p $($+(@Clients.,$network),2) 12(09 $+ $time $+ 12) 8Nick:7 $regml(1) 12->07 $regml(2)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 8Nick:7 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
