@@ -49,32 +49,32 @@ on $^*:Snotice:/^\*{3}\sNICK:\sUser\s(\S+).+to\s(\S+)/Si:{
 
 ;*** KILL: Local Kill by Shawn: Nick!Ident@Host.com (Kill Message Here)
 on $^*:Snotice:/^\*{3}\sKill:.+by\s(\S+):\s(\S+)\s\((.+)\)/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans 
   }
 
-  aline $iif($regml(1) == NickServ,-p,-ph) $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
+  aline $iif($regml(1) == NickServ,-p,-ph) @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4KILL:7 $regml(2) 12was killed by7 $regml(1) 12->07 $regml(3)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4PERMANENT XLINE:7 $regml(2) 12added by7 $regml(1) 12for7 $regml(3)
+  aline -ph @Network-Kills/Bans) 12(09 $+ $time $+ 12) $+(13[,$network,]) 4PERMANENT XLINE:7 $regml(2) 12added by7 $regml(1) 12for7 $regml(3)
   haltdef
 }
 
 ; Done on a local server.
 ;*** XLINE: Shawn added timed G-line for *@IP.IP.IP.IP, expires on Fri Jan 28 14:00:26 2011: Ban Reason Here
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
   haltdef
 }
 
@@ -82,62 +82,62 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+),.+on\s(.+):\s(.+)$/Si:{
 ; Done on a remove server. (Or possibly just Atheme?)
 ;*** XLINE: Services.CriticalSecurity.net added GLINE on *@IP.IP.IP.IP to expire on Sat Jan 29 14:12:48 2011 (Ban Reason Here).
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+on\s(\S+).+on\s(.+)\s\((.+)\)\.$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
+  aline -ph @Network-Kills/Bans. 12(09 $+ $time $+ 12) $+(13[,$network,]) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+\son\s(\S+)\./Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE REMOVAL:07 $regml(1) 12->07 $regml(2)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4XLINE REMOVAL:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sXLINE:.+\s(\S+)\s\(.+\s(\S+\s\d+.+)\)$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4XLINE EXPIRE:07 $regml(1) 12originally set by07 $regml(2)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4XLINE EXPIRE:07 $regml(1) 12originally set by07 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sXLINE:\sQ-Lined\snickname\s(\S+)\sfrom\s(\S+):\s(.+)$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4QLINE:07 $regml(2) 12->07 $regml(1) 12reason:07 $regml(3)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4QLINE:07 $regml(2) 12->07 $regml(1) 12reason:07 $regml(3)
   haltdef
 }
 
 ;*** FLOOD: Excess flood from: Nick!Ident@Host
 on $^*:Snotice:/^\*{3}\sFLOOD:.+from:\s(\S+)$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans 
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4FLOOD:07 $regml(1)
   haltdef
 }
 
 
 ;*** ANNOUNCEMENT: User NICK RecvQ of 10240 exceeds connect class maximum of 8192
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:{
-  if (!$window($($+(@Network-Kills/Bans.,$network),2))) { 
-    window -nz $($+(@Network-Kills/Bans.,$network),2) 
+  if (!$window(@Network-Kills/Bans)) { 
+    window -nz @Network-Kills/Bans
   }
 
-  aline -ph $($+(@Network-Kills/Bans.,$network),2) 12(09 $+ $time $+ 12) 4FLOOD:07 $regml(1) $+(12[07,$regml(2),12/07,$regml(3),12]03 [total/limit])
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4FLOOD:07 $regml(1) $+(12[07,$regml(2),12/07,$regml(3),12]03 [total/limit])
   haltdef
 }
 
