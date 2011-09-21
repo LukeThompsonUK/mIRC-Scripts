@@ -143,70 +143,70 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\sUser\s(\S+)\sRecvQ.+\s(\d+).+\s(\d+)$/Si:
 
 
 on $^*:Snotice:/^\*{3}\sOPER:\s(\S+)\s\((\S+)\).+type\s(\S+).+'(\S+)'/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2)
+  if (!$window(@Oper)) { 
+    window -nz @Oper
   }
 
-  aline -p $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Oper:7 $+($regml(1),!,$regml(2)) 12using OperID07 $regml(4) 12is now a7 $regml(3)
+  aline -p @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Oper:7 $+($regml(1),!,$regml(2)) 12using OperID07 $regml(4) 12is now a7 $regml(3)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sREMOTEOPER:\sFrom\s(\S+):\sUser\s(\S+)\s\((\S+)\).+type\s(\S+)/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -p $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Oper:7 $+($regml(2),!,$regml(3)) 12using OperID07 $regml(4) 12from server:07 $regml(1)
+  aline -p @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Oper:7 $+($regml(2),!,$regml(3)) 12using OperID07 $regml(4) 12from server:07 $regml(1)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sOPER:\sUser\s(\S+)\sde-opered\s\(by\s(\S+)\)/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Oper:7 $regml(1) 12Deopered by7 $regml(2)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Oper:7 $regml(1) 12Deopered by7 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sSTATS:\s(?:Remote\sstats|Stats)\s'(.)'.+\s(\S+)\s\((\S+)\)$/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -p $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4Stats:7 $+($regml(2),!,$regml(3)) 12->7 $regml(1)
+  aline -p @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Stats:7 $+($regml(2),!,$regml(3)) 12->7 $regml(1)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sOPER:.+by\s(\S+)\susing\slogin\s'(\S+)':.+:(.+)$/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 4FAIL-Oper:7 $regml(1) 12using login7 $regml(2) 12failed fields7 $regml(3)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4FAIL-Oper:7 $regml(1) 12using login7 $regml(2) 12failed fields7 $regml(3)
   ; haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\s(\S+)\sto\smake\s(\S+)\s(?:join|part)\s(\S+)/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) $+(04,$regml(2),:07) $+($regml(3),12->07,$regml(4))) 12by07 $regml(1)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) $+(04,$regml(2),:07) $+($regml(3),12->07,$regml(4))) 12by07 $regml(1)
 }
 
 
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04SAMODE:07 $regml(1) 12for07 $regml(2) 12->07 $regml(3)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04SAMODE:07 $regml(1) 12for07 $regml(2) 12->07 $regml(3)
 }
 
 
@@ -316,11 +316,11 @@ on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
 
 
 on $^*:Snotice:/^\*{3}\s(\S+)\s\((\S+)\).+\/whois/Si:{
-  if (!$window($($+(@Other.,$network),2))) { 
-    window -nz $($+(@Other.,$network),2) 
+  if (!$window(@Other)) { 
+    window -nz @Other 
   }
 
-  aline -ph $($+(@Other.,$network),2) 12(09 $+ $time $+ 12) 04WHOIS:07 $+($regml(1),!,$regml(2))
+  aline -ph @Other 12(09 $+ $time $+ 12) $+(13[,$network,]) 04WHOIS:07 $+($regml(1),!,$regml(2))
   haltdef
 }
 
