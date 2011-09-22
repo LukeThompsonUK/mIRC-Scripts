@@ -293,24 +293,24 @@ on $^*:Snotice:/^\*{3}\sLINK:.+from\s(\S+)\s\(burst\stime:\s(.+)\)$/Si:{
 
 
 on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+).+'(\S+)',\stype\s'(\S+)',\sflags\s'(\S+)',\sreason:\s(.+)$/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER:07 $regml(1) 12->07 $regml(2) 12->07 $regml(5)
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER-TYPE:07 $regml(3)
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER-FLAGS:07 $regml(4)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04FILTER:07 $regml(1) 12->07 $regml(2) 12->07 $regml(5)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04FILTER-TYPE:07 $regml(3)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04FILTER-FLAGS:07 $regml(4)
 
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
-  if (!$window($($+(@Oper.,$network),2))) { 
-    window -nz $($+(@Oper.,$network),2) 
+  if (!$window(@Oper)) { 
+    window -nz @Oper 
   }
 
-  aline -ph $($+(@Oper.,$network),2) 12(09 $+ $time $+ 12) 04FILTER REMOVAL:07 $regml(1) 12->07 $regml(2)
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04FILTER REMOVAL:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
