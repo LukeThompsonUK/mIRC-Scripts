@@ -211,83 +211,83 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
 
 
 on $^*:Snotice:/^\*{3}\sLINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server. 
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT:07 $regml(1) 12->07 $regml(2)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+(\d+).+(\d+)\sservers\.$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT-LOST:07 $regml(1) 12user(s)
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT-LOST:07 $regml(2) 12server(s)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT-LOST:07 $regml(1) 12user(s)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT-LOST:07 $regml(2) 12server(s)
 
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+'(\S+)'\sfailed\.$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server 
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT:07 $regml(1) 12failed.
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT:07 $regml(1) 12failed.
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+'(\S+)'.+for\s(\S+)$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04NETSPLIT:07 $regml(1) 12was online for07 $regml(2)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT:07 $regml(1) 12was online for07 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+from\s(\S+)\[(\S+)\]\s\((.+)\)$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK:07 $+($regml(1),@,$regml(2)) 12->07 $regml(3)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04LINK:07 $+($regml(1),@,$regml(2)) 12->07 $regml(3)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+to\s(\S+)\s\(Authentication:\s(.+)\)\.$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server 
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK-BURST:07 $regml(1) 12->07 $regml(2)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04LINK-BURST:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:\sFinished\sbursting\sto\s(\S+)\.$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server 
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK-ENDBURST:07 $regml(1)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04LINK-ENDBURST:07 $regml(1)
   haltdef
 }
 
 
 on $^*:Snotice:/^\*{3}\sLINK:.+from\s(\S+)\s\(burst\stime:\s(.+)\)$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server 
   }
 
-  aline -ph $($+(@Server.,$network),2) 12(09 $+ $time $+ 12) 04LINK-SYNC:07 $regml(1) 12->07 $regml(2)
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04LINK-SYNC:07 $regml(1) 12->07 $regml(2)
   haltdef
 }
 
@@ -348,10 +348,10 @@ on *:INPUT:@GlobOPS.*:{ GlobOPS $1- | haltdef }
 
 
 on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:{
-  if (!$window($($+(@Server.,$network),2))) { 
-    window -nz $($+(@Server.,$network),2) 
+  if (!$window(@Server)) { 
+    window -nz @Server 
   }
 
-  aline -ph $($+(@Server.,$network),2)} 12(09 $+ $time $+ 12) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
   haltdef
 }
