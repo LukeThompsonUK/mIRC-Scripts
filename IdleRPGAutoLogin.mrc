@@ -1,9 +1,9 @@
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 
-  ; If the nick joining is you, or the name of the idlerpg bot
-  if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
-    ; This simply checks if there is a bot name, if there isn't we haven't got it setup for this network
-    if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+  ; This simply checks if there is a bot name, if there isn't we haven't got it setup for this network
+  if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+    ; If the nick joining is you, or the name of the idlerpg bot
+    if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
       msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     }
   }
