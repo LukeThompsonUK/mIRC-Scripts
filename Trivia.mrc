@@ -12,7 +12,7 @@ on $*:TEXT:/^!(s)?trivia$/Si:#Trivia:{
   elseif (!strivia isin $1) { 
     .timerSETNEWQ off
     .timerTimesUp off
-    
+
     unset %Trivia
     unset %NextQ
     unset %Ans
@@ -37,7 +37,7 @@ on $*:TEXT:/^!rank(\s.+)?$/Si:#Trivia:{
   }
   else { 
     var %nick $replace($2,],$chr(41),[,$chr(40))
-    
+
     if (!$readini(TriviaScores.ini,n,$network,%nick)) { 
       .msg #Trivia $2 has 0 points. 
     }
@@ -73,8 +73,8 @@ on $*:TEXT:/^!h(int)?$/Si:#Trivia:{
   }
   else { 
     msg $chan You've used 3 hints on this question and displayed 75% of the answer. Try guessing or use !Skip if you can not answer it. 
-  
-   halt 
+
+    halt 
   }
 
   .msg $chan Your hint is: $hint(%Ans,%Len)
@@ -93,7 +93,7 @@ alias hint {
       if * $+ $mid($v1,2) {
       }
     }
-  
+
     %b = $left(%b,$({,%a)) $+ $v1
   }
 
@@ -113,7 +113,7 @@ on *:TEXT:!Credits:*:{
 ; Skips the current question.
 on *:TEXT:!Skip:#Trivia:{ 
   .timerTimesUp off
-  
+
   unset %hint
   unset %ans
   unset %PrevWinner
@@ -150,9 +150,9 @@ on *:TEXT:*:#Trivia:{
       msg $chan Congratulations $nick $+ ! You just recieved your 500th point and have been given voice access! 
 
       ChanServ access $chan add $nick 3
-       mode $chan +v $nick 
+      mode $chan +v $nick 
     }
-   
+
     .TimerTimesUp off
     .timerSETNEWQ 1 5 /setnewq
   }
@@ -243,7 +243,7 @@ on *:BAN:#:{
 
         inc %x
       }
-  
+
       mode $chan - $+ $str(b,%i) %BanMask
     }
   }
@@ -272,9 +272,8 @@ on *:PART:#Trivia:{
 
 on *:START:{
   echo -sg Trivia Script written by Shawn Smith
-  echo -sg All future (Official) releases of this script will be released on HomelessHackers.net
-  echo -sg Any alteration to this code (for what-ever reason) should be posted in a reply
-  echo -sg to the origial release post on HomelessHackers.net
+  echo -sg Any modification to this script should be submitted to the official branch hosted at:
+  echo -sg https://github.com/Shawn-Smith/mIRC-Scripts/
 }
 
 
