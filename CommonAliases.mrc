@@ -15,7 +15,7 @@ op $iif($1,mode $chan + $+ $str(o,$modespl) $1-,mode $chan +o $me)
 
 ; Ghosts a nickname and then /nicks to it
 Ghost { 
-  NickServ ghost $1 $($+(%,$network,.password),2) 
+  NickServ ghost $1-
   .timer 1 5 Nick $1
 }
 
