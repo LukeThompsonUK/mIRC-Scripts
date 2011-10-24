@@ -1,8 +1,11 @@
+; This script will use m_check from inspircd to gather various information
+; about the user or channel.
+
 alias status {
   set %Check_START ON
 
   if (!$1) {
-    echo -a Syntax: /Status [-message] User
+    echo -a Syntax: /Status [-message] User/channel
     echo -a The '-message' switch will cause the script to message the active window.
   }
 
