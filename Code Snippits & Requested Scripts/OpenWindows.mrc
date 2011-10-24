@@ -4,13 +4,13 @@ OWindows {
   while (%x <= $scon(0)) {
     scon %x
 
-    var %Query $calc(%Query + $query(0))
-    var %Chan $calc(%chan + $chan(0))
+    var %query $calc(%query + $query(0))
+    var %chan $calc(%chan + $chan(0))
 
     inc %x
   }
 
-  var %Window $Window(0)
+  var %window $Window(0)
 
   scon -r
   echo -a I have $calc(%window + %query + %chan) Open windows.
