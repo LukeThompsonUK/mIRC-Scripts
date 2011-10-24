@@ -32,7 +32,10 @@ SK { Ban -ku5 $chan $1- }
 KB { mode $chan +b $address($1,3) | Kick $chan $1 $2- }
 
 ; Displays mirc and system uptime
-uptime { echo -a 11[12mIRC Uptime11]12 $uptime(mIRC,2) | echo -a 11[12System Uptime11]12 $uptime(System,2) }
+uptime {
+  echo -a 11[12mIRC Uptime11]12 $uptime(mIRC,2)
+  echo -a 11[12System Uptime11]12 $uptime(System,2)
+}
 
 ; Displays the text you typed in an md5/sha1 hash
 hash {
