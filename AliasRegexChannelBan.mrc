@@ -1,3 +1,12 @@
+/*
+This script is used to kick (and/or ban) users based on a regex.
+/regexban regex [kdb]
+If k is specified users matching will be kicked
+If b is specified users will be banned
+If d is specified with k, b, or both it will echo the bans set and users kicked without actually doing
+anything inside the channel.
+*/
+
 alias RegexBan {
   set %RegexBan_HIDEWHO ON
 
