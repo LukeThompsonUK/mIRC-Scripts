@@ -1,3 +1,7 @@
+; This replaces the standard /away with one that works on every network you're connected to
+; /away blahblah to set yourself away
+; /away with nothing added to come back.
+
 alias away {
   if ($1) {
     scon -at1 .raw away $1-
