@@ -1,7 +1,7 @@
 ; These shortcut the /*Serv commands to /*s
-Ns { NickServ $1- }
-Cs { ChanServ $1- }
-Bs { BotServ $1- }
+ns { NickServ $1- }
+cs { ChanServ $1- }
+bs { BotServ $1- }
 hs { HostServ $1- }
 ms { MemoServ $1- }
 os { OperServ $1- }
