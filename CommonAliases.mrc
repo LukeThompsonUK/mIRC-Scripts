@@ -24,10 +24,6 @@ TB { Ban -ku $+ $calc($2 * 60) $chan $1 Time Banned for: $2 Minutes. }
 SK { Ban -ku5 $chan $1- }
 KB { mode $chan +b $address($1,2) | Kick $chan $1 $2- }
 
-; Muting only works on unrealircd
-mute { mode $chan +bb-qoahv ~q: $+ $address($1,2) ~n: $+ $address($1,2) $str($1 $chr(32),5) }
-unmute { mode $chan -bb ~q: $+ $address($1,2) ~n: $+ $address($1,2) }
-
 ; Displays mirc and system uptime
 uptime { echo -a 11[12mIRC Uptime11]12 $uptime(mIRC,2) | echo -a 11[12System Uptime11]12 $uptime(System,2) }
 
