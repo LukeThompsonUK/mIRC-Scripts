@@ -58,3 +58,10 @@ AutoJoinOnConnect.mrc
 
 AutoUnbanGetKeyInvite.mrc
 * Will automatically try to unban you, get the channel key, and invite you upon joining a channel that gives you an error when trying to join.
+
+ChannelAccessManager.mrc
+* A dialog for channel access management using Atheme services. Written on 5.2.4 but should work through the 7.0-alpha branches aswell, assuming nothing changes.
+
+CheckForBan.mrc
+* Checks for bans matching a given nick!ident@host and returns all the matching ones. Works for the channel the command is typed in.
+* Syntax: /chkban Name!Ident@Host
