@@ -19,10 +19,17 @@ Ghost {
   .timer 1 5 Nick $1
 }
 
-; Shortcut some useful bans
+; /TB <nick> <minutes to ban>
+; Timed ban.
 TB { Ban -ku $+ $calc($2 * 60) $chan $1 Time Banned for: $2 Minutes. }
+
+; /SK <nick>
+; Bans the user for 5 seconds to prevent auto-rejoin scripts from working.
 SK { Ban -ku5 $chan $1- }
-KB { mode $chan +b $address($1,2) | Kick $chan $1 $2- }
+
+; /KB <nick> <reason for ban>
+; Bans the user until someone removes the ban.
+KB { mode $chan +b $address($1,3) | Kick $chan $1 $2- }
 
 ; Displays mirc and system uptime
 uptime { echo -a 11[12mIRC Uptime11]12 $uptime(mIRC,2) | echo -a 11[12System Uptime11]12 $uptime(System,2) }
