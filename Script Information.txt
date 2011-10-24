@@ -38,7 +38,6 @@ AliasTemperatureConversion.mrc
 * Valid Scales are:
 ** F - Fahrenheit
 ** C - Celsius
-** K - Kelvin
 
 AthemePopup.mrc
 * Gives a popup menu to interact with Atheme services.
