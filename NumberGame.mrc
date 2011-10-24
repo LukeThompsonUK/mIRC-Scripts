@@ -1,3 +1,7 @@
+; One of those 'Guess what number' games.
+; /NumberGame to start
+; /GuessNumber <number> to play.
+
 alias NumberGame {
   if (%NumberGame) { 
     echo -a Game already running, /GuessNumber numberhere to play! 
@@ -11,7 +15,7 @@ alias NumberGame {
 }
 
 
-alias GuesSNumber { 
+alias GuessNumber { 
   if ($1 == %NumberGame.Answer) { 
     echo -a You won! The number was %NumberGame.Answer
 
