@@ -1,3 +1,13 @@
+; This script was made for #Help on SeersIRC back when I was helping there
+; This was used to print information about the joining user to #Help in an echo
+; so you could get a better 'feel' for the person you were helping.
+; It prints if the user is identified or not and what channels they are in.
+; It also prints that the user may be using swiftswitch or swiftkit based on the ident given.
+
+; WARNING: This script may or may not work as it used to, depending on how Viridian sends out notices now.
+; I stopped helping shortly after Viridian was developed and this script may not be needed anymore.
+; BUT it's still here for those who wish to learn from it or use it on other networks.
+
 ; The on voice/help/op is to mark the user as staff so that you never check that user on join again
 on *:Voice:#Help:{ 
   if (($network == SeersIRC) && (!$istok(%SeersIRC.Staff,$vnick,58))) { 
