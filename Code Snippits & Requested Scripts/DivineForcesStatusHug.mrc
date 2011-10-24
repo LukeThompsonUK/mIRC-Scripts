@@ -1,3 +1,5 @@
+; Randomly hugs members of #DF at the given interval.
+
 ; On joining #DF
 on *:Join:#DF:{
   if ($nick == $me) {
