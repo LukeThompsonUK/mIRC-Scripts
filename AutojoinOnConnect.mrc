@@ -10,7 +10,7 @@
 
 alias autoconnect { 
   if (($1 == -join) && ($regex(autoconnect,$2,/^#\S+$/))) {
-    writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44))
+    writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44)
     echo -a $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
   }
   elseif (($1 == -del) && ($regex(autoconnect,$2,/^#\S+$/))) {
@@ -77,7 +77,7 @@ raw 005:*:{
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
       if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
         if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
-          oper $replace($readini(AutoLoginInformation.ini,$network,&Oper),$chr(58),$chr(32)))
+          oper $replace($readini(AutoLoginInformation.ini,$network,&Oper),$chr(58),$chr(32))
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
@@ -89,7 +89,7 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
-          vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32)))
+          vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32))
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
