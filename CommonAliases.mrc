@@ -37,13 +37,18 @@ uptime {
   echo -a 11[12System Uptime11]12 $uptime(System,2)
 }
 
-; Displays the text you typed in an md5/sha1 hash
-hash {
-  var %Show $iif($1 == -m,msg $active,echo -a)
-  %Show Original: $iif($1 == -m,$2-,$1)
-  %Show md5: $md5($iif($1 == -m,$2-,$1))
-  %Show sha1: $sha1($iif($1 == -m,$2-,$1))
-}
-
 ; A simple calculator
 calc { echo -a 12 $+ $1- 11=12 $bytes($calc($remove($1-,$chr(44))),db) }
+
+; This opens a @window that can be used as a notepad. Anything you type in the box will
+; be stored there. It does not save and reload what you previously had written there however.
+; I use it for quick storage of bits and pieces of information I need at the time.
+alias notepad {
+  if (!$window(@Notepad)) { 
+    window -nezg1 @Notepad 
+  }
+}
+
+on *:INPUT:@Notepad:{ 
+  aline -ph @Notepad $1- 
+}
