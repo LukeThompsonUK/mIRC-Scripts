@@ -70,7 +70,7 @@ alias -l ReturnAll {
 
 
 on *:TEXT:*:#:{ 
-  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks,$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
     while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
@@ -89,7 +89,7 @@ on *:TEXT:*:#:{
 }
 
 on *:ACTION:*:#:{ 
-  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks,$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
     while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
