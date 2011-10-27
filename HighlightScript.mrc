@@ -1,51 +1,46 @@
+/*
+* This script creates a @Window for highlights. It copies the whole line that highlights you
+* When you are highlighted.
+Syntax:
+/Highlight -addnick Nick [Adds a nick to your highlight list]
+/Highlight -delnick Nick [Removes a nick from your highlight list]
+/Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
+/Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
+/Highlight -ignorenick Nick [Ignores a user form highlighting you]
+/Highlight -unigorenick Nick [Unignores a user form highlighting you]
+/Highlight -status [Prints information]
+*/
+
 alias highlight {
   if (($1 == -addnick) && ($2)) {
-    set %Highlight.NicksToMatch $addtok(%Highlight.NicksToMatch,$2,44)
-    echo -a [Highlight/Nicks]: %Highlight.NicksToMatch
+    writeini HighlightSettings.ini NicksToMatch $2 on
+    echo -a [Highlight/Nicks]: $ReturnAll(NicksToMatch)
   }
   elseif (($1 == -delnick) && ($2)) {
-    var %Tok $findtok(%Highlight.NicksToMatch,$2,1,44)
-    set %Highlight.NicksToMatch $deltok(%Highlight.NicksToMatch,%Tok,44)
-
-    echo -a [Highlight/Nicks]: %Highlight.NicksToMatch
-
-    if ($numtok(%Highlight.NicksToMatch,44) == 0) {
-      unset %Highlight.NicksToMatch
-    }
+    remini HighlightSettings.ini NicksToMatch $2
+    echo -a [Highlight/Nicks]: $ReturnAll(NicksToMatch)
   }
   elseif (($1 == -ignorechan) && ($regex($2,/#\S+/))) {
-    set %Highlight.IgnoreChans $addtok(%Highlight.IgnoreChans,$2,44)
-    echo -a [Highlight/IgnoreChans]: %Highlight.IgnoreChans
+    writeini HighlightSettings.ini IgnoreChans $2 on
+    echo -a [Highlight/IgnoreChans]: $ReturnAll(IgnoreChans)
   }
   elseif (($1 == -unignorechan) && ($regex($2,/#\S+/))) {
-    var %Tok $findtok(%Highlight.IgnoreChans,$2,1,44)
-    set %Highlight.IgnoreChans $deltok(%Highlight.IgnoreChans,%Tok,44)
-
-    echo -a [Highlight/IgnoreChans]: %Highlight.IgnoreChans
-
-    if ($numtok(%Highlight.IgnoreChans,44) == 0) {
-      unset %Highlight.IgnoreChans
-    }
+    remini HighlightSettings.ini IgnoreChans $2
+    echo -a [Highlight/IgnoreChans]: $ReturnAll(IgnoreChans)
   }
   elseif (($1 == -ignorenick) && ($2)) {
-    set %Highlight.IgnoreNicks $addtok(%Highlight.IgnoreNicks,$2,44)
-    echo -a [Highlight/IgnoreNicks]: %Highlight.IgnoreNicks
+    writeini HighlightSettings.ini IgnoreNicks $2 on
+    echo -a [Highlight/IgnoreNicks]: $ReturnAll(IgnoreNicks)
   }
   elseif (($1 == -unignorenick) && ($2)) {
-    var %Tok $findtok(%Highlight.IgnoreNicks,$2,1,44)
-    set %Highlight.IgnoreNicks $deltok(%Highlight.IgnoreNicks,%Tok,44)
-
-    echo -a [Highlight/IgnoreNicks]: %Highlight.IgnoreNicks
-
-    if ($numtok(%Highlight.IgnoreNicks,44) == 0) {
-      unset %Highlight.IgnoreNicks
-    }
+    remini HighlightScript.ini IgnoreNicks $2
+    echo -a [Highlight/IgnoreNicks]: $ReturnAll(IgnoreNicks)
   }
   elseif ($1 == -status) {
     echo -a [Highlight/Status]:
-    echo -a [Highlight/Nicks]: %Highlight.NicksToMatch
-    echo -a [Highlight/IgnoreChans]: %Highlight.IgnoreChans
-    echo -a [Highlight/IgnoreNicks]: %Highlight.IgnoreNicks
+    echo -a [Highlight/Nicks]: $ReturnAll(NicksToMatch)
+    echo -a [Highlight/IgnoreChans]: $ReturnAll(IgnoreChans)
+    echo -a [Highlight/IgnoreNicks]: $ReturnAll(IgnoreNicks)
   }
   else {
     echo -a 07Syntax:
@@ -60,14 +55,28 @@ alias highlight {
 }
 
 
+; This alias returns all the topics in an ini directory in item1,item2,item3 format.
+alias -l ReturnAll {
+  var %Reading $1
+  var %Total $ini(HighlightSettings.ini, %Reading, 0)
+  var %x 1
+  while (%x <= %Total) {
+    var %Return $addtok(%Return, $ini(HighlightSettings.ini, %Reading, %x), 44)
+    inc %x
+  }
+
+  return %Return
+}
+
+
 on *:TEXT:*:#:{ 
-  if ((!$istok(%Highlight.IgnoreChans,$chan,44)) && (!$istok(%Highlight.IgnoreNicks,$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks,$nick,44))) {
     var %x 1
 
-    while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
-      if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
-        if (!$window(@Highlight)) { 
-          window -nz @Highlight 
+    while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
+      if ($matchtok($1-,$gettok($ReturnAll(NicksToMatch),%x,44),0,32)) {
+        if (!$window(@Highlight)) {
+          window -nz @Highlight
         }
 
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
@@ -79,15 +88,14 @@ on *:TEXT:*:#:{
   }
 }
 
-
 on *:ACTION:*:#:{ 
-  if ((!$istok(%Highlight.IgnoreChans,$chan,44)) && (!$istok(%Highlight.IgnoreNicks,$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$ReturnAll(IgnoreNicks,$nick,44))) {
     var %x 1
 
-    while (%x <= $numtok(%Highlight.NicksToMatch,44)) {
-      if ($matchtok($1-,$gettok(%Highlight.NicksToMatch,%x,44),0,32)) {
+    while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
+      if ($matchtok($1-,$gettok($ReturnAll(NicksToMatch),%x,44),0,32)) {
         if (!$window(@Highlight)) {
-          window -nz @Highlight 
+          window -nz @Highlight
         }
 
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
