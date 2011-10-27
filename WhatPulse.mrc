@@ -3,10 +3,6 @@ alias WhatPulse {
     .sockclose WhatPulse 
   }
 
-  if (msg isin %WhatPulse_Display) { 
-    set %WhatPulse_Display msg $active 
-  }
-
   if ($1 == -t) { 
     if ($2 isnum) {
       set %TeamCheck ON
@@ -14,12 +10,12 @@ alias WhatPulse {
     }
     elseif (%WhatPulseTeamID isnum) {
       set %TeamCheck ON
-      set %IDToCheck %WhatPulseTeamID
+      set %IDToCheck $readini(WhatPulseSettings.ini,PulseID,TeamID)
     }
     else { 
       echo -a You did not specify a Team ID to lookup.
       echo -a Use /PulseID -t TeamIDHere to set your default Team ID or use /WhatPulse -t TeamIDHere to check any Team ID
-  
+
       halt
     }
   }
@@ -27,7 +23,7 @@ alias WhatPulse {
     set %IDToCheck $1 
   }
   elseif (%WhatPulseUserID isnum) {
-    set %IDToCheck %WhatPulseUserID
+    set %IDToCheck $readini(WhatPulseSettings.ini,PulseID,UserID)
   } 
   else {
     echo -a You did not specify a whatpulse ID to lookup.
@@ -47,19 +43,19 @@ alias WhatPulse {
 
 alias PulseID {
   if (($1 == -t) && ($2 isnum)) { 
-    set %WhatPulseTeamID $2 
+    writeini WhatPulseSettings.ini PulseID TeamID $2
     echo -a TeamID set. 
   }
   elseif ($1 == -t) { 
-    unset %WhatPulseTeamID 
+    remini WhatPulseSettings.ini PulseID TeamID
     echo -a TeamID unset. 
   }
   elseif ($1 isnum) { 
-    set %WhatPulseUserID $1 
+    writeini WhatPulseSettings.ini PulseID UserID $1
     echo -a UserID set. 
   }
   else { 
-    unset %WhatPulseUserID 
+    remini WhatPulseSettings.ini PulseID UserID
     echo -a UserID unset. 
   }
 }
@@ -129,7 +125,7 @@ on *:SockRead:WhatPulse:{
     if ($regex(WhatPulse,%WhatPulseBuffer,<Rank>(.+)<\/Rank>)) { 
       set %WhatPulseStats.Rank $regml(WhatPulse,1) 
     }
-    
+
     if ($regex(WhatPulse,%WhatPulseBuffer,<TeamName>(.+)<\/TeamName>)) { 
       set %WhatPulseStats.TeamName $regml(WhatPulse,1) 
     }
@@ -153,36 +149,36 @@ on *:SockRead:WhatPulse:{
 
 alias -l ShowPulse { 
   echo -a -
-
+  var %WhatPulse_Display $iif($readini(WhatPulseSettings.ini,Display,ShowMethod),$readini(WhatPulseSettings.ini, Display, ShowMethod), echo -a)
   if (%TeamCheck) {
-    if (%WhatPulse_ShortDisplay) {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) WhatPulse for $+(%WhatPulseStats.TeamName,:) $+([TeamKeys:,$bytes(%WhatPulseStats.TeamKeys,b), / TeamClicks:,$bytes(%WhatPulseStats.TeamClicks,b), / TeamMiles:,%WhatPulseStats.TeamMiles,]) / Rank: %WhatPulseStats.TeamRank
+    if ($readini(WhatPulseSettings.ini,Display,ShortDisplay) == on) {
+      %WhatPulse_Display WhatPulse for $+(%WhatPulseStats.TeamName,:) $+([TeamKeys:,$bytes(%WhatPulseStats.TeamKeys,b), / TeamClicks:,$bytes(%WhatPulseStats.TeamClicks,b), / TeamMiles:,%WhatPulseStats.TeamMiles,]) / Rank: %WhatPulseStats.TeamRank
     }
     else {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Name: %WhatPulseStats.TeamName
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Members: $bytes(%WhatPulseStats.TeamMembers,b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TeamKeys,b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TeamClicks,b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TeamMiles
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team Rank: $bytes(%WhatPulseStats.TeamRank,b)
+      %WhatPulse_Display Team Name: %WhatPulseStats.TeamName
+      %WhatPulse_Display Team Members: $bytes(%WhatPulseStats.TeamMembers,b)
+      %WhatPulse_Display Total Keys: $bytes(%WhatPulseStats.TeamKeys,b)
+      %WhatPulse_Display Total Clicks: $bytes(%WhatPulseStats.TeamClicks,b)
+      %WhatPulse_Display Total Miles: %WhatPulseStats.TeamMiles
+      %WhatPulse_Display Team Rank: $bytes(%WhatPulseStats.TeamRank,b)
     }
   }
   else {
-    if (%WhatPulse_ShortDisplay) {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Team: $+($iif(%WhatPulseStats.TeamID == 0,None,%WhatPulseStats.TeamName),[,%WhatPulseStats.TeamID,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b) / Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b)
+    if ($readini(WhatPulseSettings.ini,Display,ShortDisplay) == on) {
+      %WhatPulse_Display WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Team: $+($iif(%WhatPulseStats.TeamID == 0,None,%WhatPulseStats.TeamName),[,%WhatPulseStats.TeamID,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b) / Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b)
     }
     else {
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Account Name: %WhatPulseStats.AccountName
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Date Joined: %WhatPulseStats.DateJoined
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Keys: $bytes(%WhatPulseStats.TotalKeyCount,b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Total Miles: %WhatPulseStats.TotalMiles
-      $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank: $bytes(%WhatPulseStats.Rank,b)
+      %WhatPulse_Display Account Name: %WhatPulseStats.AccountName
+      %WhatPulse_Display Date Joined: %WhatPulseStats.DateJoined
+      %WhatPulse_Display Total Keys: $bytes(%WhatPulseStats.TotalKeyCount,b)
+      %WhatPulse_Display Total Clicks: $bytes(%WhatPulseStats.TotalMouseClicks,b)
+      %WhatPulse_Display Total Miles: %WhatPulseStats.TotalMiles
+      %WhatPulse_Display Rank: $bytes(%WhatPulseStats.Rank,b)
 
       ; If %WhatPulseStats.TeamID is 0 then they aren't in a team.
       if (%WhatPulseStats.TeamID != 0) {
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
-        $iif(%WhatPulse_Display,%WhatPulse_Display,echo -a) Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
+        %WhatPulse_Display Team: %WhatPulseStats.TeamName (ID: $+ %WhatPulseStats.TeamID $+ )
+        %WhatPulse_Display Rank in Team: $bytes(%WhatPulseStats.RankInTeam,b) out of $bytes(%WhatPulseStats.TeamMembers,b)
       }
     }
   }
@@ -209,10 +205,11 @@ menu channel,status {
     }
 
     if (%vWPD == ECHO) { 
-      set %WhatPulse_Display echo -a 
+      writeini WhatPulseSettings.ini Display ShowMethod echo -a
     }
     elseif (%vWPD == MSG) { 
-      set %WhatPulse_Display msg $active 
+
+      writeini WhatPulseSettings.ini Display ShowMethod msg $eval($active,0)
     }
   }
 
@@ -221,26 +218,26 @@ menu channel,status {
 
     if ((%sWPD != ONE) && (%sWPD != MULTI)) {
       echo -a It appears you didn't type your answer correctly, run WhatPulse->Settings->Toggle short display again and type either ONE or MULTI in the box.
-  
-      unset %WhatPulse_ShortDisplay
+
+      remini WhatPulse.ini Display ShortDisplay
       halt
     }
-  
+
     if (%sWPD == ONE) { 
-      set %WhatPulse_ShortDisplay on 
+      writeini WhatPulseSettings.ini Display ShortDisplay ON
     }
     elseif (%sWPD == MULTI) { 
-      unset %WhatPulse_ShortDisplay 
+      remini WhatPulseSettings.ini Display ShortDisplay
     }
   }
 
   ..Set default UserID: set %WhatPulseUserID $?="Enter the ID"
   ..Set default TeamID: set %WhatPulseTeamID $?="Enter the ID"
   .User
-  ..Check default UserID: /WhatPulse $iif(%WhatPulseUserID,%WhatPulseUserID,$?="No default ID set; enter a new ID to check")
+  ..Check default UserID: /WhatPulse $iif($readini(WhatPulseSettings.ini,PulseID,UserID),$readini(WhatPulseSettings.ini,PulseID,UserID),$?="No default ID set; enter a new ID to check")
   ..Check other UserID: /WhatPulse $?="Enter ID to check"
   .Team
-  ..Check default TeamID: /WhatPulse -t $iif(%WhatPulseTeamID,%WhatPulseTeamID,$?="No default ID set; enter a new ID to check")
+  ..Check default TeamID: /WhatPulse -t $iif($readini(WhatPulseSettings.ini,PulseID,TeamID),$readini(WhatPulseSettings.ini,PulseID,TeamID),$?="No default ID set; enter a new ID to check")
   ..Check other TeamID: /WhatPulse $?="Enter ID to check"
   .Help: {
     echo -a -
