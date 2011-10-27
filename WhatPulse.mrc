@@ -8,7 +8,7 @@ alias WhatPulse {
       set %TeamCheck ON
       set %IDToCheck $2
     }
-    elseif (%WhatPulseTeamID isnum) {
+    elseif ($readini(WhatPulseSettings.ini,PulseID,TeamID) isnum) {
       set %TeamCheck ON
       set %IDToCheck $readini(WhatPulseSettings.ini,PulseID,TeamID)
     }
@@ -22,7 +22,7 @@ alias WhatPulse {
   elseif ($1 isnum) { 
     set %IDToCheck $1 
   }
-  elseif (%WhatPulseUserID isnum) {
+  elseif ($readini(WhatPulseSettings.ini,PulseID,UserID) isnum) {
     set %IDToCheck $readini(WhatPulseSettings.ini,PulseID,UserID)
   } 
   else {
