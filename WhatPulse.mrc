@@ -1,5 +1,19 @@
+/*
+Commands:
+* /WhatPulse [-t] [User/TeamID]
+If the -t switch is used you will look up a TeamID instead of UserID, the User/TeamID is optional
+If you used either the menu or /PulseID [-t] to set your default IDs prior to using /WhatPulse
+*/PulseID [-t] User/TeamID
+If the -t switch is used you will specify a TeamID instead of a UserID, if you do not fill in a User/TeamID your current one will be unset.
+Settings:
+All settings are done via the channel menu, Right click a channel->WhatPulse->Settings
+You can also use this menu to change your default IDs
+If you have never used WhatPulse->Settings->Display before you will automatically echo the results of the lookup in the active window
+You can change this to a channel message if you wish.
+*/
+
 alias WhatPulse {
-  if ($sock(WhatPulse)) { 
+  if ($sock(WhatPulse)) {
     .sockclose WhatPulse 
   }
 
@@ -208,7 +222,6 @@ menu channel,status {
       writeini WhatPulseSettings.ini Display ShowMethod echo -a
     }
     elseif (%vWPD == MSG) { 
-
       writeini WhatPulseSettings.ini Display ShowMethod msg $eval($active,0)
     }
   }
