@@ -7,7 +7,7 @@ on *:Join:#:{
 }
 
 
-#BotCheck on
+#BotCheck off
 
 raw 352:*B*:{
   if ($2 == $me) { halt }
