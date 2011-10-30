@@ -17,7 +17,8 @@ alias WhatPulse {
     .sockclose WhatPulse 
   }
 
-  if ($1 == -t) { 
+  ;if ($1 == -t) { 
+  if ($regex($1,/^-t(?:eam)?/)) {
     if ($2 isnum) {
       set %TeamCheck ON
       set %IDToCheck $2
@@ -56,11 +57,11 @@ alias WhatPulse {
 
 
 alias PulseID {
-  if (($1 == -t) && ($2 isnum)) { 
+  if (($regex($1,/^-t(?:eam)?/)) && ($2 isnum)) { 
     writeini WhatPulseSettings.ini PulseID TeamID $2
     echo -a TeamID set. 
   }
-  elseif ($1 == -t) { 
+  elseif ($regex($1,/^-t(?:eam)?/)) { 
     remini WhatPulseSettings.ini PulseID TeamID
     echo -a TeamID unset. 
   }
