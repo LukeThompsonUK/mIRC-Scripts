@@ -1,58 +1,44 @@
-; /global message
-global {
+/*
+Commands provided by this script:
+* /GSettings -ignore #Channel - Will not message this channel when using /global
+* /GSettings -unignore #Channel - Removes the channel from the do not message list
+* /Global MessageHere - Will message the entire network (minus ignore list)
+*/
+
+alias global {
   var %c 1
 
-  ; These are exceptions on any network.
-  var %IChan.Exceptions #Idle,#Idle-RPG,#IdleRPG,#IRPG
-
-  ; This would be network specific, make another variable %somethinghere with channels after it if you want to add another network
-  ; Then add a if ($network == YournetworkherE) { 
-  ; if (!$istok(%YourVariableHere,$chan(%c),44)) { msg $chan(%c) 7[10 Global 7]10 $1- }
-  ; }
-  ; Below or above the SeersIRC one and it should work.
-
-  var %SChan.Exceptions #Help,#SeersIRC,#Trivia,#Seers
-
   while (%c <= $chan(0)) {
-    if (!$istok(%IChan.Exceptions,$chan(%c),44)) {
-      if ($network == SeersIRC) { 
-        if (!$istok(%SChan.Exceptions,$chan(%c),44)) { 
-          msg $chan(%c) 7[10 Global 7]10 $1- 
-        }
-      }
-      else { 
-        msg $chan(%c) 7[10 Global 7]10 $1- 
-      }
+    if (!$istok($ReturnIgnore,$chan(%c),44)) {
+      msg $chan(%c) 7[10 Global 7]10 $1- 
     }
 
     inc %c
   }
 }
 
-
-; Message channels you have in common with another user.
-; /commsg nick message
-commsg {
-  var %x 1
-
-  while (%x <= $ComChan($$1,0)) { 
-    msg $comchan($$1,%x) $2- 
-    inc %x 
+alias gsettings {
+  if ((-ignore isin $1) && ($regex($2,/#\S+/))) {
+    writeini GlobalAmsgSettings.ini $network $2 ON
+    echo 07 -a [Settings\GlobalAmsg] - Not globaling in the following channels: $ReturnIgnore
   }
-
-  echo -a Messaged $calc(%x -1) channels.
+  elseif ((-unignore isin $1) && ($regex($2/#\S+/))) {
+    remini GlobalAmsgSettings.ini $network $2
+    echo 07 -a [Settings\GlobalAmsg] - Not globaling in the following channels: $ReturnIgnore
+  }
+  else { 
+    echo 07 -a [Settings\GlobalAmsg] - Syntax: 
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -<ignore|unignore> #Channel
+  }
 }
 
-
-; Action channels you have in common with another user.
-; /comme nick action
-comme {
+alias -l ReturnIgnore {
+  var %Total $ini(GlobalAmsgSettings.ini, $network, 0)
   var %x 1
-
-  while (%x <= $ComChan($$1,0)) { 
-    describe $comchan($$1,%x) $2- 
-    inc %x 
+  while (%x <= %Total) {
+    var %Return $addtok(%Return, $ini(GlobalAmsgSettings.ini, $network, %x), 44)
+    inc %x
   }
 
-  echo -a Messaged $calc(%x -1) channels.
+  return %Return
 }
