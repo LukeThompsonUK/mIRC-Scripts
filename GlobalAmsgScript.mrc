@@ -11,14 +11,18 @@ Commands provided by this script:
 alias global {
   var %c 1
 
+  ; Loops for each channel.
   while (%c <= $chan(0)) {
+
     ; Check the global ignore first
     if (!$istok($ReturnIgnore(Global),$chan(%c),44)) {
+
       ; If that's all good check the network-specific ignore
       if (!$istok($ReturnIgnore($network),$chan(%c),44)) {
         ; Once again all good, message the channel.
         msg $chan(%c) 7[10 Global 7]10 $1-
       }
+
     }
 
     inc %c
@@ -60,6 +64,7 @@ alias gsettings {
       inc %x
     }
 
+    ; This is to print help information if there are no ignore lists.
     if ($ini(GlobalAmsgSettings.ini,0) == 0) {
       echo 07 -a [Settings\GlobalAmsg] - You don't have any channels added to an ignore list.
       echo 07 -a [Settings\GlobalAmsg] - Type ' /GSettings ' to get a list of commands.
