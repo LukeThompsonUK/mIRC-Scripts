@@ -17,6 +17,9 @@ raw 352:*B*:{
 raw 315:*End of /WHO list.:{ 
   echo -a [BotCount] - %Bots counted
   .disable BotCheck 
+
+  unset %ChanCheck
+  unset %Bots
 }
 
 #BotCheck end
