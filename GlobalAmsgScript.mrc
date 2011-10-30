@@ -1,7 +1,10 @@
 /*
 Commands provided by this script:
-* /GSettings -ignore #Channel - Will not message this channel when using /global
-* /GSettings -unignore #Channel - Removes the channel from the do not message list
+* /GSettings -gignore #Channel - Will not message this channel on any network you use /global on
+* /GSettings -gunignore #Channel - Removes the channel from the global do not message list
+* /GSettings -ignore #Channel - Will not message this channel on this network when using /global
+* /GSettings -unignore #Channel - Removes the channel from the network-specific do not message list
+* /GSettings -Status - Prints all ignore lists.
 * /Global MessageHere - Will message the entire network (minus ignore list)
 */
 
@@ -9,8 +12,13 @@ alias global {
   var %c 1
 
   while (%c <= $chan(0)) {
-    if (!$istok($ReturnIgnore,$chan(%c),44)) {
-      msg $chan(%c) 7[10 Global 7]10 $1- 
+    ; Check the global ignore first
+    if (!$istok($ReturnIgnore(Global),$chan(%c),44)) {
+      ; If that's all good check the network-specific ignore
+      if (!$istok($ReturnIgnore($network),$chan(%c),44)) {
+        ; Once again all good, message the channel.
+        msg $chan(%c) 7[10 Global 7]10 $1-
+      }
     }
 
     inc %c
@@ -18,25 +26,56 @@ alias global {
 }
 
 alias gsettings {
-  if ((-ignore isin $1) && ($regex($2,/#\S+/))) {
-    writeini GlobalAmsgSettings.ini $network $2 ON
-    echo 07 -a [Settings\GlobalAmsg] - Not globaling in the following channels: $ReturnIgnore
+  if ((-gignore isin $1) && ($regex($2,/#\S+/))) {
+    writeini GlobalAmsgSettings.ini Global $2 ON
+    echo 07 -a [Settings\GlobalAmsg] - Global Ignore: $iif($ReturnIgnore(Global),$ReturnIgnore(Global),Empty!)
   }
-  elseif ((-unignore isin $1) && ($regex($2/#\S+/))) {
+  elseif ((-gunignore isin $1) && ($regex($2,/#\S+/))) {
+    remini GlobalAmsgSettings.ini Global $2
+    if ($ini(GlobalAmsgSettings.ini,Global,0) == 0) {
+      remini GlobalAmsgSettings.ini Global
+    }
+    echo 07 -a [Settings\GlobalAmsg] - Global Ignore: $iif($ReturnIgnore(Global),$ReturnIgnore(Global),Empty!)
+  }
+  elseif ((-ignore isin $1) && ($regex($2,/#\S+/))) {
+    writeini GlobalAmsgSettings.ini $network $2 ON
+    echo 07 -a [Settings\GlobalAmsg] - $network Ignore: $iif($ReturnIgnore($network),$ReturnIgnore($network),Empty!)
+  }
+  elseif ((-unignore isin $1) && ($regex($2,/#\S+/))) {
     remini GlobalAmsgSettings.ini $network $2
-    echo 07 -a [Settings\GlobalAmsg] - Not globaling in the following channels: $ReturnIgnore
+    if ($ini(GlobalAmsgSettings.ini,$network,0) == 0) {
+      remini GlobalAmsgSettings.ini $network
+    }
+    echo 07 -a [Settings\GlobalAmsg] - $network Ignore: $iif($ReturnIgnore($network),$ReturnIgnore($network),Empty!)
+  }
+  elseif (-status isin $1) {
+    var %x 1
+    while (%x < $ini(GlobalAmsgSettings.ini,0)) {
+      echo 07 -a [Settings\GlobalAmsg] - $ini(GlobalAmsgSettings.ini,%x) Ignore: $iif($ReturnIgnore($ini(GlobalAmsgSettings.ini,%x)),$ReturnIgnore($ini(GlobalAmsgSettings.ini,%x)),Empty!)
+      inc %x
+    }
+
+    if ($ini(GlobalAmsgSettings.ini,0) == 0) {
+      echo 07 -a [Settings\GlobalAmsg] - You don't have any channels added to an ignore list.
+      echo 07 -a [Settings\GlobalAmsg] - Type ' /GSettings ' to get a list of commands.
+    }
   }
   else { 
-    echo 07 -a [Settings\GlobalAmsg] - Syntax: 
-    echo 07 -a [Settings\GlobalAmsg] - /GSettings -<ignore|unignore> #Channel
+    echo 07 -a [Settings\GlobalAmsg] - Commands:
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -gignore #Channel - Will not message this channel on any network you use /global on
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -gunignore #Channel - Removes this channel from the global do not message list
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -ignore #Channel - Will not message this channel on this network when using /global
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -unignore #Channel - Removes this channel from the network-specific do not message list
+    echo 07 -a [Settings\GlobalAmsg] - /GSettings -Status - Prints all ignore lists.
+    echo 07 -a [Settings\GlobalAmsg] - /Global MessageHere - Will message the entire network (minus ignore list)
   }
 }
 
-alias -l ReturnIgnore {
-  var %Total $ini(GlobalAmsgSettings.ini, $network, 0)
+alias ReturnIgnore {
+  var %Total $ini(GlobalAmsgSettings.ini, $1, 0)
   var %x 1
   while (%x <= %Total) {
-    var %Return $addtok(%Return, $ini(GlobalAmsgSettings.ini, $network, %x), 44)
+    var %Return $addtok(%Return, $ini(GlobalAmsgSettings.ini, $1, %x), 44)
     inc %x
   }
 
