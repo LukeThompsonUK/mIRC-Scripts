@@ -32,9 +32,11 @@ alias gsettings {
   }
   elseif ((-gunignore isin $1) && ($regex($2,/#\S+/))) {
     remini GlobalAmsgSettings.ini Global $2
+
     if ($ini(GlobalAmsgSettings.ini,Global,0) == 0) {
       remini GlobalAmsgSettings.ini Global
     }
+
     echo 07 -a [Settings\GlobalAmsg] - Global Ignore: $iif($ReturnIgnore(Global),$ReturnIgnore(Global),Empty!)
   }
   elseif ((-ignore isin $1) && ($regex($2,/#\S+/))) {
@@ -43,13 +45,16 @@ alias gsettings {
   }
   elseif ((-unignore isin $1) && ($regex($2,/#\S+/))) {
     remini GlobalAmsgSettings.ini $network $2
+
     if ($ini(GlobalAmsgSettings.ini,$network,0) == 0) {
       remini GlobalAmsgSettings.ini $network
     }
+
     echo 07 -a [Settings\GlobalAmsg] - $network Ignore: $iif($ReturnIgnore($network),$ReturnIgnore($network),Empty!)
   }
   elseif (-status isin $1) {
     var %x 1
+
     while (%x < $ini(GlobalAmsgSettings.ini,0)) {
       echo 07 -a [Settings\GlobalAmsg] - $ini(GlobalAmsgSettings.ini,%x) Ignore: $iif($ReturnIgnore($ini(GlobalAmsgSettings.ini,%x)),$ReturnIgnore($ini(GlobalAmsgSettings.ini,%x)),Empty!)
       inc %x
