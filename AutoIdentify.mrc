@@ -76,57 +76,18 @@ on *:NOTICE:*:?:{
   }
 }
 
-; This alias will work outside of the script also, so you can use /ghost namehere to ghost somebody.
-alias Ghost { 
-  ; if -switch is the first thing
-  if (-switch == $1) {
-    var %GhostNick $2
-    var %Switch on
-
-    ; If there is a third thing
-    if ($3) {
-      var %Password $3
-    }
-    else {
-      ; If there isn't, check to see if we have a password for the ghostnick
-      var %Password $readini(AutoLoginInformation.ini,$network,%GhostNick)
-    }
+raw 433:*nickname is already in use.*:{
+  ; We use this to stop from an infinate loop. If we have %Ghosting set when we
+  ; try to /nick again then we stop and do nothing.
+  if (%Ghosting) {
+    unset %Ghosting
+    .timerGHOST off
   }
-  else {
-    var %GhostNick $1
-
-    if ($2) {
-      var %Password $2
-    }
-    else {
-      var %Password $readini(AutoLoginInformation.ini,$network,$1)
-    }
-  }
-
-  if (%Password) {
-    ; Ghost the ghosted nick
-    NickServ ghost %GhostNick %Password
-
-    if (%Switch) {
-      ; If -switch was used, switch to the nick
-      .timer 1 2 nick %GhostNick
-    }
-  }
-  else {
-    ; Print the syntax.
-    echo -a -
-    echo -a 10Syntax:
-    echo -a 10/Ghost [-switch] <nick> [password]
-    echo -a 10Password is optional if you have the nick setup for auto identfying.
-    echo -a 10If -switch is used you will /nick to the nick after ghosting.
-    echo -a -
-  }
-}
-
-raw 433:*nickname is already in use.*:{ 
   ; This will prevent us trying to ghost nicks we don't have
   ; a password setup for.
-  if ($readini(AutoLoginInformation.ini,$network,$2)) {
-    ghost -switch $2 
+  elseif ($readini(AutoLoginInformation.ini,$network,$2)) {
+    set %Ghosting $2
+    msg nickserv GHOST $2
+    .timerGHOST 1 5 nick $2
   }
 }
