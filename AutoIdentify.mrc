@@ -16,17 +16,19 @@ alias LoginDetails {
       echo -a Removed $me from your autologin nicklist on $network
     }
   }
+  ; Added so when you use -d you don't get this part of the script.
+  else {
+    ; Setup auto identifying with the current nick
+    writeini AutoLoginInformation.ini $network $me $$?="Enter the password for autoidentifying"
 
-  ; Setup auto identifying with the current nick
-  writeini AutoLoginInformation.ini $network $me $$?="Enter the password for autoidentifying"
-
-  ; Display the current information
-  echo -a -
-  echo -a Network: $network
-  echo -a Username: $me
-  echo -a Password: $readini(AutoLoginInformation.ini,$network,$me)
-  echo -a To remove this username/password type /LoginDetails -d $me
-  echo -a -
+    ; Display the current information
+    echo -a -
+    echo -a Network: $network
+    echo -a Username: $me
+    echo -a Password: $readini(AutoLoginInformation.ini,$network,$me)
+    echo -a To remove this username/password type /LoginDetails -d $me
+    echo -a -
+  }
 }
 
 ; Some awesome popup menu for the script
