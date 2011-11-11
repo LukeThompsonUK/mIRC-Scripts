@@ -123,4 +123,10 @@ alias Ghost {
   }
 }
 
-raw 433:*nickname is already in use.*:{ ghost -switch $2 }
+raw 433:*nickname is already in use.*:{ 
+  ; This will prevent us trying to ghost nicks we don't have
+  ; a password setup for.
+  if ($readini(AutoLoginInformation.ini,$network,$2)) {
+    ghost -switch $2 
+  }
+}
