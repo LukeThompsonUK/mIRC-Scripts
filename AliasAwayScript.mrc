@@ -19,9 +19,6 @@ alias away {
       echo 10 -at * Back from: $awaymsg
     }
   }
-  else {
-    echo 10 -at * It appears you errored somewhere in the script
-  }
 }
 
 menu channel,status,nicklist {
