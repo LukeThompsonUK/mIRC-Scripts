@@ -1,3 +1,11 @@
+; This script will autologin to an IdleRPG game on any network you have it set for.
+; Syntax for the script is:
+; /IRPG -botnick nickforthebothere
+; /IRPG -Username nickforyouridlerpglogin
+; /IRPG -Password youridlerpgpasswordhere
+; If you use IRPG and your command doesn't match any of the methods above
+; you will be prompted to set all 3.
+
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 
   ; This simply checks if there is a bot name, if there isn't we haven't got it setup for this network
@@ -22,10 +30,22 @@ alias -l DoLogin {
 }
 
 
+; This alias is used to set your botname, username and password.
 alias IRPG {
-  writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
-  writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to autoidentify with."
-  writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to autoidentify with."
+  if ($regex($1-2,/-botnick\s\S+$/Si)) {
+    writeini IdleRPGAutoLoginDetails.ini $network Botname $2
+  }
+  elseif ($regex($1-2,/-Username\s\S+$/Si)) {
+    writeini IdleRPGAutoLoginDetails.ini $network Username $2
+  }
+  elseif ($regex($1-2,/-Password\s\S+$/Si)) {
+    writeini IdleRPGAutoLoginDetails.ini $network Password $2
+  }
+  else {
+    writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
+    writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to autoidentify with."
+    writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to autoidentify with."
+  }
 
   echo -a -
   echo -a Network: $network
@@ -44,6 +64,7 @@ on *:Notice:*No such account*:?:{
 }
 
 
+; This is a popup menu to display information about your idlerpg.
 menu channel,status {
   IdleRPG
   .View current information for this network: {
