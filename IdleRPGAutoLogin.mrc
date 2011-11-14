@@ -25,7 +25,7 @@ alias -l DoLogin {
     msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   }
   else {
-    echo 07 -a [IdleRPG] The bot doesn't appear to be an op in the idle channel
+    echo 07 $1 [IdleRPG] The bot doesn't appear to be an op in the idle channel
   }
 }
 
