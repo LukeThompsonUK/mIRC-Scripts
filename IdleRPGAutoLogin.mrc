@@ -4,8 +4,20 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
   if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
     ; If the nick joining is you, or the name of the idlerpg bot
     if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
-      msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+      .timer 1 5 //DoLogin $chan
     }
+  }
+}
+
+
+; We use this alias to check if the idle bot is an op. We can't do this on join for some reason.
+; This perevents users from stealing passwords and messaging the idle bot when it's not on the channel.
+alias -l DoLogin {
+  if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName) isop $1) {
+    msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+  }
+  else {
+    echo 07 -a [IdleRPG] The bot doesn't appear to be an op in the idle channel
   }
 }
 
