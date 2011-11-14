@@ -188,7 +188,7 @@ on $^*:Snotice:/^\*{3}\sOPER:.+by\s(\S+)\susing\slogin\s'(\S+)':.+:(.+)$/Si:{
   }
 
   aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 4FAIL-Oper:7 $regml(1) 12using login7 $regml(2) 12failed fields7 $regml(3)
-  ; haltdef
+  haltdef
 }
 
 
@@ -353,5 +353,13 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:
   }
 
   aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
+  haltdef
+}
+on $^*:Snotice:/^\*{3}\sSuccessfully\srehashed\sserver\.$/Si:{
+  if (!$window(@Server)) { 
+    window -nz @Server 
+  }
+
+  aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Rehash:07 Successfully rehashed server.
   haltdef
 }
