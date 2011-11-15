@@ -8,6 +8,17 @@
 * /AutoConnect -Oper OperUser OperPass [Adds a oper name for that network]
 */
 
+on *:LOAD:{
+  echo 07 -a To setup this script:
+  echo 10 -a /AutoConnect -join #Channel [Adds a channel to your autojoin list]
+  echo 10 -a /AutoConnect -del #Channel [Removes a channel from your autojoin list]
+  echo 10 -a /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
+  echo 10 -a /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
+  echo 10 -a /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+  echo 10 -a /AutoConnect -oper Opername OperPass [Sets your oper name for that network]
+  echo 10 -a /AutoConnect -status NetworkHere [Prints status for the given network]
+}
+
 alias autoconnect { 
   if (($1 == -join) && ($regex(autoconnect,$2,/^#\S+$/))) {
     writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44)
