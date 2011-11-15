@@ -13,7 +13,11 @@
 .delakick <nick>
 .aklist
 
+.assign <botnick>
+
 .inv <nick>
+
+.update
 */
 on *:INPUT:#:{
   ; This line checks for the first command. It MUST begin with a ., +, or -
@@ -30,6 +34,7 @@ on *:INPUT:#:{
       echo -a Syntax: .add <nick> <access level>
       echo -a Example: .add Shawn 5
     }
+    haltdef
   }
   elseif ($regml(Inputs,1) == .del) {
     if ($2) {
@@ -40,9 +45,11 @@ on *:INPUT:#:{
       echo -a Syntax: .del <nick>
       echo -a Example: .del Shawn
     }
+    haltdef
   }
   elseif ($regml(Inputs,1) == .list) {
     msg ChanServ access $chan list
+    haltdef
   }
 
   ; Channel user-mode related commands.
@@ -54,6 +61,7 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
   }
   elseif ($istok(+a:-a,$regml(Inputs,1),58)) {
     if ($2) {
@@ -63,6 +71,7 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
   }
   elseif ($istok(+o:-o,$regml(Inputs,1),58)) {
     if ($2) {
@@ -72,6 +81,7 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
   }
   elseif ($istok(+h:-h,$regml(Inputs,1),58)) {
     if ($2) {
@@ -81,6 +91,7 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
   }
   elseif ($istok(+v:-v,$regml(Inputs,1),58)) {
     if ($2) {
@@ -90,6 +101,7 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
   }
 
   ; Akick related commands.
@@ -101,6 +113,7 @@ on *:INPUT:#:{
       echo -a Syntax: .akick <nick> <reason>
       echo -a Example: .akick Shawn Testing
     }
+    haltdef
   }
   elseif ($regml(Inputs,1) == .delakick) {
     if ($2) {
@@ -110,9 +123,11 @@ on *:INPUT:#:{
       echo -a Syntax: .delakick <nick>
       echo -a Example: .delakick Shawn
     }
+    haltdef
   }
   elseif ($regml(Inputs,1) == .aklist) {
     msg ChanServ akick $chan list
+    haltdef
   }
 
   ; Invite command
@@ -124,6 +139,7 @@ on *:INPUT:#:{
       echo -a Syntax: .inv <nick>
       echo -a Example: .inv Shawn
     }
+    haltdef
   }
 
   ; Botserv assign
@@ -135,6 +151,13 @@ on *:INPUT:#:{
       echo -a Syntax: .assign <botnick>
       echo -a Example: .assign X
     }
+    haltdef
+  }
+
+  ; Update command.
+  elseif ($regml(Inputs,1) == .update) {
+    msg NickServ update
+    haltdef
   }
 
 }
