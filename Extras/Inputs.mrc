@@ -2,6 +2,7 @@
 /* Command List
 .add <nick> <access>
 .del <nick>
+.list [nick]
 
 +q/-q <nick>
 +a/-a <nick>
