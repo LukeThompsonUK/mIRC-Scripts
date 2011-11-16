@@ -48,7 +48,12 @@ on *:INPUT:#:{
     haltdef
   }
   elseif ($regml(Inputs,1) == .list) {
-    msg ChanServ access $chan list
+    if ($2) {
+      msg ChanServ access $chan list $2
+    }
+    else {
+      msg ChanServ access $chan list
+    }
     haltdef
   }
 
