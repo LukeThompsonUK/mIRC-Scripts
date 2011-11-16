@@ -1,23 +1,31 @@
-; Coded on request for Matty.
 /* Command List
+* These commands are anope-based.
 .add <nick> <access>
 .del <nick>
 .list [nick]
 
+* These commands work on any network that supports the modes.
 +q/-q <nick>
 +a/-a <nick>
 +o/-o <nick>
 +h/-h <nick>
 +v/-v <nick>
 
+* These were written for anope but should work on any network that uses the following format
+* for akicking.
+* /msg ChanServ AKICK #Channel [ADD|DEL|LIST] <nick/host> <reason>
 .akick <nick> <reason>
 .delakick <nick>
 .aklist
 
+* This command is anope based.
 .assign <botnick>
 
+* This command works on any network that allows invites.
+* /invite <nick> <chan>
 .inv <nick>
 
+* This command is anope based.
 .update
 */
 on *:INPUT:#:{
