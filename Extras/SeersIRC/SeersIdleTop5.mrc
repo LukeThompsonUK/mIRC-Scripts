@@ -52,9 +52,11 @@ on *:SockRead:IdleTop: {
   if ($regml(IdleTop,0) == 4) {
     %Top.Display Rank: $regml(IdleTop,1) - $regml(IdleTop,2) $+([Level:,$regml(IdleTop,3),])
   }
-
-  ; Call the cleanup alias.
-  .timerCLEANUP 1 5 CleanUp
+  ; The only time this should actually hit is at the end of output from the socket.
+  else {
+    ; Call the cleanup alias.
+    .timerCLEANUP 1 5 CleanUp
+  }
 }
 
 ; We use this to remove variables at the end of script.
