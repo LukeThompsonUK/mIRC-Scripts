@@ -8,14 +8,18 @@ to organise the scripts so it's not just a massive clusterfuck of scripts
 everywhere. If anyone has any ideas let me know.
 
 
+* ~/Opers
+This folder will be used for scripts designed for opers to use for
+network and server management. The majority of these scripts will be
+for InspIRCd or UnrealIRCd due to those being the only two styles of IRCd
+I have any experience with.
+
 * ~/Extras
 This folder will be used mainly for scripts that various people have
 requested that I write for them, assuming they have no problem with
 having the script being available I will be hosting them here for
 everyone to learn from and use.
 
-* ~/Opers
-This folder will be used for scripts designed for opers to use for
-network and server management. The majority of these scripts will be
-for InspIRCd or UnrealIRCd due to those being the only two styles of IRCd
-I have any experience with.
+* ~/Extras/Subfolder(s)
+These folders will be used mainly for scripts that are network specific
+and will not work on other networks for various reasons.
