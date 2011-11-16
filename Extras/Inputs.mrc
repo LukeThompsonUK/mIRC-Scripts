@@ -13,8 +13,8 @@
 
 * These were written for anope but should work on any network that uses the following format
 * for akicking.
-* /msg ChanServ AKICK #Channel [ADD|DEL|LIST] <nick/host> <reason>
-.akick <nick> <reason>
+* /msg ChanServ AKICK #Channel [ADD|DEL|LIST] <nick/host> [reason]
+.akick <nick> [reason]
 .delakick <nick>
 .aklist
 
@@ -123,8 +123,11 @@ on *:INPUT:#:{
     if ($3) {
       msg ChanServ akick $chan add $2 $3-
     }
+    elseif ($2) {
+      msg ChanServ akick $chan add $2 Akick: No reason given.
+    }
     else {
-      echo -a Syntax: .akick <nick> <reason>
+      echo -a Syntax: .akick <nick> [reason]
       echo -a Example: .akick Shawn Testing
     }
     haltdef
