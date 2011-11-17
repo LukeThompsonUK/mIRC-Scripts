@@ -26,14 +26,6 @@ AliasRegexChannelBan.mrc
 ** The 'd' flag is the debug flag, it's used to test regexs before actually using them so you don't accidently ban wrong people.
 ** You can specify multiple flags (kb to kick and ban or kbd to show you who would have been kicked/banned, or just k to kick, etc, you get the idea.)
 
-AliasTemperatureConversion.mrc
-* Syntax: /Temp <Scale> <Temperature>
-* Example: /Temp F 58
-* Will convert temperatures from the given scale.
-* Valid Scales are:
-** F - Fahrenheit
-** C - Celsius
-
 AthemePopup.mrc
 * Gives a popup menu to interact with Atheme services.
 
@@ -96,3 +88,50 @@ IdleRPGAutoLogin.mrc
 * /IRPG -Username nickforyouridlerpglogin
 * /IRPG -Password youridlerpgpasswordhere
 * If you use IRPG and your command doesn't match any of the methods above you will be prompted to set all 3.
+
+----------
+~/Extras/
+----------
+
+AliasTemperatureConversion.mrc
+* Syntax: /Temp <Scale> <Temperature>
+* Example: /Temp F 58
+* Will convert temperatures from the given scale.
+* Valid Scales are:
+** F - Fahrenheit
+** C - Celsius
+
+CheckForBots.mrc
+* This script counts the number of bots upon joining a channel
+* This will only work for UnrealIRCd-based networks.
+
+DivineForcesStatusHug.mrc
+* This script hugs a random member of #DF at the given interval.
+
+Inputs.mrc
+* This script provides .commands to the user. See the script for the full command list.
+
+KickAllF5.mrc
+* Kicks an entire channel with the F5 key.
+
+OpenWindows.mrc
+* Counts the number of open windows.
+
+PestControlWorldScript.mrc
+* Runescape based script that was used before the addition of level-based bots for Pest Control
+* Script isn't used much anymore but is still here for anyone who is looking for it.
+
+PowerDisplay.mrc
+* Displays how many channels you are in and what your status is in them. OP/Voice/Regular.
+
+QueryNotificationNickChangeandQuit.mrc
+* This script will print information to the query window when a user changes their nick
+* and when a user quits IRC.
+
+RemoteTemperatureConversion.mrc
+* Syntax: !Temp <Scale> <Temperature>
+* Example: !Temp F 58
+* Will convert temperatures from the given scale.
+* Valid Scales are:
+** F - Fahrenheit
+** C - Celsius
