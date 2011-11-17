@@ -60,3 +60,39 @@ ChannelAccessManager.mrc
 CheckForBan.mrc
 * Checks for bans matching a given nick!ident@host and returns all the matching ones. Works for the channel the command is typed in.
 * Syntax: /chkban Name!Ident@Host
+
+CommonAliases.mrc
+* Provides commonly used aliases, see script for full list.
+
+GlobalAmsgScript.mrc
+* Provides a command to send amsgs, allows for skipping channels.
+* Commands provided by this script:
+* /GSettings -gignore #Channel - Will not message this channel on any network you use /global on
+* /GSettings -gunignore #Channel - Removes the channel from the global do not message list
+* /GSettings -ignore #Channel - Will not message this channel on this network when using /global
+* /GSettings -unignore #Channel - Removes the channel from the network-specific do not message list
+* /GSettings -Status - Prints all ignore lists.
+* /Global MessageHere - Will message the entire network (minus ignore list)
+
+HideAwayScriptMessages.mrc
+* This script hides most common auto-away messages and puts them in @AwayMessages
+* to prevent them from spamming channels and getting annoying.
+
+HighlightScript.mrc
+* This script provides a @Window for highlights and allows for ignoring channels or nicks from highlighting you.
+* Syntax:
+* /Highlight -addnick Nick [Adds a nick to your highlight list]
+* /Highlight -delnick Nick [Removes a nick from your highlight list]
+* /Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
+* /Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
+* /Highlight -ignorenick Nick [Ignores a user form highlighting you]
+* /Highlight -unigorenick Nick [Unignores a user form highlighting you]
+* /Highlight -status [Prints information]
+
+IdleRPGAutoLogin.mrc
+* This script provides auto authentication with an idlerpg game on your network.
+* Command list:
+* /IRPG -botnick nickforthebothere
+* /IRPG -Username nickforyouridlerpglogin
+* /IRPG -Password youridlerpgpasswordhere
+* If you use IRPG and your command doesn't match any of the methods above you will be prompted to set all 3.

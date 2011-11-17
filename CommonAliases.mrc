@@ -1,10 +1,18 @@
 ; These shortcut the /*Serv commands to /*s
+
+alias NickServ { msg NickServ $1- }
+alias ChanServ { msg ChanServ $1- }
+alias HostServ { msg HostServ $1- }
+alias MemoServ { msg MemoServ $1- }
+alias OperServ { msg OperServ $1- }
+alias BotServ { msg BotServ $1- }
+
 alias ns { NickServ $1- }
 alias cs { ChanServ $1- }
-alias bs { BotServ $1- }
 alias hs { HostServ $1- }
 alias ms { MemoServ $1- }
 alias os { OperServ $1- }
+alias bs { BotServ $1- }
 
 ; These shortcut /mode #chan +ohv to /voice/devoice/etc
 alias voice $iif($1,mode $chan + $+ $str(v,$modespl) $1-,mode $chan +v $me)
