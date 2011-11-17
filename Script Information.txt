@@ -90,6 +90,26 @@ IdleRPGAutoLogin.mrc
 * If you use IRPG and your command doesn't match any of the methods above you will be prompted to set all 3.
 
 ----------
+~/Opers/
+----------
+
+InspIRCdSnoticeGrabber.mrc
+* Provides @Windows for most inspircd server notices to prevent being flooded in the status window.
+* Breaks the notices up into groups for different @Windows so it's easier to search for what you are looking for.
+
+NetworkDialog.mrc
+* Provides a dialog window to do various oper tasks
+* View the dialog for a full description.
+
+UnrealIRCdSnoticeGrabber.mrc
+* Provides @Windows for most unrealircd server notices to prevent being flooded in the status window.
+* Breaks the notices up into groups for different @Windows so it's easier to search for what you are looking for.
+
+Z-LineSelectedUsers.mrc
+* Z-lines users selected in the nick list with the press of the F7 key.
+* Will popup asking for a reason.
+
+----------
 ~/Extras/
 ----------
 
