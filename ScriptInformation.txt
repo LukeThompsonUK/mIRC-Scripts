@@ -5,11 +5,6 @@ AliasCheckPrivilages.mrc
 * Example: /CheckPrivilages #Testing Shawn,Dijit
 * Will print information about their channel privilages (Requires Atheme Services)
 
-AliasInspIRCdCheck.mrc
-* Syntax: /Status [-message] <User/Channel>
-* Example: /Status #TestingChannel
-* Will output various information about a user or channel, if -message is used it will print to the active window.
-
 AliasRegexChannelBan.mrc
 * Syntax: /RegexBan <Regex> [dbk]
 * Example: /RegexBan /away|brb|afk|\|zzz|school|work|bnc|offline/ dk
@@ -83,6 +78,11 @@ IdleRPGAutoLogin.mrc
 ----------
 ~/Opers/
 ----------
+
+AliasInspIRCdCheck.mrc
+* Syntax: /Status [-message] <User/Channel>
+* Example: /Status #TestingChannel
+* Will output various information about a user or channel, if -message is used it will print to the active window.
 
 InspIRCdSnoticeGrabber.mrc
 * Provides @Windows for most inspircd server notices to prevent being flooded in the status window.
