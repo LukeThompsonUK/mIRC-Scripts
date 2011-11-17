@@ -65,6 +65,15 @@ on *:INPUT:#:{
     }
     haltdef
   }
+  elseif ($regml(Inputs,1) == .clear) {
+    if ($2 == akick) {
+      msg ChanServ akick $chan clear
+    }
+    else {
+      echo -a Syntax: .clear akick
+    }
+    haltdef
+  }
 
   ; Channel user-mode related commands.
   elseif ($istok(+q:-q,$regml(Inputs,1),58)) {
