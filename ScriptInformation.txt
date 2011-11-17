@@ -1,10 +1,5 @@
 Scripts and their usage.
 
-AliasAwayScript.mrc
-* Syntax: /away [Reason]
-* Example: /away Shopping
-* Will mark you as away on all networks you are connected to and will change the title of mIRC to "mIRC [AWAY] (Your reason here)"
-
 AliasCheckPrivilages.mrc
 * Syntax: /CheckPrivilages <#chan> <nick>[,<nick2>,<nick3>]
 * Example: /CheckPrivilages #Testing Shawn,Dijit
@@ -66,10 +61,6 @@ GlobalAmsgScript.mrc
 * /GSettings -Status - Prints all ignore lists.
 * /Global MessageHere - Will message the entire network (minus ignore list)
 
-HideAwayScriptMessages.mrc
-* This script hides most common auto-away messages and puts them in @AwayMessages
-* to prevent them from spamming channels and getting annoying.
-
 HighlightScript.mrc
 * This script provides a @Window for highlights and allows for ignoring channels or nicks from highlighting you.
 * Syntax:
@@ -113,6 +104,11 @@ Z-LineSelectedUsers.mrc
 ~/Extras/
 ----------
 
+AliasAwayScript.mrc
+* Syntax: /away [Reason]
+* Example: /away Shopping
+* Will mark you as away on all networks you are connected to and will change the title of mIRC to "mIRC [AWAY] (Your reason here)"
+
 AliasTemperatureConversion.mrc
 * Syntax: /Temp <Scale> <Temperature>
 * Example: /Temp F 58
@@ -128,11 +124,18 @@ CheckForBots.mrc
 DivineForcesStatusHug.mrc
 * This script hugs a random member of #DF at the given interval.
 
+HideAwayScriptMessages.mrc
+* This script hides most common auto-away messages and puts them in @AwayMessages
+* to prevent them from spamming channels and getting annoying.
+
 Inputs.mrc
 * This script provides .commands to the user. See the script for the full command list.
 
 KickAllF5.mrc
 * Kicks an entire channel with the F5 key.
+
+LinkSavers.mrc
+* Saves various links from IRC in their own @Window to be viewed later.
 
 OpenWindows.mrc
 * Counts the number of open windows.
@@ -148,6 +151,10 @@ QueryNotificationNickChangeandQuit.mrc
 * This script will print information to the query window when a user changes their nick
 * and when a user quits IRC.
 
+RandomPassGenerator.mrc
+* Generates random passwords at the given length. Only uses alphanumeric characters.
+* /RandomPass 35
+
 RemoteTemperatureConversion.mrc
 * Syntax: !Temp <Scale> <Temperature>
 * Example: !Temp F 58
@@ -155,3 +162,15 @@ RemoteTemperatureConversion.mrc
 * Valid Scales are:
 ** F - Fahrenheit
 ** C - Celsius
+
+-----------------
+~/Extras/SeersIRC
+-----------------
+
+JoinNotification.mrc
+* Script written for #Help on the SeersIRC network, used to print information about the joining user
+* so you could better help them and avoid asking all the initial questions.
+
+SeersIdleTop5.mrc
+* Syntax: /Top [-show] [number of ranks to display, Defaults to 5]
+* If -show is used then it will message the active window instead of echoing.
