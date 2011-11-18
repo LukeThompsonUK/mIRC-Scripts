@@ -81,14 +81,14 @@ on *:NOTICE:*:?:{
 raw 433:*nickname is already in use.*:{
   ; We use this to stop from an infinate loop. If we have %Ghosting set when we
   ; try to /nick again then we stop and do nothing.
-  if (%Ghosting) {
+  if (%Ghosting. $+ $network > 5) {
     unset %Ghosting
     .timerGHOST off
   }
   ; This will prevent us trying to ghost nicks we don't have
   ; a password setup for.
   elseif ($readini(AutoLoginInformation.ini,$network,$2)) {
-    set %Ghosting $2
+    inc -u15 %Ghosting. $+ $network
     msg nickserv GHOST $2
     .timerGHOST 1 5 nick $2
   }
