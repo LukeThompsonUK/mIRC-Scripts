@@ -163,6 +163,11 @@ RemoteTemperatureConversion.mrc
 ** F - Fahrenheit
 ** C - Celsius
 
+WhatPulse.mrc
+* Provides whatpulse statistics lookup
+* Supports teams and users.
+* See script for full details.
+
 -----------------
 ~/Extras/SeersIRC
 -----------------
