@@ -64,7 +64,6 @@ alias autoconnect {
     }
 
     echo -a [Note] If you're using AutoIdentify some information from that script will be printed here also
-    echo -a [Note] &Channels, &Modes, &Vhost, and &Nick are all from AutoIdentify
     echo -a -
   }
   else { 
