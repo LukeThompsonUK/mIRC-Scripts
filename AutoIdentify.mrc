@@ -4,14 +4,14 @@ alias LoginDetails {
   if ($1 == -d) {
     ; If there is a second thing
     if ($2) {
-      ; Delete the second thing from the current network in AutoLoginInformation.ini
-      remini AutoLoginInformation.ini $network $2
+      ; Delete the second thing from the current network in AutoIdentify.ini
+      remini AutoIdentify.ini $network $2
       ; Display the removed
       echo -a Removed $2 from your autologin nicklist on $network
     }
     else {
       ; Since there was no second thing, delete the currently used nick
-      remini AutoLoginInformation.ini $network $me
+      remini AutoIdentify.ini $network $me
       ; Display the removed
       echo -a Removed $me from your autologin nicklist on $network
     }
@@ -19,13 +19,13 @@ alias LoginDetails {
   ; Added so when you use -d you don't get this part of the script.
   else {
     ; Setup auto identifying with the current nick
-    writeini AutoLoginInformation.ini $network $me $$?="Enter the password for autoidentifying"
+    writeini AutoIdentify.ini $network $me $$?="Enter the password for autoidentifying"
 
     ; Display the current information
     echo -a -
     echo -a Network: $network
     echo -a Username: $me
-    echo -a Password: $readini(AutoLoginInformation.ini,$network,$me)
+    echo -a Password: $readini(AutoIdentify.ini,$network,$me)
     echo -a To remove this username/password type /LoginDetails -d $me
     echo -a -
   }
@@ -36,12 +36,12 @@ menu channel,status {
   NickServ autologin information
   ; Setup auto identification for a nick
   .Set a nick for autologin:{
-    writeini AutoLoginInformation.ini $network $$?="Enter the nick to identify with" $$?="Enter the password for the nickname"
+    writeini AutoIdentify.ini $network $$?="Enter the nick to identify with" $$?="Enter the password for the nickname"
     echo -a Updated the autologin information for $network
   }
   ; Remove a nick from auto identification
   .Remove a nick from autologin:{
-    remini AutoLoginInformation.ini $network $$?="Enter the nick to delete"
+    remini AutoIdentify.ini $network $$?="Enter the nick to delete"
     echo -a Updated the autologin information for $network
   }
   ; Print the current network information
@@ -49,12 +49,10 @@ menu channel,status {
     var %x 1
     echo -a -
     echo -a Network: $network
-    while (%x <= $ini(AutoLoginInformation.ini,$network,0)) {
-      echo -a $ini(AutoLoginInformation.ini,$network,%x) : $readini(AutoLoginInformation.ini,$network,$ini(AutoLoginInformation.ini,$network,%x))
+    while (%x <= $ini(AutoIdentify.ini,$network,0)) {
+      echo -a $ini(AutoIdentify.ini,$network,%x) : $readini(AutoIdentify.ini,$network,$ini(AutoIdentify.ini,$network,%x))
       inc %x
     }
-    echo -a [Note] If you're using AutojoinOnConnect some information from that script will be printed here also
-    echo -a [Note] &Channels, &Modes, &Vhost, and &Nick are all from AutojoinOnConnect
     echo -a -
   }
 }
@@ -66,9 +64,9 @@ on *:NOTICE:*:?:{
     ; If it's requesting we identify
     if ((This nickname is registered isin $1-) || (Please identify via isin $1-)) {
       ; Check to see if we have a password for the current nick
-      if ($readini(AutoLoginInformation.ini,$network,$me)) {
+      if ($readini(AutoIdentify.ini,$network,$me)) {
         ; Message nickserv the password
-        NickServ IDENTIFY $readini(AutoLoginInformation.ini,$network,$me)
+        NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
       }
       else { 
         ; We didn't have a password setup, so print that information back to us.
@@ -87,7 +85,7 @@ raw 433:*nickname is already in use.*:{
   }
   ; This will prevent us trying to ghost nicks we don't have
   ; a password setup for.
-  elseif ($readini(AutoLoginInformation.ini,$network,$2)) {
+  elseif ($readini(AutoIdentify.ini,$network,$2)) {
     inc -u15 %Ghosting. $+ $network
     msg nickserv GHOST $2
     .timerGHOST 1 5 nick $2

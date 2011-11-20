@@ -63,7 +63,6 @@ alias autoconnect {
       dec %ToCheck
     }
 
-    echo -a [Note] If you're using AutoIdentify some information from that script will be printed here also
     echo -a -
   }
   else { 
