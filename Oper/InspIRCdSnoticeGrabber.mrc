@@ -212,7 +212,7 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+)\sused\sSAMODE:\s(\S+)\s(\S+)/Si:{
 
 on $^*:Snotice:/^\*{3}\sLINK:\sServer\s(\S+)\sSplit:(.+)$/Si:{
   if (!$window(@Server)) { 
-    window -nz @Server. 
+    window -nz @Server
   }
 
   aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04NETSPLIT:07 $regml(1) 12->07 $regml(2)
