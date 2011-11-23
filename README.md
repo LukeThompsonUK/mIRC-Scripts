@@ -31,4 +31,3 @@ and will not work on other networks for various reasons.
 This folder will be for small patches that something needs for one of my
 scripts to work properly. I don't plan on making many patches but the few
 I do make will be here for everyone who wants them.
-**************************************************************************
