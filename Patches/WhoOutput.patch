@@ -1,0 +1,32 @@
+From c40e24513887ea7048cda7c33a8fe7caed8cbf67 Mon Sep 17 00:00:00 2001
+From: Shawn Smith <Email Removed>
+Date: Wed, 23 Nov 2011 03:37:17 -0500
+Subject: [PATCH] Allow for 'r' in /who output for registered users
+
+This patch is needed for my Network Control Dialog to work properly.
+---
+ src/commands/cmd_who.cpp |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
+
+diff --git a/src/commands/cmd_who.cpp b/src/commands/cmd_who.cpp
+index b08e43c..60e3c90 100644
+--- a/src/commands/cmd_who.cpp
++++ b/src/commands/cmd_who.cpp
+@@ -168,7 +168,13 @@ void CommandWho::SendWhoLine(User* user, const std::string &initial, Channel* ch
+ 	{
+ 		wholine.append("H");
+ 	}
+-
++	
++	/* registered? */
++	if (u->GetExt("accountname"))
++	{
++		wholine.append("r");
++	}
++	
+ 	/* oper? */
+ 	if (IS_OPER(u))
+ 	{
+-- 
+1.7.4.msysgit.0
+
