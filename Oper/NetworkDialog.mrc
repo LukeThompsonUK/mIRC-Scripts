@@ -12,10 +12,14 @@ alias NetworkControl {
   dialog -m NetworkControl NetworkControl 
 }
 
+; Called when the script is loaded, used to populate the ircd list with the default configuration
+on *:LOAD:{
+  writeini NetworkControlDialog.ini MainSettings IRCDList InspIRCd:Other
+}
+
 
 on *:Dialog:NetworkControl:init:0:{
   ; This is called when we first start the dialog.
-  ; set %NetworkControl_Dialog ON Commented out because it may not be used anymore?
   set %NetworkControl_Dialog_Network $network
   set %NetworkControl_Dialog_WHO ON
 
@@ -26,7 +30,7 @@ on *:Dialog:NetworkControl:init:0:{
     ; This sets the IRCd to the prefered one.
     did -c NetworkControl 22 $readini(NetworkControlDialog.ini,Preferences,IRCd)
 
-    if ($readini(NetworkControlDialog.ini,Preferences,IRCd) !isnum 1-2) {
+    if ($readini(NetworkControlDialog.ini,Preferences,IRCd) !isnum 1) {
       ; 8 is the button, 9 is the edit box
       ; used for time-based who searches
       did -b NetworkControl 8,9
@@ -116,7 +120,6 @@ dialog NetworkControl {
 
   ; This will only work on ircds that have the 'r' flag in /who output, inspircd needs a patch
   ; for this to work.
-  ; Patch is located here: http://inspircd.org/forum/showthread.php?t=8347
   check "Do not show registered/identified users", 27, 5 53 105 10, tab 19
 }
 
@@ -124,10 +127,10 @@ dialog NetworkControl {
 on *:Dialog:NetworkControl:sclick:22:{
   ; If the IRCd isn't InspIRCd then we can't use these.
   ; 1 = InspIRCd
-  ; 2 = WGIRCd
+  ; 2 = Other
   ; 8 is the button, 9 is the edit box for time-based searching
   ; 27 is the ignore registered/identified users checkbox. Needs the 'r' flag in /who output
-  if ($did(22).sel isnum 1-2) { 
+  if ($did(22).sel isnum 1) { 
     did -e NetworkControl 8,9 
   }
   else { 
