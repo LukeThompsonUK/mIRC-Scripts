@@ -1,5 +1,5 @@
 ### mIRC Script Repository
-
+*************************************************************************
 This is a backup of all the scripts I've made or modified over the years.
 They should all work, I'm slowly removing the ones that rely on 3rd party
 parsers, or I'm rewriting the script to do whatever it did without the
