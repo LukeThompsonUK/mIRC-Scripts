@@ -79,15 +79,19 @@ on *:NOTICE:*:?:{
 raw 433:*nickname is already in use.*:{
   ; We use this to stop from an infinate loop. If we have %Ghosting set when we
   ; try to /nick again then we stop and do nothing.
-  if (%Ghosting. $+ $network > 5) {
-    unset %Ghosting
+  if (%Ghosting. [ $+ [ $network ] ] > 5) {
     .timerGHOST off
   }
   ; This will prevent us trying to ghost nicks we don't have
   ; a password setup for.
-  elseif ($readini(AutoIdentify.ini,$network,$2)) {
-    inc -u15 %Ghosting. $+ $network
-    msg nickserv GHOST $2
-    .timerGHOST 1 5 nick $2
+  else {
+    if ($readini(AutoIdentify.ini,$network,$2)) {
+      inc -u15 %Ghosting. [ $+ [ $network ] ]
+      msg nickserv GHOST $2 $readini(AutoIdentify.ini,$network,$2)
+      .timerGHOST 1 5 /nick $2
+    }
+    else {
+      echo 07 -at You don't have a password setup for the given nickname.
+    }
   }
 }
