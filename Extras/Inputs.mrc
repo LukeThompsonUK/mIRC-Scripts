@@ -1,15 +1,22 @@
 /* Command List
-* These commands are anope-based.
-.add <nick> <access>
-.del <nick>
-.list [nick]
-
 * These commands work on any network that supports the modes.
 +q/-q <nick>
 +a/-a <nick>
 +o/-o <nick>
 +h/-h <nick>
 +v/-v <nick>
+
+* This command works on any network that allows invites.
+* /invite <nick> <chan>
+.inv <nick>
+
+* This command works on any network
+.topic [optional topic]
+
+* These commands are anope-based.
+.add <nick> <access>
+.del <nick>
+.list [nick]
 
 * These were written for anope but should work on any network that uses the following format
 * for akicking.
@@ -20,10 +27,6 @@
 
 * This command is anope based.
 .assign <botnick>
-
-* This command works on any network that allows invites.
-* /invite <nick> <chan>
-.inv <nick>
 
 * This command is anope based.
 .update
@@ -164,6 +167,17 @@ on *:INPUT:#:{
     else {
       echo -a Syntax: .inv <nick>
       echo -a Example: .inv Shawn
+    }
+    haltdef
+  }
+
+  ; Topic command
+  elseif ($regml(Inputs,1) == .topic) {
+    if ($2) {
+      topic $chan $2-
+    }
+    else {
+      topic $chan
     }
     haltdef
   }
