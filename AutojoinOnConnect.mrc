@@ -94,7 +94,7 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          timerSETMODE 1 10 //mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
+          timerSETMODE 1 10 //SetModes
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
@@ -109,4 +109,8 @@ raw 005:*:{
       unset %Connect.Raw
     }
   }
+}
+
+alias -l SetModes {
+  //mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
 }
