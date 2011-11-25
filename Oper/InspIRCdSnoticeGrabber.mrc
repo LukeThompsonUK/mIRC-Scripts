@@ -86,7 +86,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+on\s(\S+).+on\s(.+)\s\((.+)\)\.$/Si:{
     window -nz @Network-Kills/Bans 
   }
 
-  aline -ph @Network-Kills/Bans. 12(09 $+ $time $+ 12) $+(13[,$network,]) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 04TIMED XLINE:07 $regml(1) 12->07 $regml(2) 12for07 $regml(4) 12expires07 $regml(3)
   haltdef
 }
 
