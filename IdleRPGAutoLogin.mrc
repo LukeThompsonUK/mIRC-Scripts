@@ -21,11 +21,23 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
 ; We use this alias to check if the idle bot is an op. We can't do this on join for some reason.
 ; This perevents users from stealing passwords and messaging the idle bot when it's not on the channel.
 alias -l DoLogin {
-  if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName) isop $1) {
-    msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+  ; This will increment by 1 every time the alias is called.
+  ; It will automatically be unset after 15 seconds.
+  inc -u15 %IdleLoginCheck [ $+ [ $network ] ]
+  if (%IdleLoginCheck [ $+ [ $network ] ] <= 6) {
+    if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName) isop $1) {
+      msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    }
+    ; If the login doesn't work, try again in 5 seconds. The user might have not had time to op.
+    ; It will try 6 times, totaling roughly 30 seconds after the bot joins. If the bot isn't opped by then
+    ; it gives up.
+    else {
+      echo 07 $1 [IdleRPG] The bot doesn't appear to be an op in the idle channel. Trying login again in 5 seconds.
+      .timerIdleRPGLogin [ $+ [ $network ] ] 1 5 //DoLogin $1
+    }
   }
   else {
-    echo 07 $1 [IdleRPG] The bot doesn't appear to be an op in the idle channel
+    echo 07 $1 [IdleRPG] Could not login. $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) was not an op on the channel
   }
 }
 
