@@ -19,22 +19,13 @@ AliasRegexChannelBan.mrc
 AthemePopup.mrc
 * Gives a popup menu to interact with Atheme services.
 
+AutoBypass.mrc
+* Will automatically try to unban you, get the channel key, and invite you upon joining a channel that gives you an error when trying to join.
+
 AutoIdentify.mrc
 * Syntax: /LoginDetails [-d] [Nick to remove]
 * Example: /LoginDetails
 * Example2: /LoginDetails -d Shawn
-
-AutoJoinOnConnect.mrc
-* Syntax:
-** /AutoConnect -join #Channel [Adds a channel to your autojoin list]
-** /AutoConnect -del #Channel [Removes a channel from your autojoin list]
-** /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
-** /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
-** /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
-** /AutoConnect -Oper OperUser OperPass [Adds a oper name for that network]
-
-AutoUnbanGetKeyInvite.mrc
-* Will automatically try to unban you, get the channel key, and invite you upon joining a channel that gives you an error when trying to join.
 
 ChannelAccessManager.mrc
 * A dialog for channel access management using Atheme services. Written on 5.2.4 but should work through the 7.0-alpha branches aswell, assuming nothing changes.
@@ -45,6 +36,15 @@ CheckForBan.mrc
 
 CommonAliases.mrc
 * Provides commonly used aliases, see script for full list.
+
+ConnectSetup.mrc
+* Syntax:
+** /AutoConnect -join #Channel [Adds a channel to your autojoin list]
+** /AutoConnect -del #Channel [Removes a channel from your autojoin list]
+** /AutoConnect -setmodes +modes/-modes [Sets/removes modes on connect]
+** /AutoConnect -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
+** /AutoConnect -nick Nickhere [Sets your nick to the specified nick on connect for that network]
+** /AutoConnect -Oper OperUser OperPass [Adds a oper name for that network]
 
 GlobalAmsgScript.mrc
 * Provides a command to send amsgs, allows for skipping channels.
