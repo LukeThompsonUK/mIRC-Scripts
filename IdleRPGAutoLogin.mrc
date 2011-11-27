@@ -12,7 +12,7 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
   if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
     ; If the nick joining is you, or the name of the idlerpg bot
     if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
-      .timer [ $+ [ $network ] ] 1 5 //DoLogin $chan
+      .timerIdleRPGLogin [ $+ [ $network ] ] 1 5 //DoLogin $chan
     }
   }
 }
