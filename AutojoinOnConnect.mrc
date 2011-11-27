@@ -111,6 +111,8 @@ raw 005:*:{
   }
 }
 
+; We use this alias to setmodes so $me is evaluated at the time the modes are set.
+; This prevents us from using /mode on our previous nick.
 alias -l SetModes {
   //mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
 }
