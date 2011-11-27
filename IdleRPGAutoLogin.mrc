@@ -4,7 +4,7 @@
 ; /IRPG -Username nickforyouridlerpglogin
 ; /IRPG -Password youridlerpgpasswordhere
 ; If you use IRPG and your command doesn't match any of the methods above
-; you will be prompted to set all 3.
+; you will be given syntax for the command.
 
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 
@@ -36,6 +36,7 @@ alias -l DoLogin {
       .timerIdleRPGLogin [ $+ [ $network ] ] 1 5 //DoLogin $1
     }
   }
+  ; This else is called when we've tried to login 6+ times on any given network.
   else {
     echo 07 $1 [IdleRPG] Could not login. $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) was not an op on the channel
   }
@@ -54,17 +55,16 @@ alias IRPG {
     writeini IdleRPGAutoLoginDetails.ini $network Password $2
   }
   else {
-    writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
-    writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to autoidentify with."
-    writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to autoidentify with."
+    echo 07 -a [IdleRPG] Syntax for the script is:
+    echo 07 -a [IdleRPG] /IRPG -botnick nickforthebothere
+    echo 07 -a [IdleRPG] /IRPG -Username nickforyouridlerpglogin
+    echo 07 -a [IdleRPG] /IRPG -Password youridlerpgpasswordhere
+    var %x 1
   }
 
-  echo -a -
-  echo -a Network: $network
-  echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
-  echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
-  echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
-  echo -a -
+  if (!%x) {
+    IRPG.show
+  }
 }
 
 
@@ -80,12 +80,7 @@ on *:Notice:*No such account*:?:{
 menu channel,status {
   IdleRPG
   .View current information for this network: {
-    echo -a -
-    echo -a Network: $network
-    echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
-    echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
-    echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
-    echo -a -
+    IRPG.show
   }
 
   .Autologin information
@@ -103,4 +98,14 @@ menu channel,status {
     writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to message on this network."
     echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   }
+}
+
+; Using this to prevent writing out the echos multiple times.
+alias -l IRPG.show {
+  echo -a -
+  echo -a Network: $network
+  echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+  echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+  echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+  echo -a -
 }
