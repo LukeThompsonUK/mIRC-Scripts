@@ -67,13 +67,15 @@ HighlightScript.mrc
 * /Highlight -unigorenick Nick [Unignores a user form highlighting you]
 * /Highlight -status [Prints information]
 
-IdleRPGAutoLogin.mrc
+IdleRPG.mrc
 * This script provides auto authentication with an idlerpg game on your network.
 * Command list:
 * /IRPG -botnick nickforthebothere
 * /IRPG -Username nickforyouridlerpglogin
 * /IRPG -Password youridlerpgpasswordhere
 * If you use IRPG and your command doesn't match any of the methods above you will be given syntax for the script.
+* Script also provides a @IdleRPG window to intercept any notices from the IdleRPG bot. This will stop the notices
+* from showing to you and give you a central place to view them all.
 
 ----------
 ~/Opers/
