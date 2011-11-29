@@ -18,7 +18,7 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
 }
 
 ; Intercepts idlerpg notices and sends them to @IdleRPG
-on *:NOTICE:*:?:{
+on ^*:NOTICE:*:?:{
   ; Checks to see if the incoming notice is from the idlerpg botnick.
   if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
     ; Creates @IdleRPG if we do not have one already.
