@@ -5,6 +5,9 @@
 ; /IRPG -Password youridlerpgpasswordhere
 ; If you use IRPG and your command doesn't match any of the methods above
 ; you will be given syntax for the command.
+; Script will also output notices from the botnick and text from the botnick that has your username in it
+; to a window named @IdleRPG
+
 
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 
@@ -33,6 +36,7 @@ on *:TEXT:*:#:{
     }
   }
 }
+
 
 ; Intercepts idlerpg notices and sends them to @IdleRPG
 on ^*:NOTICE:*:?:{

@@ -76,6 +76,7 @@ IdleRPG.mrc
 * If you use IRPG and your command doesn't match any of the methods above you will be given syntax for the script.
 * Script also provides a @IdleRPG window to intercept any notices from the IdleRPG bot. This will stop the notices
 * from showing to you and give you a central place to view them all.
+* Also copies text from the IdleRPG bot that has your username in it and outputs it to @IdleRPG
 
 ----------
 ~/Opers/
