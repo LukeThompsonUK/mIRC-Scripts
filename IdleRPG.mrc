@@ -47,10 +47,10 @@ on ^*:NOTICE:*:?:{
 
     ; Writes to @IdleRPG
     aline -p @IdleRPG $timestamp $+([,$network,]) $+([,$nick,/notice]) -> $1-
-  }
 
-  ; Halts the notice from showing to us.
-  haltdef
+    ; Halts the notice from showing to us.
+    haltdef
+  }
 }
 
 
