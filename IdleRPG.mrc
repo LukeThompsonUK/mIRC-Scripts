@@ -17,6 +17,7 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
   }
 }
 
+
 ; Intercepts idlerpg notices and sends them to @IdleRPG
 on ^*:NOTICE:*:?:{
   ; Checks to see if the incoming notice is from the idlerpg botnick.
@@ -31,6 +32,7 @@ on ^*:NOTICE:*:?:{
   ; Halts the notice from showing to us.
   haltdef
 }
+
 
 ; We use this alias to check if the idle bot is an op. We can't do this on join for some reason.
 ; This perevents users from stealing passwords and messaging the idle bot when it's not on the channel.
@@ -113,6 +115,7 @@ menu channel,status {
     echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
   }
 }
+
 
 ; Using this to prevent writing out the echos multiple times.
 alias -l IRPG.show {
