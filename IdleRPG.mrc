@@ -18,6 +18,22 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
 }
 
 
+; Copies text from the IdleRPG botnick that has our username somewhere in the text.
+; Outputs copied text to @IdleRPG
+on *:TEXT:*:#:{
+  ; Checks to see if the text is from the botnick.
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+    ; Checks to see if our username was said somewhere in the text.
+    if ($matchtok($1-,$readini(IdleRPGAutoLoginDetails.ini,$network,Username),0,32)) {
+      ; Creates @IdleRPG if we do not have one already.
+      if (!$window(@IdleRPG)) { window -nz @IdleRPG }
+
+      ; Writes to @IdleRPG
+      aline -p @IdleRPG $timestamp $+([,$network,]) $+([,$nick,/channel]) -> $1-
+    }
+  }
+}
+
 ; Intercepts idlerpg notices and sends them to @IdleRPG
 on ^*:NOTICE:*:?:{
   ; Checks to see if the incoming notice is from the idlerpg botnick.
@@ -26,7 +42,7 @@ on ^*:NOTICE:*:?:{
     if (!$window(@IdleRPG)) { window -nz @IdleRPG }
 
     ; Writes to @IdleRPG
-    aline -p @IdleRPG $timestamp $+([,$network,]) $nick -> $1-
+    aline -p @IdleRPG $timestamp $+([,$network,]) $+([,$nick,/notice]) -> $1-
   }
 
   ; Halts the notice from showing to us.
