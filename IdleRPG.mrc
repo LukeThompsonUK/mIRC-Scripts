@@ -22,7 +22,7 @@ on *:NOTICE:*:?:{
   ; Checks to see if the incoming notice is from the idlerpg botnick.
   if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
     ; Creates @IdleRPG if we do not have one already.
-    if (!$window(@IdleRPG) { window -nz @IdleRPG }
+    if (!$window(@IdleRPG)) { window -nz @IdleRPG }
 
     ; Writes to @IdleRPG
     aline -p @IdleRPG $timestamp $+([,$network,]) $nick -> $1-
