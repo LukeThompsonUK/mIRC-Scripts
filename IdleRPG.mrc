@@ -58,7 +58,7 @@ alias -l DoLogin {
   inc -u15 %IdleLoginCheck [ $+ [ $network ] ]
   if (%IdleLoginCheck [ $+ [ $network ] ] <= 6) {
     if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName) isop $1) {
-      msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+      .msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     }
     ; If the login doesn't work, try again in 5 seconds. The user might have not had time to op.
     ; It will try 6 times, totaling roughly 30 seconds after the bot joins. If the bot isn't opped by then
