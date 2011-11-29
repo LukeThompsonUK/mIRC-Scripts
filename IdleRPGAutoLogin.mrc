@@ -17,6 +17,20 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
   }
 }
 
+; Intercepts idlerpg notices and sends them to @IdleRPG
+on *:NOTICE:*:?:{
+  ; Checks to see if the incoming notice is from the idlerpg botnick.
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+    ; Creates @IdleRPG if we do not have one already.
+    if (!$window(@IdleRPG) { window -nz @IdleRPG }
+
+    ; Writes to @IdleRPG
+    aline -p @IdleRPG $timestamp $+([,$network,]) $nick -> $1-
+  }
+
+  ; Halts the notice from showing to us.
+  haltdef
+}
 
 ; We use this alias to check if the idle bot is an op. We can't do this on join for some reason.
 ; This perevents users from stealing passwords and messaging the idle bot when it's not on the channel.
