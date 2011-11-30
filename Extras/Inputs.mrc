@@ -5,6 +5,8 @@
 +o/-o <nick>
 +h/-h <nick>
 +v/-v <nick>
++i/-i
++m/-m
 
 * This command works on any network that allows invites.
 * /invite <nick> <chan>
@@ -118,6 +120,14 @@ on *:INPUT:#:{
       echo -a Syntax: $regml(Inputs,1) <nick>
       echo -a Example: $regml(Inputs,1) Shawn
     }
+    haltdef
+  }
+  elseif ($istok(+i:-i,$regml(Inputs,1),58)) {
+    mode $chan $regml(Inputs,1)
+    haltdef
+  }
+  elseif ($istok(+m:-m,$regml(Inputs,1),58)) {
+    mode $chan $regml(Inputs,1)
     haltdef
   }
 
