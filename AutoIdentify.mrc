@@ -87,7 +87,7 @@ raw 433:*nickname is already in use.*:{
   else {
     if ($readini(AutoIdentify.ini,$network,$2)) {
       inc -u15 %Ghosting. [ $+ [ $network ] ]
-      msg nickserv GHOST $2 $readini(AutoIdentify.ini,$network,$2)
+      .msg nickserv GHOST $2 $readini(AutoIdentify.ini,$network,$2)
       .timerGHOST [ $+ [ $network ] ] 1 5 /nick $2
     }
     else {
