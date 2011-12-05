@@ -97,7 +97,7 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          timerSETMODE [ $+ [ $network ] ] 1 10 //SetModes
+          .timerSETMODE [ $+ [ $network ] ] 1 10 //SetModes
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
@@ -105,7 +105,7 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          timerJOINCHANNELS [ $+ [ $network ] ] 1 10 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          .timerJOINCHANNELS [ $+ [ $network ] ] 1 10 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
 
