@@ -7,6 +7,7 @@
 +v/-v <nick>
 +i/-i
 +m/-m
++k/-k <key>
 
 * This command works on any network that allows invites.
 * /invite <nick> <chan>
@@ -128,6 +129,10 @@ on *:INPUT:#:{
   }
   elseif ($istok(+m:-m,$regml(Inputs,1),58)) {
     mode $chan $regml(Inputs,1)
+    haltdef
+  }
+  elseif ($istok(+k:-k,$regml(Inputs,1),58)) {
+    mode $chan $regml(Inputs,1) $2
     haltdef
   }
 
