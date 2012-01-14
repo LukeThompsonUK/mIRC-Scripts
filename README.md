@@ -27,6 +27,10 @@ that not everyone will want or need.
 These folders will be used mainly for scripts that are network specific  
 and will not work on other networks for various reasons.
 
+### ~/Games
+This folder will be used for various games that have been written for  
+users to play using the mIRC client.
+
 ### ~/Patches
 This folder will be for small patches that something needs for one of my  
 scripts to work properly. I don't plan on making many patches but the few  
