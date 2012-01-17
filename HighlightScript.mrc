@@ -69,16 +69,22 @@ alias -l ReturnAll {
 }
 
 
-on *:TEXT:*:#:{ 
+on *:TEXT:*:#:{
+  ; This checks to make sure the channel and the user both aren't in the ignore list.
   if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok(ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
+    ; Loops for every nick we have to check for.
     while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
+      ; If we found the nick somewhere in the line.
       if ($matchtok($1-,$gettok($ReturnAll(NicksToMatch),%x,44),0,32)) {
+
+        ; Open a @Window if one doesn't already exist.
         if (!$window(@Highlight)) {
           window -nz @Highlight
         }
 
+        ; Print to the window and then highlight the channel window that we were highlighted in.
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
         window -g2 $chan
       }
@@ -88,16 +94,23 @@ on *:TEXT:*:#:{
   }
 }
 
-on *:ACTION:*:#:{ 
+
+on *:ACTION:*:#:{
+  ; This checks to make sure the channel and the user both aren't in the ignore list.
   if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok(ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
+    ; Loops for every nick we have to check for.
     while (%x <= $numtok($ReturnAll(NicksToMatch),44)) {
+      ; If we found the nick somewhere in the line.
       if ($matchtok($1-,$gettok($ReturnAll(NicksToMatch),%x,44),0,32)) {
+
+        ; Open a @Window if one doesn't already exist.
         if (!$window(@Highlight)) {
           window -nz @Highlight
         }
 
+        ; Print to the window and then highlight the channel window that we were highlighted in.
         aline $iif($chan == $active,-p,-ph) @Highlight $timestamp $($+(12[07,$network,12:07,$chan,12:07,$nick,12]07:),2) $1-
         window -g2 $chan
       }
