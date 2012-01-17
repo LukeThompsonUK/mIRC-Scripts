@@ -96,6 +96,8 @@ raw 005:*:{
           nick $readini(AutoLoginInformation.ini,$network,&Nick)
         }
 
+        ; The reason for using an alias in this timer is so that $me is evaluated after the timer
+        ; Not when the timer is originally set, we may change our nick between those two periods.
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
           .timerSETMODE [ $+ [ $network ] ] 1 10 //SetModes
         }
