@@ -19,8 +19,10 @@ on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
 on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{ 
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-  aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Removed ban from:07 $regml(1)
-  join -n $regml(1) | haltdef
+  if ($me !ison $chan) {
+    aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Removed ban from:07 $regml(1)
+    join -n $regml(1) | haltdef
+  }
 }
 
 
