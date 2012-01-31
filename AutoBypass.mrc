@@ -10,7 +10,7 @@ raw 474:*cannot join channel*:{
 on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-  aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Removed ban from:07 $regml(1) [Matched $regml(2) $+($iif($regml(2) > 1,bans,ban),])
+  aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Removed ban. [Matched $+(07,$regml(2),10) $+($iif($regml(2) > 1,bans,ban),])
   join -n $regml(1) | haltdef
 }
 
@@ -20,7 +20,7 @@ on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
   if ($me !ison $chan) {
-    aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Removed ban from:07 $regml(1)
+    aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Removed ban.
     join -n $regml(1) | haltdef
   }
 }
@@ -39,7 +39,7 @@ on ^*:invite:#:{
   if ($nick == ChanServ) {
     if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-    aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Bypassed +i on:07 $chan
+    aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$chan,]) 10Bypassed invite-only mode.
     Join -n $chan | haltdef
   }
 }
@@ -55,7 +55,7 @@ raw 475:*cannot join channel*:{
 on $^*:Notice:/(\S+)\skey\sis.\s(\S+)$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-  aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Bypassed +k on:07 $regml(1) 10with key:07 $regml(2)
+  aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Bypassed channel key. [key: $+(07,$regml(2),10])
   join -n $regml(1) $regml(2) | haltdef
 }
 
@@ -87,7 +87,7 @@ on *:BAN:#:{
     if (%BanMask) {
       if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-      aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$chan,]) 04Ban:07 $nick 12banned07 %BanMask
+      aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$chan,]) 07 $nick 12banned07 %BanMask
 
       if (($me isop $chan) || ($me ishop $chan)) {
         mode $chan - $+ $str(b,%i) %BanMask
