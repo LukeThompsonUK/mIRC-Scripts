@@ -66,7 +66,15 @@ on $^*:Notice:/^KEY\s(\S+)\s(\S+)$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
   aline -ph @Ban/Key/Invite $timestamp $+([,$network,]) 10Bypassed +k on:07 $regml(1) 10with key:07 $regml(2)
-  join -n $regml(1) $regml(2) | haltdef
+
+  ; This is sort of experimental. It should check to see if the window is open
+  ; if so then it wont join -n just regular join.
+  if ($window($regml(1)) {
+    join $regml(1) $regml(2) | haltdef
+  }
+  else {
+    join -n $regml(1) $regml(2) | haltdef
+  }
 }
 
 ; This unbans you when someone else sets a ban as long as you're a Op/Halfop it will remove the ban.
