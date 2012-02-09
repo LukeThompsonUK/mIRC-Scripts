@@ -5,6 +5,7 @@
 +o/-o <nick>
 +h/-h <nick>
 +v/-v <nick>
++G/-G
 +i/-i
 +m/-m
 +k/-k <key>
@@ -73,7 +74,7 @@ on *:INPUT:#:{
   }
 
   ; Channel user-mode related commands.
-  elseif ($istok(+q:-q,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+q:-q,$regml(Inputs,1),58)) {
     if ($2) {
       mode $chan $regml(Inputs,1) $2
     }
@@ -83,7 +84,7 @@ on *:INPUT:#:{
     }
     haltdef
   }
-  elseif ($istok(+a:-a,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+a:-a,$regml(Inputs,1),58)) {
     if ($2) {
       mode $chan $regml(Inputs,1) $2
     }
@@ -93,7 +94,7 @@ on *:INPUT:#:{
     }
     haltdef
   }
-  elseif ($istok(+o:-o,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+o:-o,$regml(Inputs,1),58)) {
     if ($2) {
       mode $chan $regml(Inputs,1) $2
     }
@@ -103,7 +104,7 @@ on *:INPUT:#:{
     }
     haltdef
   }
-  elseif ($istok(+h:-h,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+h:-h,$regml(Inputs,1),58)) {
     if ($2) {
       mode $chan $regml(Inputs,1) $2
     }
@@ -113,7 +114,7 @@ on *:INPUT:#:{
     }
     haltdef
   }
-  elseif ($istok(+v:-v,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+v:-v,$regml(Inputs,1),58)) {
     if ($2) {
       mode $chan $regml(Inputs,1) $2
     }
@@ -123,15 +124,19 @@ on *:INPUT:#:{
     }
     haltdef
   }
-  elseif ($istok(+i:-i,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+G:-G,$regml(Inputs,1),58)) {
     mode $chan $regml(Inputs,1)
     haltdef
   }
-  elseif ($istok(+m:-m,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+i:-i,$regml(Inputs,1),58)) {
     mode $chan $regml(Inputs,1)
     haltdef
   }
-  elseif ($istok(+k:-k,$regml(Inputs,1),58)) {
+  elseif ($istokcs(+m:-m,$regml(Inputs,1),58)) {
+    mode $chan $regml(Inputs,1)
+    haltdef
+  }
+  elseif ($istokcs(+k:-k,$regml(Inputs,1),58)) {
     mode $chan $regml(Inputs,1) $2
     haltdef
   }
