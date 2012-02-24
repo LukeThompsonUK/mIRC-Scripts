@@ -9,6 +9,20 @@ Anyone wishing to contribute feel free to, I'm still trying to find a way
 to organise the scripts so it's not just a massive clusterfuck of scripts  
 everywhere. If anyone has any ideas let me know.
 
+### How to use.
+
+To download the entire repository you need to install git. Once installed  
+you can use the command:  
+'git clone git://github.com/Shawn-Smith/mIRC-Scripts.git FolderToInstall'  
+From there you load the scripts into mIRC as you would normally.  
+
+Updating once you have the entire repository is simple. Every so often  
+use the command 'git pull'. This will update your copy with any updates  
+that have been applied to the main copy hosted on GitHub.  
+
+For individual scripts navigate to the page of the script you want and  
+click on the 'Raw' button on the right side of the code. Copy + paste the  
+script into mIRC's scripts editor.
 
 ### ~/Opers
 This folder will be used for scripts designed for opers to use for  
