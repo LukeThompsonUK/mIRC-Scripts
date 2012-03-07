@@ -1,11 +1,19 @@
-/*
-* Syntax:
-* /ConnectSetup -join #Channel [Adds a channel to your autojoin list]
-* /ConnectSetup -del #Channel [Removes a channel from your autojoin list]
-* /ConnectSetup -setmodes +modes/-modes [Sets/removes modes on connect]
-* /ConnectSetup -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
-* /ConnectSetup -nick Nickhere [Sets your nick to the specified nick on connect for that network]
-* /ConnectSetup -Oper OperUser OperPass [Adds a oper name for that network]
+/**
+* Script Description
+** This script does the following:
+** Autojoins channels on connect
+** Sets/removes modes on connect
+** Can use a /vhost ( assuming you have one setup )
+** Changes to a certain nick
+** Auto-opers
+*
+* Commands:
+* /ConnectSetup -join #Channel ( Adds a channel to your autojoin list )
+* /ConnectSetup -del #Channel ( Removes a channel from your autojoin list )
+* /ConnectSetup -setmodes +modes/-modes ( Sets/removes modes on connect )
+* /ConnectSetup -vhost VhostName VhostPass ( Adds a vhost for that network (requires a /vhost) )
+* /ConnectSetup -nick Nickhere ( Sets your nick to the specified nick on connect for that network )
+* /ConnectSetup -Oper OperUser OperPass ( Adds a oper name for that network )
 */
 
 on *:LOAD:{
