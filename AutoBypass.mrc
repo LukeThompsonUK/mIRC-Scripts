@@ -1,3 +1,14 @@
+/**
+* Script Description
+** This script will automatically attempt untban you, get channel keys, and invite you to
+** the channel you tried to join upon reciving an error message.
+** This script will also automatically unban you when banned by a user when you're in the channel.
+** Assuming you have the rights to do so.
+
+*** There are no configuration settings for this script.
+*** This script works for Atheme and Anope-based networks.
+*/
+
 ; Raw 474 is the ban error numeric.
 raw 474:*cannot join channel*:{
   echo 10 -ta * [AutoBypass] 4Banned: Could not join: $2
