@@ -33,6 +33,11 @@ raw 340:*:{
 
 ; Alias to start the script.
 alias F7 {
+  if (!$regex(ZLineSelected,$active,/^#\S+$/)) {
+    echo -a You're active window isn't a channel, please only use this on channel windows.
+    halt
+  }
+
   if ($?!="Z-Line selected users?" == $false) { 
     Halt 
   }
