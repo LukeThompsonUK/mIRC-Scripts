@@ -1,9 +1,10 @@
-; Explaination on load.
-on *:LOAD:{
-  echo 07 -s [F7] - Alias to Z-Line selected users in the nicklist.
-  echo 07 -s [F7] - Select the users you wish to ban in the channel nicklist and press F7 to use.
-  echo 07 -s [F7] - You will be prompted for a ban reason.
-}
+/**
+* Script Description
+** Binds a function key to ban selected users in the nick-list.
+*
+* Configuration Settings / Commands
+** [Function Key]: F7 - Z-lines users selected in the nicklist.
+*/
 
 ; This is the /userip numeric
 raw 340:*:{
