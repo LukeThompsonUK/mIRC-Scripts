@@ -1,8 +1,11 @@
-;
-; Okay, this is my first serious dialog and as such it is prone to bugs and glitches
-; Please let me know if you spot anything working in a way it shouldn't
-; I am currently developing this for InspIRCd networks, I'm testing this on a 1.2.x based server
-;
+/**
+* Script Description
+** This script aims to give a popup dialog for network staff to help do certain tasks.
+*
+* Development
+** This script is currently in development and nowhere near finished.
+** If yuo wish to contribute please visit the GitHub repo: https://github.com/Shawn-Smith/mIRC-Scripts
+*/
 
 alias F6 { 
   dialog -md NetworkControl NetworkControl 

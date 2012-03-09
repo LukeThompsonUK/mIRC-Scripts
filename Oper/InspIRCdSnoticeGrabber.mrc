@@ -1,3 +1,15 @@
+/**
+* Script Description
+** This script filters out server notices given by InspIRCd and places them in their own
+** @Windows. These windows try to sort similar notices (like connect/disconnect) together.
+** Please report any bugs found using the GitHub issue tracker.
+*
+* Configuration Settings / Commands
+** This script has no configuration.
+*
+** GitHub: https://github.com/Shawn-Smith/mIRC-Scripts
+*/
+
 ; *** CONNECT: Client connecting on port 6697: Nick!Ident@Host.com [IP.IP.IP.IP] [Test Nick]
 on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
   if (!$window(@Clients)) { 
