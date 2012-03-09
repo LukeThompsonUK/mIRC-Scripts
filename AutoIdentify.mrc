@@ -1,7 +1,7 @@
 /**
 * Script Description
 ** This script will attempt to auto identify you to NickServ.
-
+*
 * Configuration Settings
 ** /LoginDetails [-d [nick]] ( To remove a nick/pass combination, if no nick is given it uses the current nick )
 ** /LoginDetails ( Will prompt you for a password to use with the current nickname. )

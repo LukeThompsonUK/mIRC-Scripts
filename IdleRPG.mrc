@@ -1,13 +1,16 @@
-; This script will autologin to an IdleRPG game on any network you have it set for.
-; Syntax for the script is:
-; /IRPG -botnick nickforthebothere
-; /IRPG -Username nickforyouridlerpglogin
-; /IRPG -Password youridlerpgpasswordhere
-; If you use IRPG and your command doesn't match any of the methods above
-; you will be given syntax for the command.
-; Script will also output notices from the botnick and text from the botnick that has your username in it
-; to a window named @IdleRPG
-
+/**
+* Script Description
+** Autologin for an IdleRPG game on any network you have it set for.
+** Outputs notices and text from the botnick concerning your IdleRPG account to
+** an @Window.
+*
+* Configuration Settings / Commands:
+** /IRPG -botnick nickforthebothere
+** /IRPG -Username nickforyouridlerpglogin
+** /IRPG -Password youridlerpgpasswordhere
+** If you use /IRPG and your syntax doesn't match any of the above
+** you will be given syntax for the command(s).
+*/
 
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 

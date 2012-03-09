@@ -1,14 +1,15 @@
-/*
-* This script creates a @Window for highlights. It copies the whole line that highlights you
-* When you are highlighted.
-Syntax:
-/Highlight -addnick Nick [Adds a nick to your highlight list]
-/Highlight -delnick Nick [Removes a nick from your highlight list]
-/Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
-/Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
-/Highlight -ignorenick Nick [Ignores a user form highlighting you]
-/Highlight -unigorenick Nick [Unignores a user form highlighting you]
-/Highlight -status [Prints information]
+/**
+* Script Description
+** Creates a @Window for highlights. Copies highlighted text to the @Window for viewing.
+*
+* Configuration Settings / Commands:
+** /Highlight -addnick Nick [Adds a nick to your highlight list]
+** /Highlight -delnick Nick [Removes a nick from your highlight list]
+** /Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
+** /Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
+** /Highlight -ignorenick Nick [Ignores a user form highlighting you]
+** /Highlight -unigorenick Nick [Unignores a user form highlighting you]
+** /Highlight -status [Prints information]
 */
 
 alias highlight {

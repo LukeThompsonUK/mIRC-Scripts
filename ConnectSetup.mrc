@@ -7,7 +7,7 @@
 ** Changes to a certain nick
 ** Auto-opers
 *
-* Commands:
+* Configuration Settings / Commands:
 ** /ConnectSetup -join #Channel ( Adds a channel to your autojoin list )
 ** /ConnectSetup -del #Channel ( Removes a channel from your autojoin list )
 ** /ConnectSetup -setmodes +modes/-modes ( Sets/removes modes on connect )
