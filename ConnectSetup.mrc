@@ -8,12 +8,12 @@
 ** Auto-opers
 *
 * Commands:
-* /ConnectSetup -join #Channel ( Adds a channel to your autojoin list )
-* /ConnectSetup -del #Channel ( Removes a channel from your autojoin list )
-* /ConnectSetup -setmodes +modes/-modes ( Sets/removes modes on connect )
-* /ConnectSetup -vhost VhostName VhostPass ( Adds a vhost for that network (requires a /vhost) )
-* /ConnectSetup -nick Nickhere ( Sets your nick to the specified nick on connect for that network )
-* /ConnectSetup -Oper OperUser OperPass ( Adds a oper name for that network )
+** /ConnectSetup -join #Channel ( Adds a channel to your autojoin list )
+** /ConnectSetup -del #Channel ( Removes a channel from your autojoin list )
+** /ConnectSetup -setmodes +modes/-modes ( Sets/removes modes on connect )
+** /ConnectSetup -vhost VhostName VhostPass ( Adds a vhost for that network (requires a /vhost) )
+** /ConnectSetup -nick Nickhere ( Sets your nick to the specified nick on connect for that network )
+** /ConnectSetup -Oper OperUser OperPass ( Adds a oper name for that network )
 */
 
 on *:LOAD:{
