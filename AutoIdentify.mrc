@@ -6,6 +6,10 @@
 ** /LoginDetails [-d [nick]] ( To remove a nick/pass combination, if no nick is given it uses the current nick )
 ** /LoginDetails ( Will prompt you for a password to use with the current nickname. )
 ** There is a popup menu in the channel and status windows.
+*
+* Settings File
+** This script stores all settings in AutoIdentify.ini in the mIRC Directory.
+** Type: //run $mIRCDir\AutoIdentify.ini to view.
 */
 
 

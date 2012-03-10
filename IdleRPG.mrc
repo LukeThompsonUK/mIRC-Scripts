@@ -10,6 +10,10 @@
 ** /IRPG -Password youridlerpgpasswordhere
 ** If you use /IRPG and your syntax doesn't match any of the above
 ** you will be given syntax for the command(s).
+*
+* Settings File
+** This script stores all settings in IdleRPGAutoLoginDetails.ini in the mIRC Directory.
+** Type: //run $mIRCDir\IdleRPGAutoLoginDetails.ini to view.
 */
 
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.

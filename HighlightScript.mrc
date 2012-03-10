@@ -10,6 +10,10 @@
 ** /Highlight -ignorenick Nick [Ignores a user form highlighting you]
 ** /Highlight -unigorenick Nick [Unignores a user form highlighting you]
 ** /Highlight -status [Prints information]
+*
+* Settings File
+** This script stores all settings in HighlightSettings.ini in the mIRC Directory.
+** Type: //run $mIRCDir\HighlightSettings.ini to view.
 */
 
 alias highlight {
