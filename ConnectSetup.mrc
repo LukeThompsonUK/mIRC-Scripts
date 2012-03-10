@@ -21,7 +21,10 @@
 ** Type: //run $mIRCDir\AutoLoginInformation.ini to view.
 */
 
+; This is the main alias.
 alias ConnectSetup { 
+  ; This checks which command they want to use.
+  ; If they don't use any of these it'll print the syntax.
   if (($1 == -join) && ($regex(ConnectSetup,$2,/^#\S+$/))) {
     writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44)
     echo -a [ConnectSetup] $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
