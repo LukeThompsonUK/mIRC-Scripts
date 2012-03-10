@@ -21,18 +21,6 @@
 ** Type: //run $mIRCDir\AutoLoginInformation.ini to view.
 */
 
-on *:LOAD:{
-  echo 10 -a -
-  echo 10 -a [ConnectSetup] /ConnectSetup -join #Channel [Adds a channel to your autojoin list]
-  echo 10 -a [ConnectSetup] /ConnectSetup -del #Channel [Removes a channel from your autojoin list]
-  echo 10 -a [ConnectSetup] /ConnectSetup -setmodes +modes/-modes [Sets/removes modes on connect]
-  echo 10 -a [ConnectSetup] /ConnectSetup -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
-  echo 10 -a [ConnectSetup] /ConnectSetup -nick Nickhere [Sets your nick to the specified nick on connect for that network]
-  echo 10 -a [ConnectSetup] /ConnectSetup -oper Opername OperPass [Sets your oper name for that network]
-  echo 10 -a [ConnectSetup] /ConnectSetup -status NetworkHere [Prints status for the given network]
-  echo 10 -a -
-}
-
 alias ConnectSetup { 
   if (($1 == -join) && ($regex(ConnectSetup,$2,/^#\S+$/))) {
     writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44)
