@@ -14,6 +14,11 @@
 ** /ConnectSetup -vhost VhostName VhostPass ( Adds a vhost for that network (requires a /vhost) )
 ** /ConnectSetup -nick Nickhere ( Sets your nick to the specified nick on connect for that network )
 ** /ConnectSetup -Oper OperUser OperPass ( Adds a oper name for that network )
+** /ConnectSetup -status NetworkHere ( Prints stored information about the given network )
+*
+* Settings File
+** This script stores all settings in AutoLoginInformation.ini in the mIRC Directory.
+** Type: //run $mIRCDir\AutoLoginInformation.ini to view.
 */
 
 on *:LOAD:{
