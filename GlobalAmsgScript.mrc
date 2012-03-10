@@ -1,11 +1,19 @@
-/*
-Commands provided by this script:
-* /GSettings -gignore #Channel - Will not message this channel on any network you use /global on
-* /GSettings -gunignore #Channel - Removes the channel from the global do not message list
-* /GSettings -ignore #Channel - Will not message this channel on this network when using /global
-* /GSettings -unignore #Channel - Removes the channel from the network-specific do not message list
-* /GSettings -Status - Prints all ignore lists.
-* /Global MessageHere - Will message the entire network (minus ignore list)
+/**
+* Script Description
+** This script is used to message every channel on a network.
+** Note: Only messages the current network, no option to message multiple networks at once.
+*
+* Configuration Settings
+** /GSettings -gignore #Channel - Will not message this channel on any network you use /global on
+** /GSettings -gunignore #Channel - Removes the channel from the global do not message list
+** /GSettings -ignore #Channel - Will not message this channel on this network when using /global
+** /GSettings -unignore #Channel - Removes the channel from the network-specific do not message list
+** /GSettings -Status - Prints all ignore lists.
+** /Global MessageHere - Will message the entire network (minus ignore list)
+*
+* Settings File
+** This script stores all settings in GlobalAmsgSettings.ini in the mIRC Directory.
+** Type: //run $mIRCDir\GlobalAmsgSettings.ini to view.
 */
 
 alias global {
