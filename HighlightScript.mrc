@@ -38,7 +38,7 @@ alias highlight {
     echo -a [Highlight/IgnoreNicks]: $ReturnAll(IgnoreNicks)
   }
   elseif (($1 == -unignorenick) && ($2)) {
-    remini HighlightScript.ini IgnoreNicks $2
+    remini HighlightSettings.ini IgnoreNicks $2
     echo -a [Highlight/IgnoreNicks]: $ReturnAll(IgnoreNicks)
   }
   elseif ($1 == -status) {
