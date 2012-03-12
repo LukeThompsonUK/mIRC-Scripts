@@ -8,7 +8,7 @@
 ** /Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
 ** /Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
 ** /Highlight -ignorenick Nick [Ignores a user form highlighting you]
-** /Highlight -unigorenick Nick [Unignores a user form highlighting you]
+** /Highlight -unignorenick Nick [Unignores a user form highlighting you]
 ** /Highlight -status [Prints information]
 *
 * Settings File
@@ -54,7 +54,7 @@ alias highlight {
     echo -a /Highlight -ignorechan #Channel [Adds a channel to your highlight ignore list]
     echo -a /Highlight -unignorechan #Channel [Removes a channel from your highlight ignore list]
     echo -a /Highlight -ignorenick Nick [Ignores a user form highlighting you]
-    echo -a /Highlight -unigorenick Nick [Unignores a user form highlighting you]
+    echo -a /Highlight -unignorenick Nick [Unignores a user form highlighting you]
     echo -a /Highlight -status [Prints information]
   }
 }
