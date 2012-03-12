@@ -246,7 +246,7 @@ menu channel,status {
   }
 
   ..Set default UserID: writeini WhatPulseSettings.ini PulseID UserID $$?="Enter the ID"
-  ..Set default TeamID: writeini WhatPulseSettings.ini PulseID UserID $$?="Enter the ID"
+  ..Set default TeamID: writeini WhatPulseSettings.ini PulseID TeamID $$?="Enter the ID"
   .User
   ..Check default UserID: /WhatPulse $iif($readini(WhatPulseSettings.ini,PulseID,UserID),$readini(WhatPulseSettings.ini,PulseID,UserID),$?="No default ID set; enter a new ID to check")
   ..Check other UserID: /WhatPulse $?="Enter ID to check"
