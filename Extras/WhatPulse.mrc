@@ -1,15 +1,15 @@
-/*
-Commands:
-* /WhatPulse [-t] [User/TeamID]
-If the -t switch is used you will look up a TeamID instead of UserID, the User/TeamID is optional
-If you used either the menu or /PulseID [-t] to set your default IDs prior to using /WhatPulse
-* /PulseID [-t] User/TeamID
-If the -t switch is used you will specify a TeamID instead of a UserID, if you do not fill in a User/TeamID your current one will be unset.
-Settings:
-All settings are done via the channel menu, Right click a channel->WhatPulse->Settings
-You can also use this menu to change your default IDs
-If you have never used WhatPulse->Settings->Display before you will automatically echo the results of the lookup in the active window
-You can change this to a channel message if you wish.
+/**
+* Script Description
+** This script provides commands to look up whatpulse information on given user and team IDs
+*
+* Configuration Settings
+** /WhatPulse [-t] [User/TeamID] ( To lookup a User or TeamID. Use -t to specify a TeamID )
+** /PulseID [-t] [User/TeamID] ( To set your default User or TeamID. Use -t to specify a TeamID )
+** This script has a right-click popup menu in the channel and status windows for interaction.
+*
+* Settings File
+** This script stores all settings in WhatPulseSettings.ini in the mIRC Directory.
+** Type: //run $mIRCDir\WhatPulseSettings.ini to view.
 */
 
 alias WhatPulse {
