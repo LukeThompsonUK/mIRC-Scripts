@@ -76,7 +76,7 @@ alias -l ReturnAll {
 
 on *:TEXT:*:#:{
   ; This checks to make sure the channel and the user both aren't in the ignore list.
-  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok(ReturnAll(IgnoreNicks),$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok($ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
     ; Loops for every nick we have to check for.
@@ -102,7 +102,7 @@ on *:TEXT:*:#:{
 
 on *:ACTION:*:#:{
   ; This checks to make sure the channel and the user both aren't in the ignore list.
-  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok(ReturnAll(IgnoreNicks),$nick,44))) {
+  if ((!$istok($ReturnAll(IgnoreChans),$chan,44)) && (!$istok($ReturnAll(IgnoreNicks),$nick,44))) {
     var %x 1
 
     ; Loops for every nick we have to check for.
