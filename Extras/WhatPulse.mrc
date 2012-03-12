@@ -180,7 +180,14 @@ alias -l ShowPulse {
   }
   else {
     if ($readini(WhatPulseSettings.ini,Display,ShortDisplay) == on) {
-      %WhatPulse_Display WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Team: $+($iif(%WhatPulseStats.TeamID == 0,None,%WhatPulseStats.TeamName),[,%WhatPulseStats.TeamID,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b) / Rank in Team: $+($iif(%WhatPulseStats.TeamID == 0,User not in team.,$bytes(%WhatPulseStats.RankInTeam,b)))
+      if (%WhatPulseStats.TeamID != 0) {
+        var %WhatPulse_Display_Message WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Team: $+(%WhatPulseStats.TeamName,[,%WhatPulseStats.TeamID,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b) / Rank in Team: $+($bytes(%WhatPulseStats.RankInTeam,b))
+      }
+      else {
+        var %WhatPulse_Display_Message WhatPulse for $+(%WhatPulseStats.AccountName,:) $+([Keys:,$bytes(%WhatPulseStats.TotalKeyCount,b), / Clicks:,$bytes(%WhatPulseStats.TotalMouseClicks,b), / Miles:,%WhatPulseStats.TotalMiles,]) / Overall Rank: $bytes(%WhatPulseStats.Rank,b)
+      }
+
+      %WhatPulse_Display %WhatPulse_Display_Message
     }
     else {
       %WhatPulse_Display Account Name: %WhatPulseStats.AccountName
