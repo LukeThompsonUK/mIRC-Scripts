@@ -1,8 +1,15 @@
-on *:LOAD:{
-  echo 07 -s [HideAwayScriptMessages]: This script will attempt to hide all away messages from channel windows
-  echo 07 -s [HideAwayScriptMessages]: There's an optional feature to pm users with a link explaining why away messages are annoying
-  echo 07 -s [HideAwayScriptMessages]: /ah.settings -pm ON to enable this feature, OFF to disable it.
-}
+/**
+* Script Description
+** Attempts to hide all away messages from channel windows.
+*
+* Configuration Settings / Commands:
+** /ah.settings -pm [ON/OFF] ( Will pm the offending user with a link to why away messages are annoying. )
+** The message sent out is: 'Due to your recent away message you are kindly being asked to read this: http://sackheads.org/~bnaylor/spew/away_msgs.html'
+*
+* Settings File
+** This script stores all settings in HideAwayScriptMessage.ini.ini in the mIRC Directory.
+** Type: //run $mIRCDir\HideAwayScriptMessage.ini to view.
+*/
 
 ; Alias to handle settings, currently it only does the pm users on/off feature.
 ; Note to self, we need to move this to a link hosted by a more trustworthy host, don't want it going down.
