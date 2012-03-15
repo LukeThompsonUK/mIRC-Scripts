@@ -1,6 +1,11 @@
-; This replaces the standard /away with one that works on every network you're connected to
-; /away blahblah to set yourself away
-; /away with nothing added to come back.
+/**
+* Script Description
+** Alters the standard away command to work for every network you are connected to.
+*
+* Configuration Settings / Commands
+** /away texthere ( Set yourself as away )
+** /away ( Set yourself as back )
+*/
 
 alias away {
   if ($1) {
