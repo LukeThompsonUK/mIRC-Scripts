@@ -32,7 +32,7 @@ alias ah.settings {
 
 ; Handles text
 on ^*:TEXT:*:#:{
-  if ($regex($1-,/^is?(?:\x20am)?\x20(?:now\x20)?(away|back).?(?:\x20reason:?(?:\x20was:?)?|-)?\x20(.+)$/Si) != 0) {
+  if ($CheckForAway($1-) != 0) {
     if (!$window(@AwayMessages)) { 
       window -nz @AwayMessages 
     }
@@ -41,10 +41,7 @@ on ^*:TEXT:*:#:{
 
     ; Handles the URL messaging function
     if ($DoURL == ON) {
-      if (!%Spam. [ $+ [ $nick ] ]) {
-        msg $nick Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html
-        inc -u5 %Spam. [ $+ [ $nick ] ]
-      }
+      SendURL $nick
     }
 
     haltdef
@@ -54,7 +51,7 @@ on ^*:TEXT:*:#:{
 
 ; Handles actions
 on ^*:ACTION:*:#:{
-  if ($regex($1-,/^is?(?:\x20am)?\x20(?:now\x20)?(away|back).?(?:\x20reason:?(?:\x20was:?)?|-)?\x20(.+)$/Si) != 0) {
+  if ($CheckForAway($1-) != 0) {
     if (!$window(@AwayMessages)) { 
       window -nz @AwayMessages 
     }
@@ -63,13 +60,24 @@ on ^*:ACTION:*:#:{
 
     ; Handles the URL messaging function
     if ($DoURL == ON) {
-      if (!%Spam. [ $+ [ $nick ] ]) {
-        msg $nick Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html
-        inc -u5 %Spam. [ $+ [ $nick ] ]
-      }
+      SendURL $nick
     }
 
     haltdef
+  }
+}
+
+
+; Moved this check down to an alias so I can expand to multiple regexs for better matching later.
+alias -l CheckForAway {
+  return $regex($1-,/^is?(?:\x20am)?\x20(?:now\x20)?(away|back).?(?:\x20reason:?(?:\x20was:?)?|-)?\x20(.+)$/Si)
+}
+
+; Sends the URL
+alias -l SendURL {
+  if (!%Spam. [ $+ [ $1 ] ]) {
+    msg $1 Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html
+    inc -u5 %Spam. [ $+ [ $1 ] ]
   }
 }
 
