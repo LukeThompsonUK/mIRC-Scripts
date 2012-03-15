@@ -33,9 +33,9 @@ alias ah.settings {
 ; Handles text
 on ^*:TEXT:*:#:{
   if ($CheckForAway($1-) != 0) {
-    if (!$window(@AwayMessages)) { 
-      window -nz @AwayMessages 
-    }
+
+    ; Opens the @Wdinow
+    OpenWindow
 
     aline -ph @AwayMessages $timestamp $($+(07,$regml(1),:),2) $($+(12[10,$network,12:10,$chan,12:10,$nick,$iif($regml(2),12]10:,12])),2) $regml(2)
 
@@ -52,9 +52,9 @@ on ^*:TEXT:*:#:{
 ; Handles actions
 on ^*:ACTION:*:#:{
   if ($CheckForAway($1-) != 0) {
-    if (!$window(@AwayMessages)) { 
-      window -nz @AwayMessages 
-    }
+
+    ; Opens the @Window
+    OpenWindow
 
     aline -ph @AwayMessages $timestamp $($+(07,$regml(1),:),2) $($+(12[10,$network,12:10,$chan,12:10,$nick,$iif($regml(2),12]10:,12])),2) $regml(2)
 
@@ -72,6 +72,15 @@ on ^*:ACTION:*:#:{
 alias -l CheckForAway {
   return $regex($1-,/^is?(?:\x20am)?\x20(?:now\x20)?(away|back).?(?:\x20reason:?(?:\x20was:?)?|-)?\x20(.+)$/Si)
 }
+
+
+; Moved this to it's own alias so I don't have to have it written twice.
+alias -l OpenWindow {
+  if (!$window(@AwayMessages)) {
+    window -nz @AwayMessages
+  }
+}
+
 
 ; Sends the URL
 alias -l SendURL {
