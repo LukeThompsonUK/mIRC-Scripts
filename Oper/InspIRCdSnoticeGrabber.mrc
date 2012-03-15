@@ -327,6 +327,15 @@ on $^*:Snotice:/^\*{3}\sFILTER:\s(\S+)\sremoved\sfilter\s'(\S+)'$/Si:{
 }
 
 
+on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\sFILTER:\s(\S+).+,\starget\swas\s(\S+):\s(.+)$/Si:{
+  if (!$window(@Oper)) {
+    window -nz @Oper
+  }
+
+  aline -ph @Oper 12(09 $+ $time $+ 12) $+(13[,$network,]) 04FILTER MATCH:07 $regml(1) on $regml(2) for $regml(3)
+}
+
+
 on $^*:Snotice:/^\*{3}\s(\S+)\s\((\S+)\).+\/whois/Si:{
   if (!$window(@Other)) { 
     window -nz @Other 
@@ -367,6 +376,8 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:\s(\S+).+rehashing.+\s(\S+)\son\s(\S+)$/Si:
   aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Rehash:07 $regml(1) 12->07 $+($regml(3),:,$regml(2))
   haltdef
 }
+
+
 on $^*:Snotice:/^\*{3}\sSuccessfully\srehashed\sserver\.$/Si:{
   if (!$window(@Server)) { 
     window -nz @Server 
