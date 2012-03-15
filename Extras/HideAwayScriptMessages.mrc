@@ -34,7 +34,7 @@ alias ah.settings {
 on ^*:TEXT:*:#:{
   if ($CheckForAway($1-) != 0) {
 
-    ; Opens the @Wdinow
+    ; Opens the @Window
     OpenWindow
 
     aline -ph @AwayMessages $timestamp $($+(07,$regml(1),:),2) $($+(12[10,$network,12:10,$chan,12:10,$nick,$iif($regml(2),12]10:,12])),2) $regml(2)
