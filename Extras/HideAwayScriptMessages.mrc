@@ -4,7 +4,7 @@
 *
 * Configuration Settings / Commands:
 ** /ah.settings -pm [ON/OFF] ( Will pm the offending user with a link to why away messages are annoying. )
-** The message sent out is: 'Due to your recent away message you are kindly being asked to read this: http://sackheads.org/~bnaylor/spew/away_msgs.html'
+** The message sent out is: 'Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html'
 *
 * Settings File
 ** This script stores all settings in HideAwayScriptMessage.ini.ini in the mIRC Directory.
@@ -42,7 +42,7 @@ on ^*:TEXT:*:#:{
     ; Handles the URL messaging function
     if ($DoURL == ON) {
       if (!%Spam. [ $+ [ $nick ] ]) {
-        msg $nick Due to your recent away message you are kindly being asked to read this: http://sackheads.org/~bnaylor/spew/away_msgs.html
+        msg $nick Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html
         inc -u5 %Spam. [ $+ [ $nick ] ]
       }
     }
@@ -64,7 +64,7 @@ on ^*:ACTION:*:#:{
     ; Handles the URL messaging function
     if ($DoURL == ON) {
       if (!%Spam. [ $+ [ $nick ] ]) {
-        msg $nick Due to your recent away message you are kindly being asked to read this: http://sackheads.org/~bnaylor/spew/away_msgs.html
+        msg $nick Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/pages/away_messages.html
         inc -u5 %Spam. [ $+ [ $nick ] ]
       }
     }
