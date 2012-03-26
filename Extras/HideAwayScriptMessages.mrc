@@ -14,18 +14,22 @@
 ; Alias to handle settings, currently it only does the pm users on/off feature.
 ; Note to self, we need to move this to a link hosted by a more trustworthy host, don't want it going down.
 alias ah.settings {
-  if ($1 == -pm) {
-    if ($2 == on) {
+  ; Checks for -pm on|off
+  if ($regex(HideAway,$1-,/-pm\s(on|off)$/Si)) {
+    ; If it's on
+    if ($regml(HideAway,1) == on) {
       writeini HideAwayScriptMessage.ini Configuration ShowURL ON
       echo 07 -a [HideAwayScriptMessages\Configuration]: Showing URL to users.
     }
-    elseif ($2 == off) {
+    ; Off.
+    elseif ($regml(HideAway,1) == off) {
       writeini HideAwayScriptMessage.ini Configuration ShowURL OFF
       echo 07 -a [HideAwayScriptMessages\Configuration]: Not showing URL to users.
     }
-    else {
-      echo 07 -a [HideAwayScriptMessages\Configuration]: Usage: /ah.settings -pm [on|off]
-    }
+  }
+  ; If it didn't match -pm on|off
+  else {
+    echo 07 -a [HideAwayScriptMessages\Configuration]: Usage: /ah.settings -pm [on|off]
   }
 }
 
