@@ -38,7 +38,8 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
         var %Reason %To_Check
       }
 
-      CreateWindow(@Monitor)
+      ; Creates the @Window if it isn't already created.
+      CreateWindow @Monitor
 
       ; Writes to @Monitor
       aline -ph @Monitor $timestamp $+([,$network,]) 04MATCH:07 $regml(2)
@@ -88,10 +89,13 @@ alias Monitor.status {
 ; Handles the monitor.settings command
 alias Monitor.settings {
   if ($1 == oper-chan) {
-    if ($2) {
-      writeini MonitorSettings Settings &oper-chan $2
+    if ($regex($2,/^#\S+/)) {
+      echo -a Oper display channel set to $2
+      aline -p @Monitor $timestamp $+([,$network,]) Oper display channel set to $2
+      writeini MonitorSettings.ini Settings &oper-chan $2
     }
     else {
+      echo -a Please use a #Channel for the oper display channel.
       remini MonitorSettings Settings &oper-chan
     }
   }
@@ -146,6 +150,7 @@ alias Monitor {
   }
 }
 
+; Used to check if the window is open, if not it creates one.
 alias -l CreateWindow {
   if (!$window($1)) {
     window -nz $1
