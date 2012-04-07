@@ -76,7 +76,7 @@ alias Monitor.status {
         var %Reason %To_Check
       }
 
-      echo -a $+(%x,:) Regex: %Regex Flags: $iif(%Flags, %Flags, none) Reason: %Reason
+      echo -a $+(%x,:) 10Regex:07 %Regex 10Flags:07 $iif(%Flags, %Flags, none) 10Reason:07 %Reason
       inc %x
     }
     echo -a -
@@ -135,15 +135,15 @@ alias Monitor {
 
   ; Check for flags.
   if (%flags) {
-    echo -a %Regex written to file with flags: %flags for reason: %Reason
-    aline -p @Monitor $timestamp $+([,$network,]) %Regex written to file with flags: %flags for reason: %Reason
+    echo -a 10Regex:07 %Regex 10written to file with flags:07 %flags 10for reason:07 %Reason
+    aline -p @Monitor $timestamp $+([,$network,]) 10Regex:07 %Regex 10written to file with flags:07 %flags 10for reason:07 %Reason
     writeini MonitorSettings.ini $network %Regex $+(%Flags,:,%Reason)
 
     halt
   }
   else {
-    echo -a %Regex written to file for reason: %Reason
-    aline -p @Monitor $timestamp $+([,$network,]) %Regex written to file for reason: %Reason
+    echo -a 10Regex:07 %Regex 10written to file for reason:07 %Reason
+    aline -p @Monitor $timestamp $+([,$network,]) 10Regex:07 %Regex 10written to file for reason:07 %Reason
     writeini MonitorSettings.ini $network %Regex %Reason
 
     halt
