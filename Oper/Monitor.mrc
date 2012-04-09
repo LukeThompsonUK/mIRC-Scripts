@@ -90,13 +90,13 @@ alias Monitor.status {
 alias Monitor.settings {
   if ($1 == oper-chan) {
     if ($regex($2,/^#\S+/)) {
-      echo -a Oper display channel set to $2
-      aline -p @Monitor $timestamp $+([,$network,]) Oper display channel set to $2
+      echo -a 10Oper display channel set to07 $2
+      aline -p @Monitor $timestamp $+([,$network,]) 10Oper display channel set to07 $2
       writeini MonitorSettings.ini Settings &oper-chan $2
     }
     else {
-      echo -a Please use a #Channel for the oper display channel.
-      remini MonitorSettings Settings &oper-chan
+      echo -a Invalid channel given, set oper display channel to default ( #Services )
+      remini MonitorSettings.ini Settings &oper-chan
     }
   }
 }
