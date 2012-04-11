@@ -75,7 +75,7 @@ on $^*:Snotice:/^\*{3}\sXLINE:\s(\S+).+for\s(\S+):\s(.+)/Si:{
     window -nz @Network-Kills/Bans
   }
 
-  aline -ph @Network-Kills/Bans) 12(09 $+ $time $+ 12) $+(13[,$network,]) 4PERMANENT XLINE:7 $regml(2) 12added by7 $regml(1) 12for7 $regml(3)
+  aline -ph @Network-Kills/Bans 12(09 $+ $time $+ 12) $+(13[,$network,]) 4PERMANENT XLINE:7 $regml(2) 12added by7 $regml(1) 12for7 $regml(3)
   haltdef
 }
 
