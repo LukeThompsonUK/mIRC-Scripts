@@ -27,7 +27,7 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
     var %Regex $ini(MonitorSettings.ini, $network, %x)
     ; If our regex matched we have to do stuff
     if ($regex(Monitor, $regml(2), %Regex) > 0) {
-      var %To_Check $readini(MonitorSettings.ini,CriticalSecurity,%Regex)
+      var %To_Check $readini(MonitorSettings.ini,$network,%Regex)
 
       ; Gets the flags + reason
       if ($numtok(%To_Check,58) == 2) {
@@ -67,7 +67,7 @@ alias Monitor.status {
     var %x 1
     while (%x <= %Lines) {
       var %Regex $ini(MonitorSettings.ini,$1,%x)
-      var %To_Check $readini(MonitorSettings.ini,CriticalSecurity,%Regex)
+      var %To_Check $readini(MonitorSettings.ini,$1,%Regex)
       if ($numtok(%To_Check,58) == 2) {
         var %Flags $gettok(%To_Check,1,58)
         var %Reason $gettok(%To_Check,2,58)
