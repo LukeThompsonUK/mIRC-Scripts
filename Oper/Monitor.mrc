@@ -47,7 +47,7 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
 
       ; Message oper chan
       if (s isincs %Flags) {
-        var %Channel $readini(MonitorSettings.ini,Settings,&oper-chan)
+        var %Channel $readini(MonitorSettings.ini,&Oper-Chan,$network)
         msg $iif(%Channel,%Channel,#Services) 04Match:07 $regml(2)
         msg $iif(%Channel,%Channel,#Services) 10Regex:07 %Regex 10Flags:07 $iif(%Flags,%Flags,none) 10Reason:07 %Reason
       }
@@ -88,15 +88,36 @@ alias Monitor.status {
 
 ; Handles the monitor.settings command
 alias Monitor.settings {
+  ; This is currently the only configurable option.
   if ($1 == oper-chan) {
+    ; Check to make sure it's a valid channel.
     if ($regex($2,/^#\S+/)) {
-      echo -a 10Oper display channel set to07 $2
+
+      ; Create the window to write to.
+      CreateWindow @Monitor
+
+      ; Write the settings to the @Window
       aline -p @Monitor $timestamp $+([,$network,]) 10Oper display channel set to07 $2
-      writeini MonitorSettings.ini Settings &oper-chan $2
+
+      ; Check if we have one set already.
+      if ($readini(MonitorSettings.ini,&Oper-Chan,$network)) {
+        msg $readini(MonitorSettings.ini,&Oper-Chan,$network) 10Oper display channel changed to:07 $2
+      }
+
+      ; Write to file
+      writeini MonitorSettings.ini &Oper-Chan $network $2
+
+      ; Write to the new channel with basic information
+      msg $2 10This channel has been set as the oper display channel for monitoring suspicious activity.
+      msg $2 10If any matches are hit they will be printed here in the following format:
+      msg $2 04MATCH:07 WhatMatched
+      msg $2 10REGEX:07 REGEX 10Flags:07 flags 10Reason:07 Reason.
+      msg $2 10Currently the only flag in use is 's' which shows the output here.
+      msg $2 10Eventually there will be 'g' for gline, 'z' for zline, and 'k' for just a regular kill.
     }
     else {
       echo -a Invalid channel given, set oper display channel to default ( #Services )
-      remini MonitorSettings.ini Settings &oper-chan
+      remini MonitorSettings.ini &Oper-Chan $network
     }
   }
 }
