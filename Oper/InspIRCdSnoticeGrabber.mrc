@@ -16,7 +16,7 @@ on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
     window -nz @Clients 
   }
 
-  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1) $+([,$regml(3),])
   haltdef
 }
 

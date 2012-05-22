@@ -42,7 +42,7 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
       CreateWindow @Monitor
 
       ; Writes to @Monitor
-      aline -ph @Monitor $timestamp $+([,$network,]) 04MATCH:07 $regml(2)
+      aline -ph @Monitor $timestamp $+([,$network,]) 04MATCH:07 $regml(2) $+([,$regml(3),])
       aline -ph @Monitor $timestamp $+([,$network,]) 10Regex:07 %Regex 10Flags:07 $iif(%Flags,%Flags,none) 10Reason:07 %Reason
 
       ; Message oper chan
@@ -61,8 +61,8 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
 ; Handles the status command
 alias Monitor.status {
   if ($1) {
-    echo -a Printing status for $1
     echo -a -
+    echo -a Printing status for $1
     var %Lines $ini(MonitorSettings.ini, $1, 0)
     var %x 1
     while (%x <= %Lines) {
