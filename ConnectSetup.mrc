@@ -100,10 +100,9 @@ raw 005:*:{
           nick $readini(AutoLoginInformation.ini,$network,&Nick)
         }
 
-        ; The reason for using an alias in this timer is so that $me is evaluated after the timer
-        ; Not when the timer is originally set, we may change our nick between those two periods.
+        ; Fixed this so we nolonger need the alias.
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          .timerSETMODE [ $+ [ $network ] ] 1 10 //SetModes
+          .timerSETMODE [ $+ [ $network ] ] 1 15 mode $!me $readini(AutoLoginInformation.ini,$network,&Modes)
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
@@ -111,17 +110,11 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          .timerJOINCHANNELS [ $+ [ $network ] ] 1 10 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
       }
 
       unset %Connect.Raw
     }
   }
-}
-
-; We use this alias to setmodes so $me is evaluated at the time the modes are set.
-; This prevents us from using /mode on our previous nick.
-alias -l SetModes {
-  //mode $me $readini(AutoLoginInformation.ini,$network,&Modes)
 }
