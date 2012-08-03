@@ -1,1 +1,5 @@
+# Configuration files
 *.ini
+
+# Paid scripts, these should not be public. Ever.
+Paid/

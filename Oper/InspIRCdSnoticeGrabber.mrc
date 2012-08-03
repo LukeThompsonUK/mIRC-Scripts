@@ -386,3 +386,12 @@ on $^*:Snotice:/^\*{3}\sSuccessfully\srehashed\sserver\.$/Si:{
   aline -ph @Server 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Rehash:07 Successfully rehashed server.
   haltdef
 }
+
+; Debug line for development purposes.
+on ^*:SNOTICE:*:{
+  if (!$window(@Snotice.debug)) { 
+    window -nz @Snotice.debug
+  }
+
+  aline -p @Snotice.debug 12(09 $+ $time $+ 12) $1-
+}
