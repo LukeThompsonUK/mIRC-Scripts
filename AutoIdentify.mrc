@@ -4,7 +4,8 @@
 *
 * Configuration Settings
 ** /LoginDetails [-d [nick]] ( To remove a nick/pass combination, if no nick is given it uses the current nick )
-** /LoginDetails ( Will prompt you for a password to use with the current nickname. )
+** /LoginDetails -current ( Will prompt you for a password to use with the current nickname. )
+** /LoginDetails ( Will print syntax information )
 ** There is a popup menu in the channel and status windows.
 *
 * Settings File
@@ -32,18 +33,14 @@ alias LoginDetails {
     }
   }
   ; Added so when you use -d you don't get this part of the script.
-  else {
+  elseif ($1 == -current) {
     ; Setup auto identifying with the current nick
-    writeini AutoIdentify.ini $network $me $$?="Enter the password for autoidentifying"
-
-    ; Display the current information
-    echo -a -
-    echo -a Network: $network
-    echo -a Username: $me
-    echo -a Password: $readini(AutoIdentify.ini,$network,$me)
-    echo -a To remove this username/password type /LoginDetails -d $me
-    echo -a -
+    writeini AutoIdentify.ini $network $me $$?="Enter the password for auto-identifying"
   }
+
+  ; Right click menu
+  echo -a To view the information saved for this network use the right click menu.
+  echo -a Right click -> NickServ autologin information -> View network information.
 }
 
 ; Some awesome popup menu for the script
