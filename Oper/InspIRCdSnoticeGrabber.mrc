@@ -351,7 +351,7 @@ on $^*:WALLOPS:*:{
     window -nezg1 $($+(@WallOPS.,$network),2) 
   }
 
-  aline -ph $($+(@WallOPS.,$network),2) 12(7 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
+  aline -ph $($+(@WallOPS.,$network),2) 12(07 $+ $time $+ 12) 4WallOps:7 $nick 12->7 $1-
   haltdef
 }
 on *:INPUT:@WallOPS.*:{ WallOPS $1- | haltdef }
