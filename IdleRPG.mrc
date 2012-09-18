@@ -14,6 +14,11 @@
 * Settings File
 ** This script stores all settings in IdleRPGAutoLoginDetails.ini in the mIRC Directory.
 ** Type: //run $mIRCDir\IdleRPGAutoLoginDetails.ini to view.
+*
+* Note:
+** This script is only designed for the IdleRPG bot from http://idlerpg.net/
+** With any other IdleRPG bot it may or may not work, depending on the syntax the bot uses for things.
+** If you wish to submit a patch to make it work with other bots, please do.
 */
 
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
