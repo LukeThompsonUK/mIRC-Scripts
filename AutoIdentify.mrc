@@ -3,10 +3,11 @@
 ** This script will attempt to auto identify you to NickServ.
 *
 * Configuration Settings
-** /LoginDetails [-d [nick]] ( To remove a nick/pass combination, if no nick is given it uses the current nick )
-** /LoginDetails -current ( Will prompt you for a password to use with the current nickname. )
-** /LoginDetails ( Will print syntax information )
-** There is a popup menu in the channel and status windows.
+** /AutoIdentify -nick=NickHere ( Will display the password for the given nick. )
+** /AutoIdentify -nick=NickHere -pass=PassHere ( Will set the password for the given nick to the specified one. )
+** /AutoIdentify -delete -nick=NickHere ( Will delete the given nickname. )
+** /AutoIdentify -listnicks=NetworkHere ( Will list all the nick/pass combinations for the given network. )
+** /AutoIdentify ( will print syntax information for the script. )
 *
 * Settings File
 ** This script stores all settings in AutoIdentify.ini in the mIRC Directory.
@@ -14,58 +15,94 @@
 */
 
 
-; Begin the alias
-alias LoginDetails {
-  ; If the first thing is -d, ex: /LoginDetails -d
-  if ($1 == -d) {
-    ; If there is a second thing
-    if ($2) {
-      ; Delete the second thing from the current network in AutoIdentify.ini
-      remini AutoIdentify.ini $network $2
-      ; Display the removed
-      echo -a Removed $2 from your autologin nicklist on $network
+; AutoIdentify alias
+alias AutoIdentify {
+  ; List info?
+  if ($regex(ListInfo,$1-,/^-listnicks=(\S+)$/Si)) { var %ListNicks $regml(ListInfo,1) }
+
+  ; Delete?
+  if ($regex(Delete,$1,/^-d(?:elete)?/Si)) { var %Delete = YES }
+
+  ; Set the nick variable
+  if ($regex(Nick,$1-,/-nick=(\S+)/Si)) { var %Nick = $regml(Nick,1) }
+
+  ; Set the pass variable
+  if ($regex(Pass,$1-,/-pass=(\S+)/Si)) { var %Pass = $regml(Pass,1) }
+
+  ; If we want to list the information for a network
+  if (%ListNicks) {
+    var %x = 1
+    echo -a -
+    echo -a Network: $network
+    while (%x <= $ini(AutoIdentify.ini,$network,0)) {
+      echo -a Nick: $ini(AutoIdentify.ini,$network,%x) : Pass: $readini(AutoIdentify.ini,$network,$ini(AutoIdentify.ini,$network,%x))
+      inc %x
+    }
+    echo -a -
+
+    return
+  }
+
+  ; If we want to delete something
+  if (%Delete) {
+    ; If a nick is given we delete that nick.
+    if (%Nick) {
+      remini AutoIdentify.ini $network %Nick
+      echo -a Removed %Nick from your autologin nicklist on $network
+
+      return
+    }
+
+    ; If no nick is given we do nothing.
+    echo -a No nick was given to remove.
+
+    return
+  }
+
+  ; If a nick is given.
+  if (%Nick) {
+    ; If there is a pass given, set the password for the given nick to it.
+    if (%Pass) {
+      writeini AutoIdentify.ini $network %Nick %Pass
+    }
+
+    if ($readini(AutoIdentify.ini,$network,%Nick)) {
+      echo -a The password for %Nick is: $readini(AutoIdentify.ini,$network,%Nick)
+      return
     }
     else {
-      ; Since there was no second thing, delete the currently used nick
-      remini AutoIdentify.ini $network $me
-      ; Display the removed
-      echo -a Removed $me from your autologin nicklist on $network
+      echo -a The given nick $+($chr(40),%Nick,$chr(41)) does not have a stored password.
+      return
     }
   }
-  ; Added so when you use -d you don't get this part of the script.
-  elseif ($1 == -current) {
-    ; Setup auto identifying with the current nick
-    writeini AutoIdentify.ini $network $me $$?="Enter the password for auto-identifying"
-  }
 
-  ; Right click menu
-  echo -a To view the information saved for this network use the right click menu.
-  echo -a Right click -> NickServ autologin information -> View network information.
+  echo -a Syntax information:
+  echo -a /AutoIdentify -nick=NickHere ( Will display the password for the given nick. )
+  echo -a /AutoIdentify -nick=NickHere -pass=PassHere ( Will set the password for the given nick to the specified one. )
+  echo -a /AutoIdentify -delete -nick=NickHere ( Will delete the given nickname. )
+  echo -a /AutoIdentify -listnicks=NetworkHere ( Will list all the nick/pass combinations for the given network. )
+  echo -a /AutoIdentify ( will print this information. )
 }
 
-; Some awesome popup menu for the script
+; Popup menu for the script
 menu channel,status {
   NickServ autologin information
   ; Setup auto identification for a nick
   .Set a nick for autologin:{
-    writeini AutoIdentify.ini $network $$?="Enter the nick to identify with" $$?="Enter the password for the nickname"
-    echo -a Updated the autologin information for $network
+    var %Nick = $$?="Enter the nick to identify with (Or leave blank to do nothing.)"
+    var %Pass = $$?="Enter the password for that nick (Or leave blank to do nothing.)"
+    AutoIdentify $+(-nick=,%Nick) $+(-pass=,%Pass)
   }
+
   ; Remove a nick from auto identification
   .Remove a nick from autologin:{
-    remini AutoIdentify.ini $network $$?="Enter the nick to delete"
-    echo -a Updated the autologin information for $network
+    var %Nick = $$?="Enter the nick to delete. (Or leave blank to do nothing.)
+    AutoIdentify -delete $+(-nick=,%Nick)
   }
+
   ; Print the current network information
   .View information for this network: {
-    var %x 1
-    echo -a -
-    echo -a Network: $network
-    while (%x <= $ini(AutoIdentify.ini,$network,0)) {
-      echo -a $ini(AutoIdentify.ini,$network,%x) : $readini(AutoIdentify.ini,$network,$ini(AutoIdentify.ini,$network,%x))
-      inc %x
-    }
-    echo -a -
+    AutoIdentify $+(-ListNicks=,$network)
   }
 }
 
