@@ -12,7 +12,8 @@
 
 ; Raw 474 is the ban error numeric.
 raw 474:*cannot join channel*:{
-  echo 10 -ta * [AutoBypass] 04Banned: Could not join: $2
+  echo 10 -ta * [474: Banned] Could not join: $2
+  echo 10 -ta * [AutoBypass] Trying to unban...
   ChanServ unban $2
   haltdef
 }
@@ -40,7 +41,8 @@ on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{
 
 ; Raw 473 is the +i error numeric.
 raw 473:*cannot join channel*:{ 
-  echo 10 -ta * [AutoBypass] 04Invite-Only: Could not join: $2
+  echo 10 -ta * [473: Invite only] Could not join: $2
+  echo 10 -ta * [AutoBypass] Trying to invite...
   ChanServ invite $2
   haltdef 
 }
@@ -58,7 +60,8 @@ on ^*:invite:#:{
 
 ; Raw 475 is the +k error numeric.
 raw 475:*cannot join channel*:{
-  echo 10 -ta * [AutoBypass] 04Keyed Channel: Could not join: $2
+  echo 10 -ta * [475: Keyed channel] Could not join: $2
+  echo 10 -ta * [AutoBypass] Trying to get key...
   ChanServ getkey $2
   haltdef
 }
