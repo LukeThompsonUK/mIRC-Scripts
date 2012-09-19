@@ -5,11 +5,8 @@
 ** an @Window.
 *
 * Configuration Settings / Commands:
-** /IRPG -botnick nickforthebothere
-** /IRPG -Username nickforyouridlerpglogin
-** /IRPG -Password youridlerpgpasswordhere
-** If you use /IRPG and your syntax doesn't match any of the above
-** you will be given syntax for the command(s).
+** /IRPG -botnick=BotNickHere -username=YourUsernameHere -password=YourPasswordHere
+** If you use /IRPG and your syntax doesn't match any of the above you will be given the syntax
 *
 * Settings File
 ** This script stores all settings in IdleRPGAutoLoginDetails.ini in the mIRC Directory.
@@ -93,25 +90,52 @@ alias -l DoLogin {
 
 ; This alias is used to set your botname, username and password.
 alias IRPG {
-  if ($regex($1-2,/-botnick\s\S+$/Si)) {
-    writeini IdleRPGAutoLoginDetails.ini $network Botname $2
-  }
-  elseif ($regex($1-2,/-Username\s\S+$/Si)) {
-    writeini IdleRPGAutoLoginDetails.ini $network Username $2
-  }
-  elseif ($regex($1-2,/-Password\s\S+$/Si)) {
-    writeini IdleRPGAutoLoginDetails.ini $network Password $2
-  }
-  else {
-    echo 07 -a [IdleRPG] Syntax for the script is:
-    echo 07 -a [IdleRPG] /IRPG -botnick nickforthebothere
-    echo 07 -a [IdleRPG] /IRPG -Username nickforyouridlerpglogin
-    echo 07 -a [IdleRPG] /IRPG -Password youridlerpgpasswordhere
-    var %x 1
+
+  if (!$1) {
+    echo -a [IdleRPG] Usage:
+    echo -a [IdleRPG] /IRPG -botnick=BotNickHere -username=YourUsernameHere -password=YourPasswordHere
+    echo -a [IdleRPG] You may specify these arguments in any order.
+    echo -a [IdleRPG] /IRPG -details ( Prints information for the network it is typed on. )
+
+    return
   }
 
-  if (!%x) {
-    IRPG.show
+  ; Details?
+  if ($regex(IRPG_FullDetails,$1,/^-details$/Si)) { var %Details = $network }
+
+  ; If we want to change the botnick.
+  if ($regex(IRPG_BotNick,$1-,/-botnick=(\S+)/Si)) { var %Botnick = $regml(IRPG_BotNick,1) }
+
+  ; If we want to change the username.
+  if ($regex(IRPG_Nick,$1-,/-username=(\S+)/Si)) { var %Nickname = $regml(IRPG_Nick,1) }
+
+  ; If we want to change the users pass.
+  if ($regex(IRPG_Pass,$1-,/-pass=(\S+)/Si)) { var %Password = $regml(IRPG_Pass,1) }
+
+  if (%Details) {
+    echo -a -
+    echo -a Network: $network
+    echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+    echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+    echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    echo -a -
+
+    return
+  }
+
+  if (%Botnick) {
+    writeini IdleRPGAutoLoginDetails.ini $network BotName %Botnick
+    echo -a Botnick changed to: %Botnick
+  }
+
+  if (%Nickname) {
+    writeini IdleRPGAutoLoginDetails.ini $network Username %Nickname
+    echo -a Username changed to: %Nickname
+  }
+
+  if (%Password) {
+    writeini IdleRPGAutoLoginDetails.ini $network Password %Password
+    echo -a Password changed to: %Password
   }
 }
 
@@ -133,28 +157,17 @@ menu channel,status {
 
   .Autologin information
   ..Set botname:{
-    writeini IdleRPGAutoLoginDetails.ini $network Botname $$?="Enter the bot name to message on this network."
-    echo -a Botname for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
+    var %Botnick $$?="Enter the bot name to message on this network."
+    IRPG $+(-botnick=,%Botnick)
   }
 
   ..Set username:{
-    writeini IdleRPGAutoLoginDetails.ini $network Username $$?="Enter the username to message on this network."
-    echo -a Username for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
+    var %Username $$?="Enter the username to message on this network."
+    IRPG $+(-username=,%Username)
   }
 
   ..Set password:{
-    writeini IdleRPGAutoLoginDetails.ini $network Password $$?="Enter the password to message on this network."
-    echo -a Password for $network changed to: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    var %Password $$?="Enter the password to message on this network."
+    IRPG $+(-password=,%Password)
   }
-}
-
-
-; Using this to prevent writing out the echos multiple times.
-alias -l IRPG.show {
-  echo -a -
-  echo -a Network: $network
-  echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
-  echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
-  echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
-  echo -a -
 }
