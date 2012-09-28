@@ -49,3 +49,10 @@ users to play using the mIRC client.
 This folder will be for small patches that something needs for one of my  
 scripts to work properly. I don't plan on making many patches but the few  
 I do make will be here for everyone who wants them.
+
+### Donations
+If i've helped you in any way and you'd like to return the favor, here is  
+a link to my Amazon Wishlist, feel free to buy any of the items.  
+There are even a few items less than $5 so you don't have to break your  
+wallet helping me out :D
+[Amazon Wishlist](http://amzn.com/w/EM4MNOPQEX35)
