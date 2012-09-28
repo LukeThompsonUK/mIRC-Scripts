@@ -5,6 +5,7 @@
 * Configuration Settings / Commands:
 ** /ah.settings -pm [ON/OFF] ( Will pm the offending user with a link to why away messages are annoying. )
 ** The message sent out is: 'Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/away_messages.html'
+** The above doesn't currently work due to the link being removed. It will be added back when it's been rewritten to look nicer.
 *
 * Settings File
 ** This script stores all settings in HideAwayScriptMessage.ini.ini in the mIRC Directory.
@@ -89,7 +90,8 @@ alias -l OpenWindow {
 ; Sends the URL
 alias -l SendURL {
   if (!%Spam. [ $+ [ $1 ] ]) {
-    msg $1 Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/away_messages.html
+    ;  msg $1 Due to your recent away message you are kindly being asked to read this: http://shawn-smith.github.com/away_messages.html
+    msg $1 Please consider turning off public away messages. They are incredibly annoying.
     inc -u5 %Spam. [ $+ [ $1 ] ]
   }
 }
