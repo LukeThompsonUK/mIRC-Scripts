@@ -22,7 +22,7 @@ alias dehalfop $iif($1,mode $chan - $+ $str(h,$modespl) $1-,mode $chan -h $me)
 alias op $iif($1,mode $chan + $+ $str(o,$modespl) $1-,mode $chan +o $me)
 
 ; Ghosts a nickname
-Ghost {
+alias Ghost {
   NickServ ghost $1-
 }
 
