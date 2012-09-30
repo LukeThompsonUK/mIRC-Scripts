@@ -9,11 +9,13 @@ Anyone wishing to contribute feel free to, I'm still trying to find a way
 to organise the scripts so it's not just a massive clusterfuck of scripts  
 everywhere. If anyone has any ideas let me know.
 
+[Link to GitHub](https://www.GitHub.com/Shawn-Smith/mIRC-Scripts)
+
 ### How to use.
 
 To download the entire repository you need to install git. Once installed  
 you can use the command:  
-'git clone git://github.com/Shawn-Smith/mIRC-Scripts.git FolderToInstall'  
+`git clone git://github.com/Shawn-Smith/mIRC-Scripts.git FolderToInstallTo`  
 From there you load the scripts into mIRC as you would normally.  
 
 Updating once you have the entire repository is simple. Every so often  
@@ -52,7 +54,6 @@ I do make will be here for everyone who wants them.
 
 ### Donations
 If i've helped you in any way and you'd like to return the favor, here is  
-a link to my Amazon Wishlist, feel free to buy any of the items.  
-There are even a few items less than $5 so you don't have to break your  
-wallet helping me out :D
+a link to my Amazon Wishlist, feel free to buy any of the items.
+
 [Amazon Wishlist](http://amzn.com/w/EM4MNOPQEX35)
