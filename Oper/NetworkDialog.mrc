@@ -4,7 +4,7 @@
 *
 * Development
 ** This script is currently in development and nowhere near finished.
-** If yuo wish to contribute please visit the GitHub repo: https://github.com/Shawn-Smith/mIRC-Scripts
+** If you wish to contribute please visit the GitHub repo: https://github.com/Shawn-Smith/mIRC-Scripts
 *
 * Settings File
 ** This script stores all settings in NetworkControlDialog.ini in the mIRC Directory.
