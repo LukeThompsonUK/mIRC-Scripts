@@ -11,6 +11,8 @@
 *** -s: Show in oper chan.
 ** /Monitor.status <network here> ( Prints given regexs for the network )
 ** /Monitor.settings oper-chan #channel ( Sets the oper channel. Defaults to #Services )
+*** -t: Display a mIRC tool-tip. ($tip)
+** Will display a small, 5 second $tip with the name of the person that matched and the reason.
 *
 * Settings File
 ** This script stores all settings in MonitorSettings.ini in the mIRC Directory.
@@ -50,6 +52,10 @@ on $*:SNOTICE:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
         var %Channel $readini(MonitorSettings.ini,&Oper-Chan,$network)
         msg $iif(%Channel,%Channel,#Services) 04Match:07 $regml(2)
         msg $iif(%Channel,%Channel,#Services) 10Regex:07 %Regex 10Flags:07 $iif(%Flags,%Flags,none) 10Reason:07 %Reason
+      }
+
+      if (t isincs %Flags) {
+        noop $tip(Monitor,Matched,10User:07 $regml(2) 10has matched Regex:07 $+(%Regex,10,$chr(44)) Reason:07 %Reason,10)
       }
     }
 
