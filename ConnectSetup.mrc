@@ -112,6 +112,18 @@ raw 005:*:{
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
           .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
         }
+
+        ; If we have the AutoIdentify script loaded, let's try to auth with our nick
+        if ($script(AutoIdentify.mrc) != NULL) {
+          if ($readini(AutoIdentify.ini,$network,$me)) {
+            ; Message nickserv the password
+            NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
+          }
+          else { 
+            ; We didn't have a password setup, so print that information back to us.
+            echo -a $+([,$network,:,$me,]) You're not set to autoidentify with this nickname.
+          }
+        }
       }
 
       unset %Connect.Raw

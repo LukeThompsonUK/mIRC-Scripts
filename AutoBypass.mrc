@@ -102,6 +102,25 @@ on $^*:Notice:/^KEY\s(\S+)\s(\S+)$/Si:?:{
   }
 }
 
+
+; This works with AutoIdentify.mrc.
+raw 477:*need to be identified*:{
+  ; Check to make sure we have AutoIdentify loaded.
+  if ($script(AutoIdentify.mrc) != NULL) {
+    echo 10 -ta [477: Registration required] Could not join $2
+    ; If we have a password for our current nick, use it.
+    if ($readini(AutoIdentify.ini,$network,$me)) {
+      echo 10 -ta [AutoBypass] Attempting to authenticate with saved password for $me and reattempt the join to $2
+      NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
+      .timerJOINAFTERID 1 5 /join $2
+    }
+    ; Otherwise, error out.
+    else {
+      echo -a $+([,$network,:,$me,]) You're not set to autoidentify with this nickname.
+    }
+  }
+}
+
 ; This unbans you when someone else sets a ban as long as you're a Op/Halfop it will remove the ban.
 ; You must be on the channel when the ban is set to remove it though, if you're banned+kicked and
 ; have autorejoin on the other part of the script will unban you and join you again.
