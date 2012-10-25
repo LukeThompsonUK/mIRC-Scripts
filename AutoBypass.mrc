@@ -23,8 +23,10 @@ raw 474:*cannot join channel*:{
 on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-  aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Removed ban. [Matched $+(07,$regml(2),10) $+($iif($regml(2) > 1,bans,ban),])
-  join -n $regml(1) | haltdef
+  if ($me !ison $regml(1)) {
+    aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Removed ban. [Matched $+(07,$regml(2),10) $+($iif($regml(2) > 1,bans,ban),])
+    join -n $regml(1) | haltdef
+  }
 }
 
 
@@ -32,7 +34,7 @@ on $^*:Notice:/(\S+)\s\((\d+)\sbans?\sremoved\)\.$/Si:?:{
 on $^*:Notice:/unbanned\sfrom\s(\S+)\.$/Si:?:{ 
   if (!$window(@Ban/Key/Invite)) { window -nz @Ban/Key/Invite }
 
-  if ($me !ison $chan) {
+  if ($me !ison $regml(1)) {
     aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Removed ban.
     join -n $regml(1) | haltdef
   }
