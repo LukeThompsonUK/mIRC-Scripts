@@ -110,7 +110,31 @@ raw 005:*:{
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join -n $readini(AutoLoginInformation.ini,$network,&Channels)
+          ; We're going to loop for all the channels and only use join -n on
+          ; channels we're not in. This prevents random minimization when we are
+          ; disconnected from the network for whatever reason.
+          var %x 1
+          tokenize 44 $readini(AutoLoginInformation.ini,$network,&Channels)
+          while (%x <= $0) {
+            if (!$window([ $ [ $+ [ %x ] ] ])) {
+              var %JoinN %JoinN [ $ [ $+ [ %x ] ] ]
+            }
+            else {
+              var %Join %Join [ $ [ $+ [ %x ] ] ]
+            }
+            inc %x
+          }
+
+          ; If we have channels we need to use join -n for
+          if (%JoinN) {
+            .timerJOINCHANNELSN [ $+ [ $network ] ] 1 15 join -n %JoinN
+          }
+
+          ; If we have channels we need a regular join for
+          if (%Join) {
+            .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join %Join
+          }
+          ;  .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join $readini(AutoLoginInformation.ini,$network,&Channels)
         }
 
         ; If we have the AutoIdentify script loaded, let's try to auth with our nick
