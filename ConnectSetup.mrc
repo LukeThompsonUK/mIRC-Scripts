@@ -116,6 +116,13 @@ raw 005:*:{
           var %x 1
           tokenize 44 $readini(AutoLoginInformation.ini,$network,&Channels)
           while (%x <= $0) {
+
+            ; This checks to see if we already have the window open or not.
+            ; How the brackets are evaluated:
+            ; [ $ [ $+ [ %x ] ] ]
+            ; [ $ [ $+ 1 ] ]
+            ; [ $1 ]
+            ; #Window
             if (!$window([ $ [ $+ [ %x ] ] ])) {
               var %JoinN %JoinN [ $ [ $+ [ %x ] ] ]
             }
@@ -134,7 +141,6 @@ raw 005:*:{
           if (%Join) {
             .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join %Join
           }
-          ;  .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join $readini(AutoLoginInformation.ini,$network,&Channels)
         }
 
         ; If we have the AutoIdentify script loaded, let's try to auth with our nick
