@@ -124,10 +124,20 @@ raw 005:*:{
             ; [ $1 ]
             ; #Window
             if (!$window([ $ [ $+ [ %x ] ] ])) {
-              var %JoinN %JoinN [ $ [ $+ [ %x ] ] ]
+              if (!%JoinN) {
+                var %JoinN [ $ [ $+ [ %x ] ] ]
+              }
+              else {
+                var %JoinN %JoinN $+ , $+ [ $ [ $+ [ %x ] ] ]
+              }
             }
             else {
-              var %Join %Join [ $ [ $+ [ %x ] ] ]
+              if (!%Join) {
+                var %Join [ $ [ $+ [ %x ] ] ]
+              }
+              else {
+                var %Join %Join $+ , $+ [ $ [ $+ [ %x ] ] ]
+              }
             }
             inc %x
           }
