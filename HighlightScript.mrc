@@ -124,3 +124,11 @@ on *:ACTION:*:#:{
     }
   }
 }
+
+
+; Accidently unloaded a script and it took me a good 10 minutes to figure out
+; which one was unloaded, Adding this to all the scripts to prevent this problem
+; happening again in the future.
+on *:UNLOAD:{
+  echo -a Unloading: $script
+}
