@@ -401,5 +401,8 @@ on ^*:SNOTICE:*:{
 ; which one was unloaded, Adding this to all the scripts to prevent this problem
 ; happening again in the future.
 on *:UNLOAD:{
-  echo -a Unloading: $script
+  if (!$window(@Script_Log)) {
+    window -nz @Script_Log
+  }
+  aline -ph @Script_Log Unloading: $script
 }
