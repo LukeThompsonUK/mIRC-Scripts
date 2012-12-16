@@ -82,13 +82,13 @@ alias ConnectSetup {
     var %Do_Status = TRUE
   }
 
+  ; Now that we've parsed all the input we can get to editing the files.
   ; If we want to change the default nick
   if (%Set_Nickname) {
     writeini AutoLoginInformation.ini %Network &Nick %Set_Nickname
     echo -a [ConnectSetup] $+([,%Network,]) Nick set to: %Set_Nickname
   }
 
-  ; Now that we've parsed all the input we can get to editing the files.
   ; If there is a channel to add
   if (%J_Channel) {
     writeini AutoLoginInformation.ini %Network &Channels $addtok($readini(AutoLoginInformation.ini,%Network,&Channels),%J_Channel,44)
