@@ -8,13 +8,16 @@
 ** Auto-opers
 *
 * Configuration Settings / Commands:
-** /ConnectSetup -join #Channel ( Adds a channel to your autojoin list )
-** /ConnectSetup -del #Channel ( Removes a channel from your autojoin list )
-** /ConnectSetup -setmodes +modes/-modes ( Sets/removes modes on connect )
-** /ConnectSetup -vhost VhostName VhostPass ( Adds a vhost for that network (requires a /vhost) )
-** /ConnectSetup -nick Nickhere ( Sets your nick to the specified nick on connect for that network )
-** /ConnectSetup -Oper OperUser OperPass ( Adds a oper name for that network )
-** /ConnectSetup -status NetworkHere ( Prints stored information about the given network )
+** /ConnectSetup -network=<network> -nick=<Nickname> ( Sets your nick to the specified nick on connect for that network )
+** /ConnectSetup -network=<network> -join=<#Channel> ( Adds a channel to your autojoin list )
+** /ConnectSetup -network=<network> -part=<#Channel> ( Removes a channel from your autojoin list )
+** /ConnectSetup -network=<network> -modes=<+modes/-modes> ( Sets/removes modes on connect )
+** /ConnectSetup -network=<network> -vhost=<VhostName> -vhostpass=<VhostPass> ( Adds a vhost for that network (requires a /vhost) )
+** /ConnectSetup -network=<network> -OperName=<OperUsername> -OperPass=<OperPassword> ( Adds a oper name for that network )
+** /ConnectSetup -network=<network> -status ( Prints stored information about the given network )
+*** If you do not give a -network=NETWORK then it uses whatever network you typed the command on
+*** Note: Please add/remove channels one at a time.
+*** Note: vhost and oper related things have bugs if you use : in either the name or the password
 *
 * Settings File
 ** This script stores all settings in AutoLoginInformation.ini in the mIRC Directory.
@@ -22,74 +25,139 @@
 */
 
 ; This is the main alias.
-alias ConnectSetup { 
-  ; This checks which command they want to use.
-  ; If they don't use any of these it'll print the syntax.
-  if (($1 == -join) && ($regex(ConnectSetup,$2,/^#\S+$/))) {
-    writeini AutoLoginInformation.ini $network &Channels $addtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,44)
-    echo -a [ConnectSetup] $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
+alias ConnectSetup {
+  ; Check to make sure there's a network name, if there isn't then
+  ; we use the network that the user was typing on.
+  if ($regex(NetworkName,$1-,/-network=(\S+)/Si)) {
+    var %Network = $regml(NetworkName,1)
   }
-  elseif (($1 == -del) && ($regex(ConnectSetup,$2,/^#\S+$/))) {
-    var %Tok $findtok($readini(AutoLoginInformation.ini,$network,&Channels),$2,1,44)
+  else {
+    var  %Network = $network
+  }
 
-    writeini AutoLoginInformation.ini $network &Channels $deltok($readini(AutoLoginInformation.ini,$network,&Channels),%Tok,44)
-    echo -a [ConnectSetup] $+([,$network,]) $readini(AutoLoginInformation.ini,$network,&Channels)
+  ; Check nickname
+  if ($regex(Nickname,$1-,/-nick=(\S+)/Si)) {
+    var %Set_Nickname = $regml(Nickname,1)
   }
-  elseif (($1 == -setmodes) && ($2)) {
-    writeini AutoLoginInformation.ini $network &Modes $2
-    echo -a [ConnectSetup] $+([,$network,]) Modes on connect set to: $2
-  }
-  elseif (($1 == -vhost) && ($3)) {
-    writeini AutoLoginInformation.ini $network &Vhost $+($2,:,$3)
-    echo -a [ConnectSetup] $+([,$network,]) Vhost set to: $2 - password: $3
-  }
-  elseif (($1 == -nick) && ($2)) {
-    writeini AutoLoginInformation.ini $network &Nick $2
-    echo -a [ConnectSetup] $+([,$network,]) Nick set to: $2
-  }
-  elseif (($1 == -oper) && ($3)) {
-    writeini AutoLoginInformation.ini $network &Oper $+($2,:,$3)
-    echo -a [ConnectSetup] $+([,$network,]) Oper set to: $2 - password: $3
-  }
-  elseif (($1 == -status) && ($2)) {
-    echo 10 -a [ConnectSetup] -
-    echo 10 -a [ConnectSetup] Printing information for: $+(07,$2)
 
-    if (!$ini(AutoLoginInformation.ini,$2,0)) {
+  ; If we have channels to join
+  if ($regex(JoinChannels,$1-,/-join=(#\S+)/Si)) {
+    var %J_Channel = $regml(JoinChannels,1)
+  }
+
+  ; If we have channels to remove
+  if ($regex(RemoveChannels,$1-,/-part=(#\S+)/Si)) {
+    var %P_Channel = $regml(RemoveChannels,1)
+  }
+
+  ; If we have modes to set or remove
+  if ($regex(Modes,$1-,/-modes=(\S+)/Si)) {
+    var %Set_Modes $regml(Modes,1)
+  }
+
+  ; Check for vhost name
+  if ($regex(VhostName,$1-,/-vhostname=(\S+)/Si)) {
+    var %VhostName = $regml(VhostName,1)
+
+    ; Since we require a VhostName for there to be a VhostPassword
+    ; we do that check inside of this if
+    if ($regex(VhostPassword,$1-,/-VhostPassword=(\S+)/Si)) {
+      var %VhostPassword = $regml(VhostPassword,1)
+    }
+  }
+
+  ; Check for OperName
+  if ($regex(OperName,$1-,/-OperName=(\S+)/Si)) {
+    var %OperName = $regml(OperName,1)
+
+    ; Since we require an OperName for there to be an OperPassword
+    ; we do that check inside of this if
+    if ($regex(OperPassword,$1-,/-OperPassword=(\S+)/Si)) {
+      var %OperPass = $regml(OperPassword,1)
+    }
+  }
+
+  ; Check for status
+  if ($regex(Status,$1-,/-Status/Si)) {
+    var %Do_Status = TRUE
+  }
+
+  ; If we want to change the default nick
+  if (%Set_Nickname) {
+    writeini AutoLoginInformation.ini %Network &Nick %Set_Nickname
+    echo -a [ConnectSetup] $+([,%Network,]) Nick set to: %Set_Nickname
+  }
+
+  ; Now that we've parsed all the input we can get to editing the files.
+  ; If there is a channel to add
+  if (%J_Channel) {
+    writeini AutoLoginInformation.ini %Network &Channels $addtok($readini(AutoLoginInformation.ini,%Network,&Channels),%J_Channel,44)
+    echo -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+  }
+
+  ; If there is a channel to remove
+  if (%P_Channel) {
+    var %Tok $findtok($readini(AutoLoginInformation.ini,%Network,&Channels),%P_Channel,1,44)
+
+    writeini AutoLoginInformation.ini %Network &Channels $deltok($readini(AutoLoginInformation.ini,%Network,&Channels),%Tok,44)
+    echo -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+  }
+
+  ; If we want to set or remove modes
+  if (%Set_Modes) {
+    writeini AutoLoginInformation.ini %Network &Modes %Set_Modes
+    echo -a [ConnectSetup] $+([,%Network,]) Modes on connect set to: %Set_Modes
+  }
+
+  ; If we want to set a vhost
+  ; The reason why we check for a pass instead of a user is because we do the check for a password
+  ; inside the check for a user, so if there's a password then there HAS to be a user
+  ; This eliminates one check we have to do here. (For the user)
+  if (%VhostPassword) {
+    writeini AutoLoginInformation.ini %Network &Vhost $+(%VhostName,:,%VhostPassword)
+    echo -a [ConnectSetup] $+([,%Network,]) Vhost set to: %VhostName - password: %VhostPassword
+  }
+
+  ; Oper
+  ; Same reason why we check for pass as above
+  if (%OperPassword) {
+    writeini AutoLoginInformation.ini %Network &Oper $+(%OperName,:,%OperPassword)
+    echo -a [ConnectSetup] $+([,%Network,]) Oper set to: %OperName - password: %OperPassword
+  }
+
+  ; Print the whole status report?
+  if (%Do_Status) {
+    echo 10 -a -
+    echo 10 -a [ConnectSetup] Printing information for: $+(07,%Network)
+
+    if (!$ini(AutoLoginInformation.ini,%Network,0)) {
       echo 10 -a [ConnectSetup] 10No information found.
     }
     else {
-      var %ToCheck $ini(AutoLoginInformation.ini,$2,0)
+      var %ToCheck $ini(AutoLoginInformation.ini,%Network,0)
     }
 
     while (%ToCheck > 0) {
-      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,$2,%ToCheck),:07) $readini(AutoLoginInformation.ini,$2,$ini(AutoLoginInformation.ini,$2,%ToCheck))
+      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,%Network,%ToCheck),:07) $readini(AutoLoginInformation.ini,%Network,$ini(AutoLoginInformation.ini,%Network,%ToCheck))
 
       dec %ToCheck
     }
 
     echo 10 -a -
   }
-  else {
-    echo 10 -a -
-    echo 10 -a [ConnectSetup] Syntax:
-    echo 10 -a [ConnectSetup] /ConnectSetup -join #Channel [Adds a channel to your autojoin list]
-    echo 10 -a [ConnectSetup] /ConnectSetup -del #Channel [Removes a channel from your autojoin list]
-    echo 10 -a [ConnectSetup] /ConnectSetup -setmodes +modes/-modes [Sets/removes modes on connect]
-    echo 10 -a [ConnectSetup] /ConnectSetup -vhost VhostName VhostPass [Adds a vhost for that network (requires a /vhost)]
-    echo 10 -a [ConnectSetup] /ConnectSetup -nick Nickhere [Sets your nick to the specified nick on connect for that network]
-    echo 10 -a [ConnectSetup] /ConnectSetup -oper Opername OperPass [Sets your oper name for that network]
-    echo 10 -a [ConnectSetup] /ConnectSetup -status NetworkHere [Prints status for the given network]
-    echo 10 -a -
-  }
 }
 
+; We use this to trigger the beginning of the script.
 raw 001:*:{
   set %Connect.raw on
 }
 
 raw 005:*:{
+  ; If that's on then we do the script, if we didn't have this it would trigger when doing
+  ; /version, and that's just annoying.
   if (%Connect.Raw) {
+
+    ; Check for the network name
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
       if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
         if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
