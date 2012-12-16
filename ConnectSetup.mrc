@@ -73,7 +73,7 @@ alias ConnectSetup {
     ; Since we require an OperName for there to be an OperPassword
     ; we do that check inside of this if
     if ($regex(OperPassword,$1-,/-OperPassword=(\S+)/Si)) {
-      var %OperPass = $regml(OperPassword,1)
+      var %OperPassword = $regml(OperPassword,1)
     }
   }
 
