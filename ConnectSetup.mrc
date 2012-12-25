@@ -86,13 +86,13 @@ alias ConnectSetup {
   ; If we want to change the default nick
   if (%Set_Nickname) {
     writeini AutoLoginInformation.ini %Network &Nick %Set_Nickname
-    echo -a [ConnectSetup] $+([,%Network,]) Nick set to: %Set_Nickname
+    echo 10 -a [ConnectSetup] $+([,%Network,]) Nick set to: %Set_Nickname
   }
 
   ; If there is a channel to add
   if (%J_Channel) {
     writeini AutoLoginInformation.ini %Network &Channels $addtok($readini(AutoLoginInformation.ini,%Network,&Channels),%J_Channel,44)
-    echo -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
   }
 
   ; If there is a channel to remove
@@ -100,13 +100,13 @@ alias ConnectSetup {
     var %Tok $findtok($readini(AutoLoginInformation.ini,%Network,&Channels),%P_Channel,1,44)
 
     writeini AutoLoginInformation.ini %Network &Channels $deltok($readini(AutoLoginInformation.ini,%Network,&Channels),%Tok,44)
-    echo -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
   }
 
   ; If we want to set or remove modes
   if (%Set_Modes) {
     writeini AutoLoginInformation.ini %Network &Modes %Set_Modes
-    echo -a [ConnectSetup] $+([,%Network,]) Modes on connect set to: %Set_Modes
+    echo 10 -a [ConnectSetup] $+([,%Network,]) Modes on connect set to: %Set_Modes
   }
 
   ; If we want to set a vhost
@@ -115,14 +115,14 @@ alias ConnectSetup {
   ; This eliminates one check we have to do here. (For the user)
   if (%VhostPassword) {
     writeini AutoLoginInformation.ini %Network &Vhost $+(%VhostName,:,%VhostPassword)
-    echo -a [ConnectSetup] $+([,%Network,]) Vhost set to: %VhostName - password: %VhostPassword
+    echo 10 -a [ConnectSetup] $+([,%Network,]) Vhost set to: %VhostName - password: %VhostPassword
   }
 
   ; Oper
   ; Same reason why we check for pass as above
   if (%OperPassword) {
     writeini AutoLoginInformation.ini %Network &Oper $+(%OperName,:,%OperPassword)
-    echo -a [ConnectSetup] $+([,%Network,]) Oper set to: %OperName - password: %OperPassword
+    echo 10 -a [ConnectSetup] $+([,%Network,]) Oper set to: %OperName - password: %OperPassword
   }
 
   ; Print the whole status report?
