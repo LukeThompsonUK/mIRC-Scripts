@@ -21,9 +21,9 @@
 ; If the channel you play IdleRPG in isn't listed here make sure it gets added or the script wont work.
 on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{ 
   ; This simply checks if there is a bot name, if there isn't we haven't got it setup for this network
-  if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+  if ($readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName)) {
     ; If the nick joining is you, or the name of the idlerpg bot
-    if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName))) {
+    if (($nick == $me) || ($nick == $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName))) {
       .timerIdleRPGLogin [ $+ [ $network ] ] 1 5 //DoLogin $chan
     }
   }
@@ -34,9 +34,9 @@ on *:Join:#Idle-RPG,#IdleRPG,#IRPG,#Idle:{
 ; Outputs copied text to @IdleRPG
 on *:TEXT:*:#:{
   ; Checks to see if the text is from the botnick.
-  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName)) {
     ; Checks to see if our username was said somewhere in the text.
-    if ($matchtok($1-,$readini(IdleRPGAutoLoginDetails.ini,$network,Username),0,32)) {
+    if ($matchtok($1-,$readini(IdleRPGAutoLoginDetails.ini,n,$network,Username),0,32)) {
       ; Creates @IdleRPG if we do not have one already.
       if (!$window(@IdleRPG)) { window -nz @IdleRPG }
 
@@ -70,8 +70,8 @@ alias -l DoLogin {
   ; It will automatically be unset after 15 seconds.
   inc -u15 %IdleLoginCheck [ $+ [ $network ] ]
   if (%IdleLoginCheck [ $+ [ $network ] ] <= 6) {
-    if ($readini(IdleRPGAutoLoginDetails.ini,$network,BotName) isop $1) {
-      .msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    if ($readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName) isop $1) {
+      .msg $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName) LOGIN $readini(IdleRPGAutoLoginDetails.ini,n,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
     }
     ; If the login doesn't work, try again in 5 seconds. The user might have not had time to op.
     ; It will try 6 times, totaling roughly 30 seconds after the bot joins. If the bot isn't opped by then
@@ -83,7 +83,7 @@ alias -l DoLogin {
   }
   ; This else is called when we've tried to login 6+ times on any given network.
   else {
-    echo 07 $1 [IdleRPG] Could not login. $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) was not an op on the channel
+    echo 07 $1 [IdleRPG] Could not login. $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName) was not an op on the channel
   }
 }
 
@@ -115,9 +115,9 @@ alias IRPG {
   if (%Details) {
     echo -a -
     echo -a Network: $network
-    echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)
-    echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,$network,Username)
-    echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,$network,Password)
+    echo -a BotName: $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName)
+    echo -a Username: $readini(IdleRPGAutoLoginDetails.ini,n,$network,Username)
+    echo -a Password: $readini(IdleRPGAutoLoginDetails.ini,n,$network,Password)
     echo -a -
 
     return
@@ -142,8 +142,8 @@ alias IRPG {
 
 ; If the bot notices back there isn't an account by that name, register one.
 on *:Notice:*No such account*:?:{
-  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
-    msg $readini(IdleRPGAutoLoginDetails.ini,$network,BotName) REGISTER $readini(IdleRPGAutoLoginDetails.ini,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,$network,Password) IdleUser
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName)) {
+    msg $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName) REGISTER $readini(IdleRPGAutoLoginDetails.ini,n,$network,Username) $readini(IdleRPGAutoLoginDetails.ini,n,$network,Password) IdleUser
   }
 }
 
