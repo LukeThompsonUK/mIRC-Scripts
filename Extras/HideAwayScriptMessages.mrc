@@ -8,7 +8,7 @@
 ** The above doesn't currently work due to the link being removed. It will be added back when it's been rewritten to look nicer.
 *
 * Settings File
-** This script stores all settings in HideAwayScriptMessage.ini.ini in the mIRC Directory.
+** This script stores all settings in HideAwayScriptMessage.ini in the mIRC Directory.
 ** Type: //run $mIRCDir\HideAwayScriptMessage.ini to view.
 */
 
