@@ -35,7 +35,7 @@ alias AutoIdentify {
     echo -a -
     echo -a Network: $network
     while (%x <= $ini(AutoIdentify.ini,$network,0)) {
-      echo -a Nick: $ini(AutoIdentify.ini,$network,%x) : Pass: $readini(AutoIdentify.ini,$network,$ini(AutoIdentify.ini,$network,%x))
+      echo -a Nick: $ini(AutoIdentify.ini,$network,%x) : Pass: $readini(AutoIdentify.ini,n,$network,$ini(AutoIdentify.ini,$network,%x))
       inc %x
     }
     echo -a -
@@ -66,8 +66,8 @@ alias AutoIdentify {
       writeini AutoIdentify.ini $network %Nick %Pass
     }
 
-    if ($readini(AutoIdentify.ini,$network,%Nick)) {
-      echo -a The password for %Nick is: $readini(AutoIdentify.ini,$network,%Nick)
+    if ($readini(AutoIdentify.ini,n,$network,%Nick)) {
+      echo -a The password for %Nick is: $readini(AutoIdentify.ini,n,$network,%Nick)
       return
     }
     else {
@@ -113,9 +113,9 @@ on *:NOTICE:*:?:{
     ; If it's requesting we identify
     if ((This nickname is registered isin $1-) || (Please identify via isin $1-)) {
       ; Check to see if we have a password for the current nick
-      if ($readini(AutoIdentify.ini,$network,$me)) {
+      if ($readini(AutoIdentify.ini,n,$network,$me)) {
         ; Message nickserv the password
-        NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
+        NickServ IDENTIFY $readini(AutoIdentify.ini,n,$network,$me)
       }
       else { 
         ; We didn't have a password setup, so print that information back to us.
@@ -134,9 +134,9 @@ raw 433:*nickname is already in use.*:{
   ; This will prevent us trying to ghost nicks we don't have
   ; a password setup for.
   else {
-    if ($readini(AutoIdentify.ini,$network,$2)) {
+    if ($readini(AutoIdentify.ini,n,$network,$2)) {
       inc -u15 %Ghosting. [ $+ [ $network ] ]
-      .msg nickserv GHOST $2 $readini(AutoIdentify.ini,$network,$2)
+      .msg nickserv GHOST $2 $readini(AutoIdentify.ini,n,$network,$2)
       .timerGHOST [ $+ [ $network ] ] 1 5 /nick $2
     }
     else {
