@@ -99,7 +99,7 @@ alias -l SendURL {
 
 ; Returns ON/OFF
 alias -l DoURL {
-  return $readini(HideAwayScriptMessage.ini,Configuration,ShowURL)
+  return $readini(HideAwayScriptMessage.ini,n,Configuration,ShowURL)
 }
 
 

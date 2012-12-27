@@ -111,9 +111,9 @@ raw 477:*need to be identified*:{
   if ($script(AutoIdentify.mrc) != NULL) {
     echo 10 -ta [477: Registration required] Could not join $2
     ; If we have a password for our current nick, use it.
-    if ($readini(AutoIdentify.ini,$network,$me)) {
+    if ($readini(AutoIdentify.ini,n,$network,$me)) {
       echo 10 -ta [AutoBypass] Attempting to authenticate with saved password for $me and reattempt the join to $2
-      NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
+      NickServ IDENTIFY $readini(AutoIdentify.ini,n,$network,$me)
       .timerJOINAFTERID 1 5 /join $2
     }
     ; Otherwise, error out.

@@ -91,16 +91,16 @@ alias ConnectSetup {
 
   ; If there is a channel to add
   if (%J_Channel) {
-    writeini AutoLoginInformation.ini %Network &Channels $addtok($readini(AutoLoginInformation.ini,%Network,&Channels),%J_Channel,44)
-    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+    writeini AutoLoginInformation.ini %Network &Channels $addtok($readini(AutoLoginInformation.ini,n,%Network,&Channels),%J_Channel,44)
+    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,n,%Network,&Channels)
   }
 
   ; If there is a channel to remove
   if (%P_Channel) {
-    var %Tok $findtok($readini(AutoLoginInformation.ini,%Network,&Channels),%P_Channel,1,44)
+    var %Tok $findtok($readini(AutoLoginInformation.ini,n,%Network,&Channels),%P_Channel,1,44)
 
-    writeini AutoLoginInformation.ini %Network &Channels $deltok($readini(AutoLoginInformation.ini,%Network,&Channels),%Tok,44)
-    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,%Network,&Channels)
+    writeini AutoLoginInformation.ini %Network &Channels $deltok($readini(AutoLoginInformation.ini,n,%Network,&Channels),%Tok,44)
+    echo 10 -a [ConnectSetup] $+([,%Network,]) $readini(AutoLoginInformation.ini,n,%Network,&Channels)
   }
 
   ; If we want to set or remove modes
@@ -134,11 +134,11 @@ alias ConnectSetup {
       echo 10 -a [ConnectSetup] 10No information found.
     }
     else {
-      var %ToCheck $ini(AutoLoginInformation.ini,%Network,0)
+      var %ToCheck $ini(AutoLoginInformation.ini,n,%Network,0)
     }
 
     while (%ToCheck > 0) {
-      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,%Network,%ToCheck),:07) $readini(AutoLoginInformation.ini,%Network,$ini(AutoLoginInformation.ini,%Network,%ToCheck))
+      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,n,%Network,%ToCheck),:07) $readini(AutoLoginInformation.ini,%Network,$ini(AutoLoginInformation.ini,%Network,%ToCheck))
 
       dec %ToCheck
     }
@@ -161,20 +161,20 @@ raw 005:*:{
     if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
       if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
         if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
-          oper $replace($readini(AutoLoginInformation.ini,$network,&Oper),$chr(58),$chr(32))
+          oper $replace($readini(AutoLoginInformation.ini,n,$network,&Oper),$chr(58),$chr(32))
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
-          nick $readini(AutoLoginInformation.ini,$network,&Nick)
+          nick $readini(AutoLoginInformation.ini,n,$network,&Nick)
         }
 
         ; Fixed this so we nolonger need the alias.
         if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          .timerSETMODE [ $+ [ $network ] ] 1 15 mode $!me $readini(AutoLoginInformation.ini,$network,&Modes)
+          .timerSETMODE [ $+ [ $network ] ] 1 15 mode $!me $readini(AutoLoginInformation.ini,n,$network,&Modes)
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
-          vhost $replace($readini(AutoLoginInformation.ini,$network,&Vhost),$chr(58),$chr(32))
+          vhost $replace($readini(AutoLoginInformation.ini,n,$network,&Vhost),$chr(58),$chr(32))
         }
 
         if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
@@ -182,7 +182,7 @@ raw 005:*:{
           ; channels we're not in. This prevents random minimization when we are
           ; disconnected from the network for whatever reason.
           var %x 1
-          tokenize 44 $readini(AutoLoginInformation.ini,$network,&Channels)
+          tokenize 44 $readini(AutoLoginInformation.ini,n,$network,&Channels)
           while (%x <= $0) {
 
             ; This checks to see if we already have the window open or not.
@@ -225,7 +225,7 @@ raw 005:*:{
         if ($script(AutoIdentify.mrc) != NULL) {
           if ($readini(AutoIdentify.ini,$network,$me)) {
             ; Message nickserv the password
-            NickServ IDENTIFY $readini(AutoIdentify.ini,$network,$me)
+            NickServ IDENTIFY $readini(AutoIdentify.ini,n,$network,$me)
           }
           else { 
             ; We didn't have a password setup, so print that information back to us.
