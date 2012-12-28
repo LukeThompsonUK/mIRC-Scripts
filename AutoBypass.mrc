@@ -74,7 +74,7 @@ on $^*:Notice:/(\S+)\skey\sis.\s(\S+)$/Si:?:{
 
   aline -ph @Ban/Key/Invite $timestamp $+([,$network,/,$regml(1),]) 10Bypassed channel key. [key: $+(07,$regml(2),10])
 
-  if ($window($regml(1)) {
+  if ($window($regml(1))) {
     join $regml(1) $regml(2)
     haltdef
   }
@@ -94,7 +94,7 @@ on $^*:Notice:/^KEY\s(\S+)\s(\S+)$/Si:?:{
 
   ; This is sort of experimental. It should check to see if the window is open
   ; if so then it wont join -n just regular join.
-  if ($window($regml(1)) {
+  if ($window($regml(1))) {
     join $regml(1) $regml(2)
     haltdef
   }

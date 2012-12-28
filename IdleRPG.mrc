@@ -50,7 +50,7 @@ on *:TEXT:*:#:{
 ; Intercepts idlerpg notices and sends them to @IdleRPG
 on ^*:NOTICE:*:?:{
   ; Checks to see if the incoming notice is from the idlerpg botnick.
-  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,$network,BotName)) {
+  if ($nick == $readini(IdleRPGAutoLoginDetails.ini,n,$network,BotName)) {
     ; Creates @IdleRPG if we do not have one already.
     if (!$window(@IdleRPG)) { window -nz @IdleRPG }
 
