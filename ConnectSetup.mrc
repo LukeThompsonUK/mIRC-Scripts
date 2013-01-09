@@ -134,11 +134,11 @@ alias ConnectSetup {
       echo 10 -a [ConnectSetup] 10No information found.
     }
     else {
-      var %ToCheck $ini(AutoLoginInformation.ini,n,%Network,0)
+      var %ToCheck $ini(AutoLoginInformation.ini,%Network,0)
     }
 
     while (%ToCheck > 0) {
-      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,n,%Network,%ToCheck),:07) $readini(AutoLoginInformation.ini,%Network,$ini(AutoLoginInformation.ini,%Network,%ToCheck))
+      echo 10 -a [ConnectSetup] $+(10,$ini(AutoLoginInformation.ini,%Network,%ToCheck),:07) $readini(AutoLoginInformation.ini,%Network,$ini(AutoLoginInformation.ini,%Network,%ToCheck))
 
       dec %ToCheck
     }
