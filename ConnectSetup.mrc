@@ -149,96 +149,100 @@ alias ConnectSetup {
 
 ; We use this to trigger the beginning of the script.
 raw 001:*:{
-  set %Connect.raw on
+  ; Changed this to a group instead of a variable and an if statement. Seems more efficient.
+  enable #ConnectSetup
 }
 
+; Declare the ConnectSetup group
+#ConnectSetup off
 raw 005:*:{
   ; If that's on then we do the script, if we didn't have this it would trigger when doing
   ; /version, and that's just annoying.
-  if (%Connect.Raw) {
 
-    ; Check for the network name
-    if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
-      if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
-        if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
-          oper $replace($readini(AutoLoginInformation.ini,n,$network,&Oper),$chr(58),$chr(32))
-        }
+  ; Check for the network name
+  if ($regex(Raw005Name,$1-,NETWORK=(\S+)) == 1) {
+    if ($ini(AutoLoginInformation.ini,$regml(Raw005Name,1))) {
+      if ($ini(AutoLoginInformation.ini,$network,&Oper)) {
+        oper $replace($readini(AutoLoginInformation.ini,n,$network,&Oper),$chr(58),$chr(32))
+      }
 
-        if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
-          nick $readini(AutoLoginInformation.ini,n,$network,&Nick)
-        }
+      if ($ini(AutoLoginInformation.ini,$network,&Nick)) {
+        nick $readini(AutoLoginInformation.ini,n,$network,&Nick)
+      }
 
-        ; Fixed this so we nolonger need the alias.
-        if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
-          .timerSETMODE [ $+ [ $network ] ] 1 15 mode $!me $readini(AutoLoginInformation.ini,n,$network,&Modes)
-        }
+      ; Fixed this so we nolonger need the alias.
+      if ($ini(AutoLoginInformation.ini,$network,&Modes)) {
+        .timerSETMODE [ $+ [ $network ] ] 1 15 mode $!me $readini(AutoLoginInformation.ini,n,$network,&Modes)
+      }
 
-        if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
-          vhost $replace($readini(AutoLoginInformation.ini,n,$network,&Vhost),$chr(58),$chr(32))
-        }
+      if ($ini(AutoLoginInformation.ini,$network,&Vhost)) {
+        vhost $replace($readini(AutoLoginInformation.ini,n,$network,&Vhost),$chr(58),$chr(32))
+      }
 
-        if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
-          ; We're going to loop for all the channels and only use join -n on
-          ; channels we're not in. This prevents random minimization when we are
-          ; disconnected from the network for whatever reason.
-          var %x 1
-          tokenize 44 $readini(AutoLoginInformation.ini,n,$network,&Channels)
-          while (%x <= $0) {
+      if ($ini(AutoLoginInformation.ini,$network,&Channels)) {
+        ; We're going to loop for all the channels and only use join -n on
+        ; channels we're not in. This prevents random minimization when we are
+        ; disconnected from the network for whatever reason.
+        var %x 1
+        tokenize 44 $readini(AutoLoginInformation.ini,n,$network,&Channels)
+        while (%x <= $0) {
 
-            ; This checks to see if we already have the window open or not.
-            ; How the brackets are evaluated:
-            ; [ $ [ $+ [ %x ] ] ]
-            ; [ $ [ $+ 1 ] ]
-            ; [ $1 ]
-            ; #Window
-            if (!$window([ $ [ $+ [ %x ] ] ])) {
-              if (!%JoinN) {
-                var %JoinN [ $ [ $+ [ %x ] ] ]
-              }
-              else {
-                var %JoinN %JoinN $+ , $+ [ $ [ $+ [ %x ] ] ]
-              }
+          ; This checks to see if we already have the window open or not.
+          ; How the brackets are evaluated:
+          ; [ $ [ $+ [ %x ] ] ]
+          ; [ $ [ $+ 1 ] ]
+          ; [ $1 ]
+          ; #Window
+          if (!$window([ $ [ $+ [ %x ] ] ])) {
+            if (!%JoinN) {
+              var %JoinN [ $ [ $+ [ %x ] ] ]
             }
             else {
-              if (!%Join) {
-                var %Join [ $ [ $+ [ %x ] ] ]
-              }
-              else {
-                var %Join %Join $+ , $+ [ $ [ $+ [ %x ] ] ]
-              }
+              var %JoinN %JoinN $+ , $+ [ $ [ $+ [ %x ] ] ]
             }
-            inc %x
           }
-
-          ; If we have channels we need to use join -n for
-          if (%JoinN) {
-            .timerJOINCHANNELSN [ $+ [ $network ] ] 1 15 join -n %JoinN
+          else {
+            if (!%Join) {
+              var %Join [ $ [ $+ [ %x ] ] ]
+            }
+            else {
+              var %Join %Join $+ , $+ [ $ [ $+ [ %x ] ] ]
+            }
           }
-
-          ; If we have channels we need a regular join for
-          if (%Join) {
-            .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join %Join
-          }
+          inc %x
         }
 
-        ; If we have the AutoIdentify script loaded, let's try to auth with our nick
-        if ($script(AutoIdentify.mrc) != NULL) {
-          if ($readini(AutoIdentify.ini,$network,$me)) {
-            ; Message nickserv the password
-            NickServ IDENTIFY $readini(AutoIdentify.ini,n,$network,$me)
-          }
-          else { 
-            ; We didn't have a password setup, so print that information back to us.
-            echo -a $+([,$network,:,$me,]) You're not set to autoidentify with this nickname.
-          }
+        ; If we have channels we need to use join -n for
+        if (%JoinN) {
+          .timerJOINCHANNELSN [ $+ [ $network ] ] 1 15 join -n %JoinN
+        }
+
+        ; If we have channels we need a regular join for
+        if (%Join) {
+          .timerJOINCHANNELS [ $+ [ $network ] ] 1 15 join %Join
         }
       }
 
-      unset %Connect.Raw
+      ; If we have the AutoIdentify script loaded, let's try to auth with our nick
+      if ($script(AutoIdentify.mrc) != NULL) {
+        if ($readini(AutoIdentify.ini,$network,$me)) {
+          ; Message nickserv the password
+          NickServ IDENTIFY $readini(AutoIdentify.ini,n,$network,$me)
+        }
+        else { 
+          ; We didn't have a password setup, so print that information back to us.
+          echo -a $+([,$network,:,$me,]) You're not set to autoidentify with this nickname.
+        }
+      }
     }
+
+    ; Disable the connect setup group now that we're done connecting.
+    disable #ConnectSetup
   }
 }
 
+; Mark the end of the #ConnectSetup group.
+#ConnectSetup end
 
 ; Accidently unloaded a script and it took me a good 10 minutes to figure out
 ; which one was unloaded, Adding this to all the scripts to prevent this problem
