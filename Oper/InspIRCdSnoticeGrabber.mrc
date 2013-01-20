@@ -10,13 +10,13 @@
 ** GitHub: https://github.com/Shawn-Smith/mIRC-Scripts
 */
 
-; *** CONNECT: Client connecting on port 6697: Nick!Ident@Host.com [IP.IP.IP.IP] [Test Nick]
-on $^*:Snotice:/^\*{3}\sCONNECT:.+port\s(\S+):\s(\S+)\s\[(\S+)\]\s\[(.+)\]/Si:{
+; *** CONNECT: Client connecting on port 6697 (class main): Nick!Ident@Host.com (IP.IP.IP.IP) [Test Nick]
+on $^*:Snotice:/^\*{3}\sCONNECT:.+\(class\s(\S+)\):\s(\S+)!(\S+)@(\S+)\s\((\S+)\)\s\[(.+)\]/Si:{
   if (!$window(@Clients)) { 
     window -nz @Clients 
   }
 
-  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Connect:7 $+($regml(2),:,$regml(4)) 12on port7 $regml(1) $+([,$regml(3),])
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 04Connect:07 $+($regml(2),12!07,$regml(3),12@07,$regml(4),12:07,$regml(6)) $+(12[07,$regml(5),12]07) $+(12[Class:07,$chr(32),$regml(1),12])
   haltdef
 }
 
@@ -34,16 +34,16 @@ on $^*:Snotice:/^\*{3}\sANNOUNCEMENT:.+\s(\S+)\sdetected.+CGI:IRC\s\((\S+)\).+to
 }
 
 
-;*** QUIT: Client exiting: Nick!Ident@Host.com [Quit: Quitting IRC]
+;*** QUIT: Client exiting: Nick!Ident@Host.com (IP.IP.IP.IP) [Quit: Quitting IRC]
 ; Note that the 'Quit:' prefix will not always be shown, when being server banned, killed, ghosted, or ping timeouting
 ; It will be different, so when matching you should match from [ to the end of the line for a quit reason
 ; Sometimes the ending ] will not be shown on long lines as it's cut off from the buffer due to the newline needing to be added
-on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)\s\[(.+).$/Si:{
+on $^*:Snotice:/^\*{3}\sQUIT:\sClient\sexiting:\s(\S+)!(\S+)@(\S+)\s\((\S+)\)\s\[(.+).$/Si:{
   if (!$window(@Clients)) { 
     window -nz @Clients 
   }
 
-  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Disconnect:7 $regml(1) 12->07 $regml(2)
+  aline -p @Clients 12(09 $+ $time $+ 12) $+(13[,$network,]) 4Disconnect:7 $+($regml(1),12!07,$regml(2),12@07,$regml(3)) $+(12[07,$regml(4),12]) 12->07 $regml(5)
   haltdef
 }
 
